@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Histoire du Monde</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dark: #8b6914;
+    --ink: #0e0b07;
+    --parchment: #f5edd6;
+    --parchment-dark: #e8d9b5;
+    --blood: #8b1a1a;
+    --stone: #2a2318;
+    --smoke: #6b5f45;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    font-family: 'EB Garamond', serif;
+    color: var(--parchment);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* STARFIELD */
+  #stars {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse at center, #1a1208 0%, #0a0703 100%);
+  }
+  .star {
+    position: absolute; border-radius: 50%;
+    background: #fff; animation: twinkle var(--d, 3s) infinite var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--min-op, 0.2); }
+    50% { opacity: var(--max-op, 0.9); }
+  }
+
+  /* HEADER */
+  header {
+    position: relative; z-index: 10; text-align: center;
+    padding: 60px 20px 40px;
+    background: linear-gradient(180deg, rgba(10,7,3,0.95) 0%, transparent 100%);
+  }
+  .header-ornament {
+    font-size: 1.2rem; color: var(--gold); letter-spacing: 0.5em;
+    margin-bottom: 16px; opacity: 0.7;
+  }
+  h1 {
+    font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900; letter-spacing: 0.1em;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; text-shadow: none;
+    animation: fadeDown 1.2s ease both;
+  }
+  .subtitle {
+    font-size: 1.1rem; color: var(--smoke); font-style: italic;
+    margin-top: 10px; animation: fadeDown 1.4s ease both;
+    letter-spacing: 0.1em;
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex; align-items: center; gap: 16px;
+    max-width: 600px; margin: 20px auto;
+    animation: fadeIn 2s ease both;
+  }
+  .divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dark), transparent); }
+  .divider-diamond {
+    width: 8px; height: 8px; background: var(--gold);
+    transform: rotate(45deg); flex-shrink: 0;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* TIMELINE NAV */
+  .timeline-nav {
+    position: relative; z-index: 10;
+    display: flex; overflow-x: auto; gap: 0;
+    padding: 0 40px; margin: 20px 0;
+    scrollbar-width: none;
+  }
+  .timeline-nav::-webkit-scrollbar { display: none; }
+
+  .era-btn {
+    flex-shrink: 0; padding: 12px 20px;
+    background: transparent; border: none; cursor: pointer;
+    font-family: 'Cinzel', serif; font-size: 0.65rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--smoke); transition: all 0.3s ease;
+    position: relative; white-space: nowrap;
+  }
+  .era-btn::after {
+    content: ''; position: absolute; bottom: 0; left: 50%; right: 50%;
+    height: 2px; background: var(--gold);
+    transition: all 0.3s ease;
+  }
+  .era-btn:hover { color: var(--gold-light); }
+  .era-btn.active {
+    color: var(--gold);
+  }
+  .era-btn.active::after { left: 0; right: 0; }
+
+  /* MAIN CONTENT */
+  .content {
+    position: relative; z-index: 10;
+    max-width: 1200px; margin: 0 auto;
+    padding: 20px 40px 80px;
+  }
+
+  /* ERA PANEL */
+  .era-panel {
+    display: none; animation: panelIn 0.6s ease both;
+  }
+  .era-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ERA HEADER */
+  .era-header {
+    grid-column: 1 / -1;
+    display: flex; align-items: flex-end; gap: 30px;
+    padding-bottom: 30px; border-bottom: 1px solid rgba(201,168,76,0.2);
+    margin-bottom: 10px;
+  }
+  .era-icon {
+    font-size: 5rem; line-height: 1;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
+    animation: iconFloat 4s ease-in-out infinite;
+  }
+  @keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .era-title-block {}
+  .era-period {
+    font-size: 0.8rem; color: var(--gold); letter-spacing: 0.3em;
+    text-transform: uppercase; font-family: 'Cinzel', serif;
+  }
+  .era-title {
+    font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900; color: var(--parchment);
+    line-height: 1.1; margin: 6px 0;
+  }
+  .era-tagline { font-style: italic; color: var(--smoke); font-size: 1.05rem; }
+
+  /* CARDS */
+  .card {
+    background: linear-gradient(135deg, rgba(42,35,24,0.8) 0%, rgba(20,16,10,0.9) 100%);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 2px; padding: 28px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
+  .card:hover::before { opacity: 1; }
+
+  .card-title {
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent);
+  }
+  .card-text {
+    font-size: 1rem; line-height: 1.8; color: var(--parchment);
+    opacity: 0.9;
+  }
+
+  /* EVENTS LIST */
+  .events-list { list-style: none; }
+  .event-item {
+    display: flex; gap: 16px; padding: 14px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    transition: background 0.2s;
+  }
+  .event-item:last-child { border-bottom: none; }
+  .event-date {
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    color: var(--gold-dark); min-width: 100px;
+    padding-top: 2px; text-align: right;
+  }
+  .event-dot {
+    width: 6px; height: 6px; background: var(--gold);
+    border-radius: 50%; flex-shrink: 0; margin-top: 7px;
+    box-shadow: 0 0 6px var(--gold);
+  }
+  .event-desc { font-size: 0.92rem; line-height: 1.6; color: var(--parchment); opacity: 0.85; }
+
+  /* FIGURES */
+  .figures-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .figure-card {
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.1);
+    padding: 14px; border-radius: 1px;
+    transition: background 0.3s;
+  }
+  .figure-card:hover { background: rgba(201,168,76,0.1); }
+  .figure-name {
+    font-family: 'Cinzel', serif; font-size: 0.78rem;
+    color: var(--gold-light); margin-bottom: 4px;
+  }
+  .figure-role { font-size: 0.82rem; color: var(--smoke); font-style: italic; }
+
+  /* STAT BAR */
+  .stat { margin-bottom: 16px; }
+  .stat-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.82rem; margin-bottom: 6px;
+    color: var(--smoke);
+  }
+  .stat-label span:last-child { color: var(--gold); font-family: 'Cinzel', serif; }
+  .stat-bar { height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+  .stat-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+    width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* QUOTE */
+  .era-quote {
+    grid-column: 1 / -1;
+    text-align: center; padding: 30px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    margin-top: 10px;
+  }
+  .quote-text {
+    font-size: 1.15rem; font-style: italic;
+    color: var(--parchment); opacity: 0.7;
+    max-width: 600px; margin: 0 auto;
+    line-height: 1.8;
+  }
+  .quote-source {
+    font-family: 'Cinzel', serif; font-size: 0.7rem;
+    color: var(--gold-dark); letter-spacing: 0.2em;
+    margin-top: 12px;
+  }
+
+  /* PROGRESS BAR */
+  .era-progress {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    height: 3px; background: rgba(255,255,255,0.05);
+  }
+  .era-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+    transition: width 0.5s ease;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--ink); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+  @media (max-width: 768px) {
+    .era-panel.active { grid-template-columns: 1fr; }
+    .content { padding: 20px; }
+    .era-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .figures-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<header>
+  <div class="header-ornament">✦ ✦ ✦</div>
+  <h1>HISTORIA MUNDI</h1>
+  <p class="subtitle">L'histoire du monde à travers les âges</p>
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+</header>
+
+<nav class="timeline-nav" id="timelineNav"></nav>
+
+<main class="content" id="content"></main>
+
+<div class="era-progress"><div class="era-progress-fill" id="progressFill"></div></div>
+
+<script>
+const ERAS = [
+  {
+    id: "prehistoire",
+    period: "−3 800 000 — −3 000 av. J.-C.",
+    title: "Préhistoire",
+    tagline: "L'aube de l'humanité",
+    icon: "🦴",
+    color: "#8b6914",
+    description: "La préhistoire couvre plus de 99% de l'aventure humaine. Des premiers hominidés d'Afrique aux premières civilisations, l'Homo sapiens apprend à maîtriser le feu, façonne des outils, invente l'art et se répand sur toute la planète. Une épopée silencieuse gravée dans la pierre.",
+    events: [
+      { date: "−3,8 Ma", desc: "Australopithecus afarensis — premiers bipèdes en Afrique orientale" },
+      { date: "−2,5 Ma", desc: "Homo habilis : premiers outils en pierre taillée (Oldowayen)" },
+      { date: "−1,8 Ma", desc: "Homo erectus quitte l'Afrique et colonise l'Eurasie" },
+      { date: "−400 000", desc: "Maîtrise du feu et premières habitations structurées" },
+      { date: "−300 000", desc: "Apparition d'Homo sapiens en Afrique du Nord" },
+      { date: "−70 000", desc: "Sortie d'Afrique et dispersion mondiale (Out of Africa II)" },
+      { date: "−35 000", desc: "Art rupestre de la grotte Chauvet — naissance de l'expression artistique" },
+      { date: "−10 000", desc: "Révolution néolithique : agriculture et élevage au Croissant Fertile" },
+    ],
+    figures: [
+      { name: "Lucy", role: "Australopithèque, symbole des origines humaines" },
+      { name: "Homo neanderthalensis", role: "Cousin disparu, artisan et penseur" },
+      { name: "L'homme de Cro-Magnon", role: "Homo sapiens, artiste du Paléolithique" },
+      { name: "Ötzi", role: "Homme des glaces néolithique (~3 300 av. J.-C.)" },
+    ],
+    stats: [
+      { label: "Extension territoriale", value: 95 },
+      { label: "Durée relative", value: 99 },
+      { label: "Innovations technologiques", value: 25 },
+    ],
+    quote: { text: "Nous ne savons pas qui nous sommes si nous ne savons pas d'où nous venons.", source: "Proverbe anthropologique" }
+  },
+  {
+    id: "antiquite",
+    period: "−3 000 — 476 apr. J.-C.",
+    title: "Antiquité",
+    tagline: "Les fondations de la civilisation",
+    icon: "🏛️",
+    color: "#c9a84c",
+    description: "Des premières cités-États de Mésopotamie aux grandes empires méditerranéens, l'Antiquité voit naître l'écriture, les lois, la philosophie, les mathématiques et les religions monothéistes. Rome et la Grèce forgent un héritage intellectuel qui structure encore notre monde.",
+    events: [
+      { date: "−3 200", desc: "Invention de l'écriture cunéiforme en Mésopotamie (Sumer)" },
+      { date: "−2 560", desc: "Construction de la Grande Pyramide de Gizeh sous Khéops" },
+      { date: "−1 754", desc: "Code d'Hammurabi — premier système juridique codifié" },
+      { date: "−776", desc: "Premiers Jeux olympiques à Olympie, Grèce" },
+      { date: "−490", desc: "Victoire de Marathon : Athènes résiste à la Perse" },
+      { date: "−399", desc: "Mort de Socrate — procès et exécution du philosophe" },
+      { date: "−44", desc: "Assassinat de Jules César aux Ides de Mars" },
+      { date: "476", desc: "Chute de Rome occidentale — fin officielle de l'Antiquité" },
+    ],
+    figures: [
+      { name: "Alexandre le Grand", role: "Conquérant de l'Inde à l'Égypte (356−323 av. J.-C.)" },
+      { name: "Cléopâtre VII", role: "Dernière reine d'Égypte, stratège politique" },
+      { name: "Aristote", role: "Philosophe, fondateur de la logique et des sciences" },
+      { name: "César Auguste", role: "Premier emperor romain, Pax Romana" },
+    ],
+    stats: [
+      { label: "Expansion territoriale", value: 70 },
+      { label: "Développement culturel", value: 85 },
+      { label: "Innovation technologique", value: 55 },
+    ],
+    quote: { text: "Je suis venu, j'ai vu, j'ai vaincu.", source: "Jules César" }
+  },
+  {
+    id: "moyen-age",
+    period: "476 — 1 492",
+    title: "Moyen Âge",
+    tagline: "Entre foi, fer et pestilence",
+    icon: "⚔️",
+    color: "#7a5c8a",
+    description: "Longtemps diabolisé comme 'âge des ténèbres', le Moyen Âge est en réalité une période d'une richesse extraordinaire : cathédrales gothiques, universités, chevalerie, Croisades, commerce arabe et chinois, et une foi qui structure toute l'existence. La Peste Noire fracture l'ordre établi et prépare la Renaissance.",
+    events: [
+      { date: "622", desc: "Hégire de Mahomet — naissance de l'Islam et du calendrier musulman" },
+      { date: "800", desc: "Charlemagne couronné Empereur d'Occident par le pape Léon III" },
+      { date: "1 066", desc: "Bataille de Hastings — Guillaume le Conquérant prend l'Angleterre" },
+      { date: "1 095", desc: "Première Croisade prêchée par le pape Urbain II à Clermont" },
+      { date: "1 215", desc: "Magna Carta — premiers droits contre le pouvoir royal en Angleterre" },
+      { date: "1 347", desc: "Arrivée de la Peste Noire en Europe : 1/3 de la population décimée" },
+      { date: "1 431", desc: "Jeanne d'Arc brûlée à Rouen — guerre de Cent Ans" },
+      { date: "1 453", desc: "Chute de Constantinople — fin de l'Empire byzantin" },
+    ],
+    figures: [
+      { name: "Charlemagne", role: "Père de l'Europe, roi des Francs et Lombards" },
+      { name: "Gengis Khan", role: "Fondateur du plus grand empire terrestre de l'histoire" },
+      { name: "Jeanne d'Arc", role: "Héroïne française, martyre et sainte" },
+      { name: "Avicenne", role: "Médecin et philosophe perse, pilier de la science arabe" },
+    ],
+    stats: [
+      { label: "Puissance religieuse", value: 95 },
+      { label: "Développement intellectuel", value: 60 },
+      { label: "Conflits armés", value: 80 },
+    ],
+    quote: { text: "Nul ne peut connaître Dieu sinon celui qui L'aime.", source: "Thomas d'Aquin" }
+  },
+  {
+    id: "renaissance",
+    period: "1 400 — 1 600",
+    title: "Renaissance",
+    tagline: "La lumière retrouvée",
+    icon: "🎨",
+    color: "#c17a2b",
+    description: "Né en Italie, ce mouvement de redécouverte de l'Antiquité révolutionne l'art, la pensée et la science. L'imprimerie de Gutenberg diffuse le savoir à une vitesse sans précédent. Colomb traverse l'Atlantique, Copernic détrône la Terre de son centre, et Michel-Ange sculpte la figure humaine à la perfection divine.",
+    events: [
+      { date: "1 440", desc: "Gutenberg invente l'imprimerie à caractères mobiles — révolution culturelle" },
+      { date: "1 453", desc: "Chute de Byzance : les savants grecs fuient vers l'Occident avec leurs manuscrits" },
+      { date: "1 492", desc: "Christophe Colomb débarque aux Amériques — Nouveau Monde découvert" },
+      { date: "1 503", desc: "Léonard de Vinci peint la Joconde" },
+      { date: "1 517", desc: "Luther publie ses 95 thèses — début de la Réforme protestante" },
+      { date: "1 543", desc: "Copernic publie son modèle héliocentrique du système solaire" },
+      { date: "1 564", desc: "Naissance de Shakespeare et Galilée — année d'exception" },
+      { date: "1 600", desc: "Giordano Bruno brûlé pour avoir défendu l'infinité de l'univers" },
+    ],
+    figures: [
+      { name: "Léonard de Vinci", role: "Génie universel : peintre, ingénieur, anatomiste" },
+      { name: "Michel-Ange", role: "Sculpteur, peintre de la Sixtine, architecte" },
+      { name: "Érasme de Rotterdam", role: "Humaniste, père du dialogue intellectuel européen" },
+      { name: "Copernic", role: "Révolution astronomique, héliocentrisme" },
+    ],
+    stats: [
+      { label: "Explosion artistique", value: 98 },
+      { label: "Révolution scientifique", value: 75 },
+      { label: "Expansion géographique", value: 85 },
+    ],
+    quote: { text: "La simplicité est la sophistication suprême.", source: "Léonard de Vinci" }
+  },
+  {
+    id: "lumieres",
+    period: "1 600 — 1 800",
+    title: "Lumières & Révolutions",
+    tagline: "La raison contre la tyrannie",
+    icon: "💡",
+    color: "#4a7c9e",
+    description: "Le XVIIIe siècle voit triompher la Raison sur la superstition. Les philosophes — Voltaire, Rousseau, Locke — réinventent le contrat social. La Révolution américaine puis française ébranlent les monarchies. La Révolution industrielle en Angleterre transforme le travail, la ville et le temps lui-même.",
+    events: [
+      { date: "1 687", desc: "Newton publie les Principia — loi de la gravitation universelle" },
+      { date: "1 751", desc: "Diderot et d'Alembert lancent l'Encyclopédie — somme des Lumières" },
+      { date: "1 762", desc: "Rousseau publie Du Contrat social — fondements de la démocratie" },
+      { date: "1 776", desc: "Déclaration d'indépendance américaine — 'tous les hommes sont créés égaux'" },
+      { date: "1 789", desc: "Prise de la Bastille — Révolution française commence" },
+      { date: "1 793", desc: "Exécution de Louis XVI — fin de la monarchie absolue en France" },
+      { date: "1 799", desc: "Coup d'état de Napoléon Bonaparte — fin de la Révolution" },
+      { date: "1 804", desc: "Napoléon se couronne Empereur des Français à Notre-Dame" },
+    ],
+    figures: [
+      { name: "Voltaire", role: "Champion de la tolérance et critique des dogmes" },
+      { name: "Napoléon Bonaparte", role: "Génie militaire, législateur (Code civil)" },
+      { name: "Isaac Newton", role: "Père de la physique classique" },
+      { name: "Olympe de Gouges", role: "Militante des droits des femmes, guillotinée" },
+    ],
+    stats: [
+      { label: "Bouleversement politique", value: 95 },
+      { label: "Avancées scientifiques", value: 80 },
+      { label: "Changement social", value: 85 },
+    ],
+    quote: { text: "Que chacun examine ses propres pensées, il les trouvera toujours occupées au passé et à l'avenir.", source: "Blaise Pascal" }
+  },
+  {
+    id: "xix",
+    period: "1 800 — 1 914",
+    title: "XIXe Siècle",
+    tagline: "Vapeur, empire et idéologie",
+    icon: "🏭",
+    color: "#5a7a45",
+    description: "Le siècle de la vapeur et du charbon. L'Europe industrielle colonise les quatre cinquièmes du globe. Darwin révolutionne la biologie. Marx et Engels publient le Manifeste. La photographie, le téléphone, l'électricité transforment le quotidien. Sous la Belle Époque, les nations s'arment en secret.",
+    events: [
+      { date: "1815", desc: "Défaite de Napoléon à Waterloo — congrès de Vienne remodèle l'Europe" },
+      { date: "1830", desc: "Premières lignes de chemin de fer — révolution des transports" },
+      { date: "1848", desc: "Printemps des peuples : révolutions libérales à travers toute l'Europe" },
+      { date: "1859", desc: "Darwin publie De l'origine des espèces — théorie de l'évolution" },
+      { date: "1861", desc: "Guerre de Sécession aux États-Unis — 620 000 morts" },
+      { date: "1871", desc: "Commune de Paris — première révolution ouvrière, réprimée dans le sang" },
+      { date: "1885", desc: "Conférence de Berlin : partage de l'Afrique entre puissances coloniales" },
+      { date: "1905", desc: "Première révolution russe — prélude à 1917" },
+    ],
+    figures: [
+      { name: "Karl Marx", role: "Philosophe, fondateur du socialisme scientifique" },
+      { name: "Charles Darwin", role: "Naturaliste, théorie de l'évolution" },
+      { name: "Queen Victoria", role: "Reine de l'Empire britannique à son apogée" },
+      { name: "Abraham Lincoln", role: "Président, abolition de l'esclavage aux États-Unis" },
+    ],
+    stats: [
+      { label: "Colonisation mondiale", value: 90 },
+      { label: "Révolution industrielle", value: 95 },
+      { label: "Tensions politiques", value: 75 },
+    ],
+    quote: { text: "Un spectre hante l'Europe — le spectre du communisme.", source: "Karl Marx & Friedrich Engels, 1848" }
+  },
+  {
+    id: "xxe",
+    period: "1 914 — 1 991",
+    title: "XXe Siècle",
+    tagline: "Guerres, progrès et liberté",
+    icon: "✈️",
+    color: "#8b2a2a",
+    description: "Le siècle le plus meurtrier et le plus inventif de l'histoire. Deux guerres mondiales, la Shoah, l'atome, la décolonisation, la Guerre froide, la course à l'espace, le rock, internet. En 77 ans, l'humanité passe du cheval de trait à la Lune, du télégraphe au satellite, de la monarchie à la démocratie de masse.",
+    events: [
+      { date: "1914", desc: "Début de la Première Guerre mondiale — 20 millions de morts" },
+      { date: "1917", desc: "Révolution d'Octobre en Russie — naissance de l'URSS" },
+      { date: "1939", desc: "Seconde Guerre mondiale — 70 à 85 millions de morts" },
+      { date: "1945", desc: "Bombes atomiques sur Hiroshima et Nagasaki — fin du conflit" },
+      { date: "1948", desc: "Déclaration universelle des droits de l'homme adoptée par l'ONU" },
+      { date: "1961", desc: "Youri Gagarine, premier homme dans l'espace" },
+      { date: "1969", desc: "Apollo 11 : Neil Armstrong marche sur la Lune" },
+      { date: "1989", desc: "Chute du mur de Berlin — fin de la Guerre froide" },
+    ],
+    figures: [
+      { name: "Winston Churchill", role: "Premier ministre britannique, résistance au nazisme" },
+      { name: "Nelson Mandela", role: "Icône de la lutte anti-apartheid, président d'Afrique du Sud" },
+      { name: "Albert Einstein", role: "Physicien, relativité, E=mc²" },
+      { name: "Simone de Beauvoir", role: "Philosophe, pionnière du féminisme moderne" },
+    ],
+    stats: [
+      { label: "Mortalité par conflits", value: 90 },
+      { label: "Avancées scientifiques", value: 99 },
+      { label: "Bouleversements politiques", value: 95 },
+    ],
+    quote: { text: "On ne naît pas femme, on le devient.", source: "Simone de Beauvoir, 1949" }
+  },
+  {
+    id: "contemporain",
+    period: "1 991 — aujourd'hui",
+    title: "Époque Contemporaine",
+    tagline: "Le monde en réseau",
+    icon: "🌐",
+    color: "#2a6e8a",
+    description: "La fin de la Guerre froide ouvre une ère de mondialisation accélérée. Internet relie l'humanité en une toile numérique, les smartphones font de chaque humain un émetteur. Le changement climatique devient la menace existentielle du siècle. L'intelligence artificielle promet de redéfinir la nature même du travail et de la pensée.",
+    events: [
+      { date: "1991", desc: "Dissolution de l'URSS — fin bipolaire du monde, naissance du web" },
+      { date: "2001", desc: "Attentats du 11 septembre — nouveau paradigme géopolitique mondial" },
+      { date: "2007", desc: "Lancement de l'iPhone — début de l'ère smartphone et mobile" },
+      { date: "2008", desc: "Crise financière mondiale — remise en question du capitalisme libéral" },
+      { date: "2016", desc: "Brexit et Trump : montée des nationalismes et populismes en Occident" },
+      { date: "2020", desc: "Pandémie de COVID-19 — première pandémie mondiale à l'ère numérique" },
+      { date: "2022", desc: "Invasion de l'Ukraine par la Russie — retour de la guerre en Europe" },
+      { date: "2023", desc: "ChatGPT démocratise l'IA générative — nouvelle révolution cognitive" },
+    ],
+    figures: [
+      { name: "Tim Berners-Lee", role: "Inventeur du World Wide Web, 1991" },
+      { name: "Nelson Mandela", role: "Paix et réconciliation en Afrique du Sud" },
+      { name: "Greta Thunberg", role: "Activiste climatique, voix d'une génération" },
+      { name: "Elon Musk", role: "Entrepreneur spatial et technologique controversé" },
+    ],
+    stats: [
+      { label: "Connectivité numérique", value: 95 },
+      { label: "Crise environnementale", value: 85 },
+      { label: "Tensions géopolitiques", value: 70 },
+    ],
+    quote: { text: "Notre maison brûle et nous regardons ailleurs.", source: "Jacques Chirac, Sommet de la Terre, 2002" }
+  }
+];
+
+// STARS
+function createStars() {
+  const container = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2 + 0.5;
+    s.style.cssText = `
+      left: ${Math.random()*100}%; top: ${Math.random()*100}%;
+      width: ${size}px; height: ${size}px;
+      --d: ${2+Math.random()*4}s;
+      --delay: ${Math.random()*5}s;
+      --min-op: ${0.05+Math.random()*0.15};
+      --max-op: ${0.4+Math.random()*0.5};
+    `;
+    container.appendChild(s);
+  }
+}
+
+// RENDER NAV
+function renderNav() {
+  const nav = document.getElementById('timelineNav');
+  ERAS.forEach((era, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'era-btn' + (i === 0 ? ' active' : '');
+    btn.innerHTML = `${era.icon} ${era.title}`;
+    btn.onclick = () => selectEra(i);
+    nav.appendChild(btn);
+  });
+}
+
+// RENDER CONTENT
+function renderEra(era, index) {
+  return `
+    <div class="era-panel${index === 0 ? ' active' : ''}" id="panel-${era.id}" data-index="${index}">
+      <div class="era-header">
+        <div class="era-icon">${era.icon}</div>
+        <div class="era-title-block">
+          <div class="era-period">${era.period}</div>
+          <h2 class="era-title">${era.title}</h2>
+          <p class="era-tagline">${era.tagline}</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Vue d'ensemble</div>
+        <p class="card-text">${era.description}</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Indicateurs clés</div>
+        ${era.stats.map(s => `
+          <div class="stat">
+            <div class="stat-label"><span>${s.label}</span><span>${s.value}%</span></div>
+            <div class="stat-bar"><div class="stat-fill" data-value="${s.value}" style="width:0%"></div></div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="card">
+        <div class="card-title">Chronologie</div>
+        <ul class="events-list">
+          ${era.events.map(e => `
+            <li class="event-item">
+              <span class="event-date">${e.date}</span>
+              <span class="event-dot"></span>
+              <span class="event-desc">${e.desc}</span>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Figures marquantes</div>
+        <div class="figures-grid">
+          ${era.figures.map(f => `
+            <div class="figure-card">
+              <div class="figure-name">${f.name}</div>
+              <div class="figure-role">${f.role}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="era-quote">
+        <div class="quote-text">"${era.quote.text}"</div>
+        <div class="quote-source">— ${era.quote.source}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderAll() {
+  const content = document.getElementById('content');
+  content.innerHTML = ERAS.map(renderEra).join('');
+}
+
+let currentIndex = 0;
+
+function selectEra(index) {
+  // Update nav
+  document.querySelectorAll('.era-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === index);
+  });
+
+  // Hide current, show new
+  document.querySelectorAll('.era-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(`panel-${ERAS[index].id}`);
+  panel.classList.add('active');
+
+  // Animate stat bars
+  setTimeout(() => {
+    panel.querySelectorAll('.stat-fill').forEach(fill => {
+      fill.style.width = fill.dataset.value + '%';
+    });
+  }, 100);
+
+  // Progress bar
+  const progress = ((index + 1) / ERAS.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  currentIndex = index;
+
+  // Scroll nav button into view
+  document.querySelectorAll('.era-btn')[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// KEYBOARD NAV
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' && currentIndex < ERAS.length - 1) selectEra(currentIndex + 1);
+  if (e.key === 'ArrowLeft' && currentIndex > 0) selectEra(currentIndex - 1);
+});
+
+// INIT
+createStars();
+renderNav();
+renderAll();
+selectEra(0);
+</script>
+</body>
+</html>
