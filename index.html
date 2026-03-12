@@ -215,14 +215,141 @@
     background: rgba(201,168,76,0.05);
     border: 1px solid rgba(201,168,76,0.1);
     padding: 14px; border-radius: 1px;
-    transition: background 0.3s;
+    transition: all 0.3s; cursor: pointer;
+    position: relative; overflow: hidden;
   }
-  .figure-card:hover { background: rgba(201,168,76,0.1); }
+  .figure-card::after {
+    content: '↗'; position: absolute; top: 10px; right: 12px;
+    font-size: 0.75rem; color: var(--gold-dark);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .figure-card:hover { background: rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
+  .figure-card:hover::after { opacity: 1; }
   .figure-name {
     font-family: 'Cinzel', serif; font-size: 0.78rem;
     color: var(--gold-light); margin-bottom: 4px;
   }
   .figure-role { font-size: 0.82rem; color: var(--smoke); font-style: italic; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(5,3,1,0.92);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+    backdrop-filter: blur(8px);
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: linear-gradient(135deg, #1a1408 0%, #0e0b07 100%);
+    border: 1px solid rgba(201,168,76,0.3);
+    max-width: 640px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    position: relative;
+    transform: translateY(30px) scale(0.97);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    scrollbar-width: thin; scrollbar-color: var(--gold-dark) transparent;
+  }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+  .modal-img-wrap {
+    width: 100%; height: 260px; overflow: hidden;
+    position: relative;
+  }
+  .modal-img {
+    width: 100%; height: 100%; object-fit: cover; object-position: top;
+    filter: sepia(30%) contrast(1.1);
+    transition: transform 0.6s ease;
+  }
+  .modal-img-wrap:hover .modal-img { transform: scale(1.04); }
+  .modal-img-gradient {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+    background: linear-gradient(transparent, #0e0b07);
+  }
+  .modal-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1a1408, #2a1e0e);
+    font-size: 5rem;
+  }
+
+  .modal-body { padding: 28px 32px 32px; }
+
+  .modal-period {
+    font-family: 'Cinzel', serif; font-size: 0.7rem;
+    color: var(--gold-dark); letter-spacing: 0.3em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .modal-name {
+    font-family: 'Cinzel', serif; font-size: 1.8rem;
+    font-weight: 900; color: var(--parchment);
+    line-height: 1.1; margin-bottom: 6px;
+  }
+  .modal-role {
+    font-style: italic; color: var(--smoke);
+    font-size: 1rem; margin-bottom: 24px;
+  }
+
+  .modal-divider {
+    height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+    margin: 20px 0;
+  }
+
+  .modal-bio {
+    font-size: 0.97rem; line-height: 1.85;
+    color: var(--parchment); opacity: 0.88;
+    margin-bottom: 24px;
+  }
+
+  .modal-quote-block {
+    border-left: 2px solid var(--gold-dark);
+    padding: 14px 20px;
+    background: rgba(201,168,76,0.04);
+    margin-bottom: 24px;
+  }
+  .modal-quote-text {
+    font-style: italic; font-size: 1.05rem;
+    color: var(--gold-light); line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .modal-quote-attr {
+    font-family: 'Cinzel', serif; font-size: 0.65rem;
+    color: var(--gold-dark); letter-spacing: 0.2em;
+  }
+
+  .modal-facts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+  .modal-fact {
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 8px 14px; font-size: 0.8rem;
+    color: var(--parchment); opacity: 0.8;
+  }
+  .modal-fact strong {
+    font-family: 'Cinzel', serif; color: var(--gold);
+    font-size: 0.7rem; display: block; margin-bottom: 2px;
+    letter-spacing: 0.1em;
+  }
+
+  .modal-close {
+    position: absolute; top: 14px; right: 16px; z-index: 10;
+    background: rgba(10,7,3,0.8); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); cursor: pointer; width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; transition: all 0.2s;
+    font-family: 'Cinzel', serif;
+  }
+  .modal-close:hover { background: rgba(201,168,76,0.15); }
+
+  .modal-wiki-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Cinzel', serif; font-size: 0.7rem;
+    letter-spacing: 0.15em; color: var(--gold-dark);
+    text-decoration: none; border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding-bottom: 2px; transition: color 0.2s, border-color 0.2s;
+  }
+  .modal-wiki-link:hover { color: var(--gold); border-color: var(--gold); }
 
   /* STAT BAR */
   .stat { margin-bottom: 16px; }
@@ -303,6 +430,27 @@
 
 <div class="era-progress"><div class="era-progress-fill" id="progressFill"></div></div>
 
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-img-wrap" id="modalImgWrap"></div>
+    <div class="modal-body">
+      <div class="modal-period" id="modalPeriod"></div>
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-role" id="modalRole"></div>
+      <div class="modal-facts" id="modalFacts"></div>
+      <div class="modal-divider"></div>
+      <div class="modal-bio" id="modalBio"></div>
+      <div class="modal-quote-block" id="modalQuoteBlock">
+        <div class="modal-quote-text" id="modalQuoteText"></div>
+        <div class="modal-quote-attr" id="modalQuoteAttr"></div>
+      </div>
+      <a class="modal-wiki-link" id="modalWikiLink" target="_blank">↗ LIRE SUR WIKIPÉDIA</a>
+    </div>
+  </div>
+</div>
+
 <script>
 const ERAS = [
   {
@@ -324,10 +472,10 @@ const ERAS = [
       { date: "−10 000", desc: "Révolution néolithique : agriculture et élevage au Croissant Fertile" },
     ],
     figures: [
-      { name: "Lucy", role: "Australopithèque, symbole des origines humaines" },
-      { name: "Homo neanderthalensis", role: "Cousin disparu, artisan et penseur" },
-      { name: "L'homme de Cro-Magnon", role: "Homo sapiens, artiste du Paléolithique" },
-      { name: "Ötzi", role: "Homme des glaces néolithique (~3 300 av. J.-C.)" },
+      { name: "Lucy", role: "Australopithèque, symbole des origines humaines", period: "−3,2 millions d'années", emoji: "🦴", bio: "Lucy est le surnom d'un squelette partiel d'Australopithecus afarensis découvert en Éthiopie en 1974 par Donald Johanson. Âgée d'environ 3,2 millions d'années, elle est l'une des plus anciennes ancêtres humains connues. Son squelette révèle qu'elle marchait debout, preuve que la bipédie a précédé le développement du grand cerveau.", quote: { text: "Lucy a changé notre vision de l'évolution humaine pour toujours.", attr: "Donald Johanson, paléoanthropologue, 1974" }, facts: [{k:"Époque", v:"−3,2 Ma"},{k:"Lieu", v:"Éthiopie"},{k:"Taille", v:"~1,07 m"},{k:"Découverte", v:"1974"}], wiki: "https://fr.wikipedia.org/wiki/Lucy_(australopith%C3%A8que)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Lucy_blackbg.jpg/440px-Lucy_blackbg.jpg" },
+      { name: "Homo neanderthalensis", role: "Cousin disparu, artisan et penseur", period: "−400 000 — −40 000", emoji: "🏕️", bio: "L'Homme de Néandertal a peuplé l'Europe et l'Asie occidentale pendant des centaines de milliers d'années. Loin de l'image de brute primitive, il enterrait ses morts, fabriquait des outils sophistiqués, portait des parures et maîtrisait probablement le langage. Il a coexisté avec Homo sapiens et s'est métissé avec lui — 1 à 4% de l'ADN des Européens est néandertalien.", quote: { text: "Néandertal n'était pas un sous-homme, mais un autre humain.", attr: "Svante Pääbo, Prix Nobel 2022" }, facts: [{k:"Période", v:"−400 000 / −40 000"},{k:"Zone", v:"Europe & Asie"},{k:"Cerveau", v:"1 600 cm³"},{k:"Extinction", v:"il y a ~40 000 ans"}], wiki: "https://fr.wikipedia.org/wiki/N%C3%A9andertal", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Homo_neanderthalensis.jpg/440px-Homo_neanderthalensis.jpg" },
+      { name: "L'homme de Cro-Magnon", role: "Homo sapiens, artiste du Paléolithique", period: "−35 000 av. J.-C.", emoji: "🎨", bio: "Cro-Magnon désigne les premiers Homo sapiens anatomiquement modernes ayant peuplé l'Europe. Arrivés d'Afrique, ils ont laissé un héritage artistique extraordinaire : les peintures de Lascaux, Altamira et Chauvet témoignent d'une imagination et d'une sensibilité esthétique pleinement humaines. Ils fabriquaient aussi des instruments de musique, des bijoux et des outils en os.", quote: { text: "Ces artistes d'il y a 35 000 ans pensaient et ressentaient comme nous.", attr: "Jean Clottes, préhistorien" }, facts: [{k:"Époque", v:"−35 000 av. J.-C."},{k:"Lieu", v:"Europe"},{k:"Art", v:"Grottes de Lascaux, Chauvet"},{k:"Espèce", v:"Homo sapiens"}], wiki: "https://fr.wikipedia.org/wiki/Homme_de_Cro-Magnon", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Lascaux_04.jpg/440px-Lascaux_04.jpg" },
+      { name: "Ötzi", role: "Homme des glaces néolithique (~3 300 av. J.-C.)", period: "~3 300 av. J.-C.", emoji: "🧊", bio: "Ötzi est une momie naturelle découverte en 1991 dans les Alpes tyroliennes. Mort vers 3 300 av. J.-C., il est l'un des individus préhistoriques les mieux conservés. Les analyses ADN révèlent qu'il avait les yeux clairs, était intolérant au lactose et souffrait de maladie de Lyme. Il a été assassiné d'une flèche dans le dos — la plus vieille scène de crime résolue de l'histoire.", quote: { text: "Ötzi est comme une capsule temporelle vivante du Néolithique.", attr: "Albert Zink, Institut de recherche sur les momies, Bolzano" }, facts: [{k:"Décès", v:"~3 300 av. J.-C."},{k:"Âge", v:"~45 ans"},{k:"Taille", v:"1,60 m"},{k:"Découverte", v:"1991, Alpes"}], wiki: "https://fr.wikipedia.org/wiki/%C3%96tzi", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Otzi-Quinson.jpg/440px-Otzi-Quinson.jpg" },
     ],
     stats: [
       { label: "Extension territoriale", value: 95 },
@@ -355,10 +503,10 @@ const ERAS = [
       { date: "476", desc: "Chute de Rome occidentale — fin officielle de l'Antiquité" },
     ],
     figures: [
-      { name: "Alexandre le Grand", role: "Conquérant de l'Inde à l'Égypte (356−323 av. J.-C.)" },
-      { name: "Cléopâtre VII", role: "Dernière reine d'Égypte, stratège politique" },
-      { name: "Aristote", role: "Philosophe, fondateur de la logique et des sciences" },
-      { name: "César Auguste", role: "Premier emperor romain, Pax Romana" },
+      { name: "Alexandre le Grand", role: "Conquérant de l'Inde à l'Égypte (356−323 av. J.-C.)", period: "356 — 323 av. J.-C.", emoji: "⚔️", bio: "Élève d'Aristote, roi de Macédoine à 20 ans, Alexandre constitue en 13 ans le plus grand empire du monde antique, de la Grèce à l'Inde. Invaincu sur les champs de bataille, il fond les cultures grecque et orientale dans un vaste mouvement d'hellénisation. Il meurt à 32 ans à Babylone, laissant un empire sans héritier désigné.", quote: { text: "Il n'y a rien d'impossible à celui qui essaie.", attr: "Alexandre le Grand" }, facts: [{k:"Naissance", v:"356 av. J.-C., Pella"},{k:"Mort", v:"323 av. J.-C., Babylone"},{k:"Empire", v:"5,2 millions km²"},{k:"Batailles", v:"Invaincu (Granique, Issos, Gaugamèles)"}], wiki: "https://fr.wikipedia.org/wiki/Alexandre_le_Grand", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/AlexanderTheGreat_Bust.jpg/440px-AlexanderTheGreat_Bust.jpg" },
+      { name: "Cléopâtre VII", role: "Dernière reine d'Égypte, stratège politique", period: "69 — 30 av. J.-C.", emoji: "👑", bio: "Cléopâtre VII est la dernière souveraine de la dynastie ptolémaïque. Brillante politicienne, elle parlait neuf langues et s'allia successivement à César et à Marc Antoine pour maintenir l'indépendance de l'Égypte face à Rome. Sa mort en 30 av. J.-C. marque la fin de l'Égypte pharaonique et le début de l'ère impériale romaine.", quote: { text: "Je ne serai pas exhibée comme un trophée dans le triomphe de César.", attr: "Cléopâtre VII, avant sa mort, 30 av. J.-C." }, facts: [{k:"Naissance", v:"69 av. J.-C., Alexandrie"},{k:"Mort", v:"30 av. J.-C."},{k:"Langues", v:"9 langues parlées"},{k:"Règne", v:"51 — 30 av. J.-C."}], wiki: "https://fr.wikipedia.org/wiki/Cl%C3%A9op%C3%A2tre_VII", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Kleopatra-VII.-Altes-Museum-Berlin1.jpg/440px-Kleopatra-VII.-Altes-Museum-Berlin1.jpg" },
+      { name: "Aristote", role: "Philosophe, fondateur de la logique et des sciences", period: "384 — 322 av. J.-C.", emoji: "📜", bio: "Élève de Platon, précepteur d'Alexandre le Grand, Aristote est l'un des esprits les plus encyclopédiques de l'histoire. Il fonde la logique formelle, la biologie, la physique, la métaphysique, la politique et la poétique. Son œuvre, transmise par les savants arabes au Moyen Âge, structure la pensée occidentale pendant deux millénaires.", quote: { text: "L'homme est par nature un animal politique.", attr: "Aristote, La Politique" }, facts: [{k:"Naissance", v:"384 av. J.-C., Stagire"},{k:"École", v:"Le Lycée, Athènes"},{k:"Œuvres", v:"200+ traités"},{k:"Élève", v:"Alexandre le Grand"}], wiki: "https://fr.wikipedia.org/wiki/Aristote", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/440px-Aristotle_Altemps_Inv8575.jpg" },
+      { name: "César Auguste", role: "Premier emperor romain, Pax Romana", period: "63 av. J.-C. — 14 apr. J.-C.", emoji: "🏛️", bio: "Octave Auguste, neveu et fils adoptif de Jules César, est le premier véritable empereur romain. Après avoir vaincu Marc Antoine et Cléopâtre, il instaure la Pax Romana, deux siècles de paix relative. Il réforme l'administration, construit de grands monuments à Rome et patronne les arts — l'âge d'Auguste est l'apogée de la littérature latine (Virgile, Ovide, Horace).", quote: { text: "J'ai trouvé Rome en briques et je la laisse en marbre.", attr: "Auguste, selon Suétone" }, facts: [{k:"Naissance", v:"63 av. J.-C."},{k:"Règne", v:"27 av. J.-C. — 14 apr."},{k:"Durée", v:"41 ans d'empire"},{k:"Mort", v:"14 apr. J.-C., Nola"}], wiki: "https://fr.wikipedia.org/wiki/Auguste", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Statue-Augustus.jpg/440px-Statue-Augustus.jpg" },
     ],
     stats: [
       { label: "Expansion territoriale", value: 70 },
@@ -386,10 +534,10 @@ const ERAS = [
       { date: "1 453", desc: "Chute de Constantinople — fin de l'Empire byzantin" },
     ],
     figures: [
-      { name: "Charlemagne", role: "Père de l'Europe, roi des Francs et Lombards" },
-      { name: "Gengis Khan", role: "Fondateur du plus grand empire terrestre de l'histoire" },
-      { name: "Jeanne d'Arc", role: "Héroïne française, martyre et sainte" },
-      { name: "Avicenne", role: "Médecin et philosophe perse, pilier de la science arabe" },
+      { name: "Charlemagne", role: "Père de l'Europe, roi des Francs et Lombards", period: "742 — 814", emoji: "👑", bio: "Charlemagne unifie une grande partie de l'Europe occidentale et se fait couronner Empereur d'Occident en l'an 800. Il lance la Renaissance carolingienne, développe les écoles, standardise l'écriture et les poids. Son empire, divisé après sa mort, forme les germes des futures France, Allemagne et Italie.", quote: { text: "Avoir deux langues, c'est avoir deux âmes.", attr: "Charlemagne" }, facts: [{k:"Naissance", v:"742, Aix-la-Chapelle"},{k:"Règne", v:"768 — 814"},{k:"Couronnement", v:"25 déc. 800, Rome"},{k:"Mort", v:"28 jan. 814"}], wiki: "https://fr.wikipedia.org/wiki/Charlemagne", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Charlemagne_by_Durer.jpg/440px-Charlemagne_by_Durer.jpg" },
+      { name: "Gengis Khan", role: "Fondateur du plus grand empire terrestre de l'histoire", period: "1162 — 1227", emoji: "🐴", bio: "Né Temüjin, Gengis Khan unifie les tribus mongoles et conquiert un empire s'étendant de la Chine à la Perse. Réputé pour sa brutalité, il favorisa aussi le commerce sur la Route de la Soie, la tolérance religieuse et la méritocratie. Ses descendants gouverneront la Chine (Yuan), la Perse et la Russie.", quote: { text: "Si tu as peur, ne le fais pas. Si tu le fais, n'aie pas peur.", attr: "Gengis Khan" }, facts: [{k:"Naissance", v:"v.1162, Mongolie"},{k:"Empire", v:"24 millions km²"},{k:"Mort", v:"1227"},{k:"Descendants", v:"0,5% de l'humanité"}], wiki: "https://fr.wikipedia.org/wiki/Gengis_Khan", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/YuanEmperorAlbumGenghisPortrait.jpg/440px-YuanEmperorAlbumGenghisPortrait.jpg" },
+      { name: "Jeanne d'Arc", role: "Héroïne française, martyre et sainte", period: "1412 — 1431", emoji: "⚔️", bio: "Paysanne lorraine de 17 ans, Jeanne d'Arc affirme entendre des voix divines qui l'enjoignent de bouter les Anglais hors de France. Elle convainc Charles VII, fait lever le siège d'Orléans et le conduit à Reims pour son sacre. Capturée, jugée pour hérésie et brûlée vive à 19 ans à Rouen, elle est canonisée en 1920 et reste le symbole de la France.", quote: { text: "J'ai peur de rien, et je n'ai peur que de la trahison.", attr: "Jeanne d'Arc, procès de Rouen, 1431" }, facts: [{k:"Naissance", v:"v.1412, Domrémy"},{k:"Mort", v:"30 mai 1431, Rouen"},{k:"Canonisation", v:"1920"},{k:"Fête", v:"30 mai"}], wiki: "https://fr.wikipedia.org/wiki/Jeanne_d%27Arc", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Joan_of_Arc_miniature_graded.jpg/440px-Joan_of_Arc_miniature_graded.jpg" },
+      { name: "Avicenne", role: "Médecin et philosophe perse, pilier de la science arabe", period: "980 — 1037", emoji: "📖", bio: "Ibn Sina, connu en Occident sous le nom d'Avicenne, est le plus grand médecin et philosophe du monde islamique médiéval. Son Canon de la médecine est utilisé comme manuel universitaire en Europe jusqu'au XVIIe siècle. Il synthétise Aristote et le néoplatonisme avec la théologie islamique et jette les bases de la pharmacologie moderne.", quote: { text: "Le corps humain est la maison de l'âme, et il faut en prendre soin.", attr: "Avicenne, Canon de la médecine" }, facts: [{k:"Naissance", v:"980, Perse (Ouzbékistan)"},{k:"Mort", v:"1037, Hamadan"},{k:"Œuvres", v:"450 traités"},{k:"Spécialités", v:"Médecine, philosophie, astronomie"}], wiki: "https://fr.wikipedia.org/wiki/Avicenne", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Avicenna-miniatur.jpg/440px-Avicenna-miniatur.jpg" },
     ],
     stats: [
       { label: "Puissance religieuse", value: 95 },
@@ -417,10 +565,10 @@ const ERAS = [
       { date: "1 600", desc: "Giordano Bruno brûlé pour avoir défendu l'infinité de l'univers" },
     ],
     figures: [
-      { name: "Léonard de Vinci", role: "Génie universel : peintre, ingénieur, anatomiste" },
-      { name: "Michel-Ange", role: "Sculpteur, peintre de la Sixtine, architecte" },
-      { name: "Érasme de Rotterdam", role: "Humaniste, père du dialogue intellectuel européen" },
-      { name: "Copernic", role: "Révolution astronomique, héliocentrisme" },
+      { name: "Léonard de Vinci", role: "Génie universel : peintre, ingénieur, anatomiste", period: "1452 — 1519", emoji: "🎨", bio: "Léonard de Vinci est l'incarnation même de la Renaissance. Peintre de la Joconde et de La Cène, il remplit des milliers de pages de carnets couverts d'inventions visionnaires : hélicoptère, tank, robot, machine à voler. Ses dissections anatomiques révolutionnent la connaissance du corps humain. Il reste le symbole absolu du génie humain universel.", quote: { text: "La simplicité est la sophistication suprême.", attr: "Léonard de Vinci" }, facts: [{k:"Naissance", v:"15 avr. 1452, Vinci"},{k:"Mort", v:"2 mai 1519, Amboise"},{k:"Carnets", v:"~13 000 pages"},{k:"Chef-d'œuvre", v:"La Joconde, La Cène"}], wiki: "https://fr.wikipedia.org/wiki/L%C3%A9onard_de_Vinci", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Leonardo_self.jpg/440px-Leonardo_self.jpg" },
+      { name: "Michel-Ange", role: "Sculpteur, peintre de la Sixtine, architecte", period: "1475 — 1564", emoji: "🏛️", bio: "Michel-Ange Buonarroti domine la Renaissance italienne par la puissance de son génie. Son David en marbre est le symbole de la perfection sculpturale. La voûte de la Chapelle Sixtine, peinte seul en 4 ans, représente l'un des sommets absolus de l'art mondial. Architecte de la coupole de Saint-Pierre de Rome, il redéfinit les limites du possible humain.", quote: { text: "Je sculpte simplement en enlevant tout ce qui n'est pas la statue.", attr: "Michel-Ange" }, facts: [{k:"Naissance", v:"6 mars 1475, Caprese"},{k:"Mort", v:"18 fév. 1564, Rome"},{k:"Sixtine", v:"1508 — 1512"},{k:"David", v:"1501 — 1504"}], wiki: "https://fr.wikipedia.org/wiki/Michel-Ange", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg/440px-Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg" },
+      { name: "Érasme de Rotterdam", role: "Humaniste, père du dialogue intellectuel européen", period: "1469 — 1536", emoji: "📚", bio: "Erasme est le prince des humanistes de la Renaissance. Son Éloge de la folie dénonce la corruption de l'Église avec une ironie mordante. Correspondant de tous les grands esprits d'Europe, il prône une réforme de l'Église par l'éducation plutôt que par la rupture, refusant de choisir entre Luther et Rome. Il incarne l'idéal d'un intellectuel européen indépendant.", quote: { text: "Quand je touche de l'argent, c'est pour m'en débarrasser.", attr: "Érasme de Rotterdam" }, facts: [{k:"Naissance", v:"v.1469, Rotterdam"},{k:"Mort", v:"1536, Bâle"},{k:"Œuvre clé", v:"Éloge de la folie, 1509"},{k:"Langues", v:"Latin, grec, hébreu}"}], wiki: "https://fr.wikipedia.org/wiki/%C3%89rasme", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Holbein-erasmus.jpg/440px-Holbein-erasmus.jpg" },
+      { name: "Copernic", role: "Révolution astronomique, héliocentrisme", period: "1473 — 1543", emoji: "🌍", bio: "Nicolas Copernic est l'astronome polonais qui décentra la Terre de l'univers. Son traité De revolutionibus orbium coelestium (1543) propose que la Terre et les planètes tournent autour du Soleil — et non l'inverse. Cette révolution copernicienne provoque une crise intellectuelle et religieuse majeure, ouvrant la voie à Galilée, Kepler et Newton.", quote: { text: "Savoir que nous savons ce que nous savons, savoir que nous ne savons pas ce que nous ne savons pas : c'est la vraie science.", attr: "Nicolas Copernic" }, facts: [{k:"Naissance", v:"19 fév. 1473, Toruń"},{k:"Mort", v:"24 mai 1543"},{k:"Œuvre", v:"De revolutionibus, 1543"},{k:"Nationalité", v:"Polonais"}], wiki: "https://fr.wikipedia.org/wiki/Nicolas_Copernic", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Nikolaj_Kopernik.jpg/440px-Nikolaj_Kopernik.jpg" },
     ],
     stats: [
       { label: "Explosion artistique", value: 98 },
@@ -448,10 +596,10 @@ const ERAS = [
       { date: "1 804", desc: "Napoléon se couronne Empereur des Français à Notre-Dame" },
     ],
     figures: [
-      { name: "Voltaire", role: "Champion de la tolérance et critique des dogmes" },
-      { name: "Napoléon Bonaparte", role: "Génie militaire, législateur (Code civil)" },
-      { name: "Isaac Newton", role: "Père de la physique classique" },
-      { name: "Olympe de Gouges", role: "Militante des droits des femmes, guillotinée" },
+      { name: "Voltaire", role: "Champion de la tolérance et critique des dogmes", period: "1694 — 1778", emoji: "✍️", bio: "François-Marie Arouet, dit Voltaire, est l'esprit le plus acéré des Lumières françaises. Auteur de Candide et de l'Essai sur les mœurs, il combat toute sa vie contre le fanatisme, l'intolérance et l'injustice. Son engagement pour réhabiliter Jean Calas, protestant exécuté injustement, est l'un des premiers grands combats de l'opinion publique pour les droits de l'homme.", quote: { text: "Je ne suis pas d'accord avec ce que vous dites, mais je me battrai jusqu'à la mort pour que vous ayez le droit de le dire.", attr: "Voltaire (attribué)" }, facts: [{k:"Naissance", v:"21 nov. 1694, Paris"},{k:"Mort", v:"30 mai 1778, Paris"},{k:"Exils", v:"Angleterre, Prusse, Ferney"},{k:"Œuvre", v:"Candide, Dictionnaire philosophique"}], wiki: "https://fr.wikipedia.org/wiki/Voltaire", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Nicolas_de_Largilli%C3%A8re%2C_Voltaire_%28Mary_Evans_Picture_Library%29_%28cropped%29.jpg/440px-Nicolas_de_Largilli%C3%A8re%2C_Voltaire_%28Mary_Evans_Picture_Library%29_%28cropped%29.jpg" },
+      { name: "Napoléon Bonaparte", role: "Génie militaire, législateur (Code civil)", period: "1769 — 1821", emoji: "⚔️", bio: "Né en Corse, Napoléon Bonaparte est l'un des plus grands génies militaires de l'histoire. Général à 24 ans, consul à 30, Empereur à 35, il domine l'Europe entière. Son Code civil, toujours en vigueur dans de nombreux pays, est son legs durable. Sa chute à Waterloo (1815) et son exil à Sainte-Hélène clôturent l'épopée napoléonienne.", quote: { text: "Impossible n'est pas français.", attr: "Napoléon Bonaparte" }, facts: [{k:"Naissance", v:"15 août 1769, Ajaccio"},{k:"Mort", v:"5 mai 1821, Sainte-Hélène"},{k:"Batailles", v:"60 victoires majeures"},{k:"Code civil", v:"Promulgué en 1804"}], wiki: "https://fr.wikipedia.org/wiki/Napol%C3%A9on_Ier", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Jacques-Louis_David_-_The_Emperor_Napoleon_in_His_Study_at_the_Tuileries_-_Google_Art_Project.jpg/440px-Jacques-Louis_David_-_The_Emperor_Napoleon_in_His_Study_at_the_Tuileries_-_Google_Art_Project.jpg" },
+      { name: "Isaac Newton", role: "Père de la physique classique", period: "1643 — 1727", emoji: "🍎", bio: "Isaac Newton révolutionne la physique, les mathématiques et l'astronomie. Ses Principia Mathematica (1687) énoncent les lois du mouvement et la gravitation universelle, unifiant la mécanique terrestre et céleste. Il invente simultanément avec Leibniz le calcul infinitésimal. Sa conception du monde comme machine régie par des lois mathématiques fonde la science moderne.", quote: { text: "Si j'ai vu plus loin que les autres, c'est parce que je me tenais sur les épaules de géants.", attr: "Isaac Newton, lettre à Robert Hooke, 1676" }, facts: [{k:"Naissance", v:"4 jan. 1643, Woolsthorpe"},{k:"Mort", v:"31 mars 1727, Londres"},{k:"Œuvre", v:"Principia Mathematica, 1687"},{k:"Académie", v:"Président de la Royal Society"}], wiki: "https://fr.wikipedia.org/wiki/Isaac_Newton", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/GodfreyKneller-IsaacNewton-1689.jpg/440px-GodfreyKneller-IsaacNewton-1689.jpg" },
+      { name: "Olympe de Gouges", role: "Militante des droits des femmes, guillotinée", period: "1748 — 1793", emoji: "✊", bio: "Marie Gouze, dite Olympe de Gouges, est une femme de lettres et militante politique française. Auteure de la Déclaration des droits de la femme et de la citoyenne (1791), elle affirme que si la femme a le droit de monter à l'échafaud, elle doit aussi avoir celui de monter à la tribune. Guillotinée en 1793 pour ses pamphlets contre Robespierre, elle reste une icône du féminisme.", quote: { text: "La femme a le droit de monter sur l'échafaud, elle doit avoir également le droit de monter à la Tribune.", attr: "Olympe de Gouges, 1791" }, facts: [{k:"Naissance", v:"7 mai 1748, Montauban"},{k:"Mort", v:"3 nov. 1793, Paris"},{k:"Œuvre", v:"Déclaration des droits de la femme"},{k:"Mort", v:"Guillotinée"}], wiki: "https://fr.wikipedia.org/wiki/Olympe_de_Gouges", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Olympedegouges.jpg/440px-Olympedegouges.jpg" },
     ],
     stats: [
       { label: "Bouleversement politique", value: 95 },
@@ -479,10 +627,10 @@ const ERAS = [
       { date: "1905", desc: "Première révolution russe — prélude à 1917" },
     ],
     figures: [
-      { name: "Karl Marx", role: "Philosophe, fondateur du socialisme scientifique" },
-      { name: "Charles Darwin", role: "Naturaliste, théorie de l'évolution" },
-      { name: "Queen Victoria", role: "Reine de l'Empire britannique à son apogée" },
-      { name: "Abraham Lincoln", role: "Président, abolition de l'esclavage aux États-Unis" },
+      { name: "Karl Marx", role: "Philosophe, fondateur du socialisme scientifique", period: "1818 — 1883", emoji: "✊", bio: "Karl Marx est le penseur politique le plus influent du XIXe siècle. Co-auteur avec Engels du Manifeste du Parti communiste (1848) et auteur du Capital, il analyse le capitalisme comme un système d'exploitation destiné à être renversé par le prolétariat. Son œuvre inspire les révolutions russe, chinoise, cubaine et des dizaines de mouvements d'émancipation au XXe siècle.", quote: { text: "Les philosophes n'ont fait qu'interpréter le monde de différentes manières ; ce qui importe, c'est de le transformer.", attr: "Karl Marx, Thèses sur Feuerbach, 1845" }, facts: [{k:"Naissance", v:"5 mai 1818, Trèves"},{k:"Mort", v:"14 mars 1883, Londres"},{k:"Œuvre", v:"Le Capital (1867)"},{k:"Exils", v:"Paris, Bruxelles, Londres"}], wiki: "https://fr.wikipedia.org/wiki/Karl_Marx", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Karl_Marx_001.jpg/440px-Karl_Marx_001.jpg" },
+      { name: "Charles Darwin", role: "Naturaliste, théorie de l'évolution", period: "1809 — 1882", emoji: "🐢", bio: "Charles Darwin publie en 1859 De l'origine des espèces, l'un des livres les plus importants de l'histoire scientifique. Sa théorie de la sélection naturelle explique comment les espèces évoluent et se diversifient. Elle révolutionne la biologie, la médecine et la pensée humaine, retirant l'homme de son piédestal de créature à part et l'inscrivant dans le continuum du vivant.", quote: { text: "Ce n'est pas le plus fort qui survit, ni le plus intelligent, mais celui qui sait le mieux s'adapter au changement.", attr: "Attribué à Charles Darwin" }, facts: [{k:"Naissance", v:"12 fév. 1809, Shrewsbury"},{k:"Mort", v:"19 avril 1882"},{k:"Voyage", v:"Beagle, 1831−1836"},{k:"Œuvre", v:"De l'origine des espèces, 1859"}], wiki: "https://fr.wikipedia.org/wiki/Charles_Darwin", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Charles_Darwin_seated_crop.jpg/440px-Charles_Darwin_seated_crop.jpg" },
+      { name: "Queen Victoria", role: "Reine de l'Empire britannique à son apogée", period: "1819 — 1901", emoji: "👑", bio: "Victoria règne sur le Royaume-Uni pendant 63 ans, la plus longue règne de l'histoire britannique jusqu'à Élisabeth II. Son règne coïncide avec l'apogée de l'Empire britannique, qui couvre alors 25% de la surface terrestre. Mère de neuf enfants qui épousent les dynasties européennes, elle est surnommée la 'grand-mère de l'Europe'. L'ère victorienne est synonyme d'industrialisation et de rigueur morale.", quote: { text: "Nous ne sommes pas intéressés par les possibilités d'une défaite.", attr: "Queen Victoria, 1899" }, facts: [{k:"Naissance", v:"24 mai 1819"},{k:"Mort", v:"22 jan. 1901"},{k:"Règne", v:"63 ans"},{k:"Empire", v:"~450 millions de sujets"}], wiki: "https://fr.wikipedia.org/wiki/Victoria_(reine_du_Royaume-Uni)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Queen_Victoria_by_Bassano.jpg/440px-Queen_Victoria_by_Bassano.jpg" },
+      { name: "Abraham Lincoln", role: "Président, abolition de l'esclavage aux États-Unis", period: "1809 — 1865", emoji: "🗽", bio: "Abraham Lincoln est le 16e président des États-Unis, élu en 1860. Son élection provoque la sécession des États du Sud et la guerre de Sécession. Il proclame l'émancipation des esclaves en 1863 et conduit l'Union à la victoire. Assassiné par John Wilkes Booth au Ford's Theatre le 14 avril 1865, il est considéré comme le plus grand président américain de l'histoire.", quote: { text: "On peut tromper tout le monde quelque temps, et quelques-uns tout le temps, mais on ne peut pas tromper tout le monde tout le temps.", attr: "Abraham Lincoln" }, facts: [{k:"Naissance", v:"12 fév. 1809, Kentucky"},{k:"Mort", v:"15 avril 1865, Washington"},{k:"Mandat", v:"1861 — 1865"},{k:"Émancipation", v:"1er jan. 1863"}], wiki: "https://fr.wikipedia.org/wiki/Abraham_Lincoln", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Abraham_Lincoln_O-77_matte_collodion_print.jpg/440px-Abraham_Lincoln_O-77_matte_collodion_print.jpg" },
     ],
     stats: [
       { label: "Colonisation mondiale", value: 90 },
@@ -510,10 +658,10 @@ const ERAS = [
       { date: "1989", desc: "Chute du mur de Berlin — fin de la Guerre froide" },
     ],
     figures: [
-      { name: "Winston Churchill", role: "Premier ministre britannique, résistance au nazisme" },
-      { name: "Nelson Mandela", role: "Icône de la lutte anti-apartheid, président d'Afrique du Sud" },
-      { name: "Albert Einstein", role: "Physicien, relativité, E=mc²" },
-      { name: "Simone de Beauvoir", role: "Philosophe, pionnière du féminisme moderne" },
+      { name: "Winston Churchill", role: "Premier ministre britannique, résistance au nazisme", period: "1874 — 1965", emoji: "🇬🇧", bio: "Winston Churchill est le dirigeant britannique qui refusa de capituler face à Hitler en 1940, quand toute l'Europe avait succombé. Son discours 'We shall fight on the beaches' galvanise le pays. Prix Nobel de littérature en 1953, peintre amateur, brick-layer et stratège, il reste l'une des figures les plus complexes et déterminantes du XXe siècle.", quote: { text: "Le succès c'est d'aller d'échec en échec sans perdre son enthousiasme.", attr: "Winston Churchill" }, facts: [{k:"Naissance", v:"30 nov. 1874, Blenheim"},{k:"Mort", v:"24 jan. 1965, Londres"},{k:"Nobel", v:"Littérature, 1953"},{k:"Premier ministre", v:"1940−45, 1951−55"}], wiki: "https://fr.wikipedia.org/wiki/Winston_Churchill", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Sir_Winston_Churchill_-_19086236948.jpg/440px-Sir_Winston_Churchill_-_19086236948.jpg" },
+      { name: "Nelson Mandela", role: "Icône de la lutte anti-apartheid, président d'Afrique du Sud", period: "1918 — 2013", emoji: "✊", bio: "Nelson Mandela passe 27 ans en prison sur l'île de Robben Island pour son combat contre l'apartheid. Libéré en 1990, il négocie avec le régime blanc une transition pacifique vers la démocratie. Élu premier président noir d'Afrique du Sud en 1994, il incarne la réconciliation plutôt que la vengeance. Prix Nobel de la Paix en 1993, il reste le symbole mondial de la dignité humaine.", quote: { text: "Tout semble impossible jusqu'à ce que ce soit fait.", attr: "Nelson Mandela" }, facts: [{k:"Naissance", v:"18 juil. 1918"},{k:"Mort", v:"5 déc. 2013"},{k:"Prison", v:"27 ans, Robben Island"},{k:"Nobel", v:"Paix, 1993"}], wiki: "https://fr.wikipedia.org/wiki/Nelson_Mandela", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Nelson_Mandela-2008_%28edit%29.jpg/440px-Nelson_Mandela-2008_%28edit%29.jpg" },
+      { name: "Albert Einstein", role: "Physicien, relativité, E=mc²", period: "1879 — 1955", emoji: "🔭", bio: "Albert Einstein publie en 1905 sa théorie de la relativité restreinte, qui aboutit à l'équation E=mc². En 1915, la relativité générale révolutionne notre compréhension de l'espace, du temps et de la gravitation. Réfugié aux États-Unis après l'accession de Hitler au pouvoir, il alerte Roosevelt sur le danger d'une bombe atomique nazie. Il reçoit le Nobel de physique en 1921.", quote: { text: "L'imagination est plus importante que le savoir.", attr: "Albert Einstein" }, facts: [{k:"Naissance", v:"14 mars 1879, Ulm"},{k:"Mort", v:"18 avril 1955, Princeton"},{k:"Nobel", v:"Physique, 1921"},{k:"Nationalité", v:"Allemand, puis américain"}], wiki: "https://fr.wikipedia.org/wiki/Albert_Einstein", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Albert_Einstein_Head.jpg/440px-Albert_Einstein_Head.jpg" },
+      { name: "Simone de Beauvoir", role: "Philosophe, pionnière du féminisme moderne", period: "1908 — 1986", emoji: "✍️", bio: "Simone de Beauvoir est la philosophe existentialiste dont l'œuvre Le Deuxième Sexe (1949) fonde le féminisme contemporain. Sa thèse 'On ne naît pas femme, on le devient' révolutionne la pensée du genre. Compagne de Sartre, elle mène une vie délibérément libre et non-conformiste, et s'engage dans les luttes de décolonisation et pour le droit à l'avortement.", quote: { text: "On ne naît pas femme, on le devient.", attr: "Simone de Beauvoir, Le Deuxième Sexe, 1949" }, facts: [{k:"Naissance", v:"9 jan. 1908, Paris"},{k:"Mort", v:"14 avril 1986, Paris"},{k:"Œuvre", v:"Le Deuxième Sexe, 1949"},{k:"Prix", v:"Goncourt, 1954 (Les Mandarins)"}], wiki: "https://fr.wikipedia.org/wiki/Simone_de_Beauvoir", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Simone_de_Beauvoir2.png/440px-Simone_de_Beauvoir2.png" },
     ],
     stats: [
       { label: "Mortalité par conflits", value: 90 },
@@ -541,10 +689,10 @@ const ERAS = [
       { date: "2023", desc: "ChatGPT démocratise l'IA générative — nouvelle révolution cognitive" },
     ],
     figures: [
-      { name: "Tim Berners-Lee", role: "Inventeur du World Wide Web, 1991" },
-      { name: "Nelson Mandela", role: "Paix et réconciliation en Afrique du Sud" },
-      { name: "Greta Thunberg", role: "Activiste climatique, voix d'une génération" },
-      { name: "Elon Musk", role: "Entrepreneur spatial et technologique controversé" },
+      { name: "Tim Berners-Lee", role: "Inventeur du World Wide Web, 1991", period: "né en 1955", emoji: "🌐", bio: "Tim Berners-Lee est l'informaticien britannique qui invente le World Wide Web en 1989 au CERN de Genève. Il conçoit les protocoles HTTP, HTML et le système d'adressage URL, puis offre son invention au monde entier sans brevet ni droit d'auteur. Aujourd'hui, il milite pour un Web ouvert, décentralisé et respectueux des droits humains, face aux géants du numérique.", quote: { text: "Le Web n'est pas ce que vous pensez qu'il est. C'est ce que nous en faisons ensemble.", attr: "Tim Berners-Lee" }, facts: [{k:"Naissance", v:"8 juin 1955, Londres"},{k:"Invention", v:"World Wide Web, 1989"},{k:"CERN", v:"Genève, 1989"},{k:"Titres", v:"Chevalier de l'Empire"}], wiki: "https://fr.wikipedia.org/wiki/Tim_Berners-Lee", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Sir_Tim_Berners-Lee_%28cropped%29.jpg/440px-Sir_Tim_Berners-Lee_%28cropped%29.jpg" },
+      { name: "Nelson Mandela", role: "Paix et réconciliation en Afrique du Sud", period: "1918 — 2013", emoji: "✊", bio: "Nelson Mandela passe 27 ans en prison sur l'île de Robben Island pour son combat contre l'apartheid. Libéré en 1990, il négocie avec le régime blanc une transition pacifique vers la démocratie. Élu premier président noir d'Afrique du Sud en 1994, il incarne la réconciliation plutôt que la vengeance. Prix Nobel de la Paix en 1993, il reste le symbole mondial de la dignité humaine.", quote: { text: "Tout semble impossible jusqu'à ce que ce soit fait.", attr: "Nelson Mandela" }, facts: [{k:"Naissance", v:"18 juil. 1918"},{k:"Mort", v:"5 déc. 2013"},{k:"Prison", v:"27 ans, Robben Island"},{k:"Nobel", v:"Paix, 1993"}], wiki: "https://fr.wikipedia.org/wiki/Nelson_Mandela", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Nelson_Mandela-2008_%28edit%29.jpg/440px-Nelson_Mandela-2008_%28edit%29.jpg" },
+      { name: "Greta Thunberg", role: "Activiste climatique, voix d'une génération", period: "née en 2003", emoji: "🌱", bio: "Greta Thunberg entame en août 2018, à 15 ans, une grève scolaire devant le Parlement suédois pour le climat. Son mouvement Fridays for Future mobilise des millions de jeunes dans le monde entier. Devant l'ONU en 2019, son discours 'How dare you!' devient viral. Symbole de l'urgence climatique, elle incarne la révolte d'une génération face à l'inaction des dirigeants.", quote: { text: "Notre maison est en feu.", attr: "Greta Thunberg, Forum économique mondial de Davos, 2019" }, facts: [{k:"Naissance", v:"3 jan. 2003, Stockholm"},{k:"Grève", v:"Août 2018"},{k:"Mouvement", v:"Fridays for Future"},{k:"ONU", v:"Discours, sept. 2019"}], wiki: "https://fr.wikipedia.org/wiki/Greta_Thunberg", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Greta_Thunberg_au_parlement_europ%C3%A9en_%2833744056508%29_%28cropped%29.jpg/440px-Greta_Thunberg_au_parlement_europ%C3%A9en_%2833744056508%29_%28cropped%29.jpg" },
+      { name: "Elon Musk", role: "Entrepreneur spatial et technologique controversé", period: "né en 1971", emoji: "🚀", bio: "Elon Musk est l'entrepreneur sud-africain fondateur de Tesla (voitures électriques), SpaceX (fusées réutilisables), et X (ex-Twitter). SpaceX révolutionne l'accès à l'espace en rendant les lanceurs réutilisables. Homme le plus riche du monde par intermittence, il concentre des pouvoirs économiques et d'influence sans précédent, suscitant à la fois admiration et inquiétude.", quote: { text: "Quand quelque chose est assez important pour toi, tu le fais même si les probabilités ne sont pas en ta faveur.", attr: "Elon Musk" }, facts: [{k:"Naissance", v:"28 juin 1971, Pretoria"},{k:"Entreprises", v:"Tesla, SpaceX, X, Neuralink"},{k:"SpaceX", v:"Fondée en 2002"},{k:"Fortune", v:"Parmi les 3 premières mondiales"}], wiki: "https://fr.wikipedia.org/wiki/Elon_Musk", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg/440px-Elon_Musk_Royal_Society_%28crop2%29.jpg" },
     ],
     stats: [
       { label: "Connectivité numérique", value: 95 },
@@ -631,7 +779,7 @@ function renderEra(era, index) {
         <div class="card-title">Figures marquantes</div>
         <div class="figures-grid">
           ${era.figures.map(f => `
-            <div class="figure-card">
+            <div class="figure-card" onclick="openFigure(${JSON.stringify(f).replace(/"/g, '&quot;')})">
               <div class="figure-name">${f.name}</div>
               <div class="figure-role">${f.role}</div>
             </div>
@@ -688,7 +836,60 @@ function selectEra(index) {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight' && currentIndex < ERAS.length - 1) selectEra(currentIndex + 1);
   if (e.key === 'ArrowLeft' && currentIndex > 0) selectEra(currentIndex - 1);
+  if (e.key === 'Escape') closeModalDirect();
 });
+
+// MODAL
+function openFigure(f) {
+  // Image
+  const wrap = document.getElementById('modalImgWrap');
+  if (f.img) {
+    wrap.innerHTML = `<img class="modal-img" src="${f.img}" alt="${f.name}" onerror="this.parentNode.innerHTML='<div class=modal-img-placeholder>${f.emoji || '👤'}</div>'"><div class="modal-img-gradient"></div>`;
+  } else {
+    wrap.innerHTML = `<div class="modal-img-placeholder">${f.emoji || '👤'}</div>`;
+  }
+
+  document.getElementById('modalPeriod').textContent = f.period || '';
+  document.getElementById('modalName').textContent = f.name;
+  document.getElementById('modalRole').textContent = f.role;
+  document.getElementById('modalBio').textContent = f.bio || '';
+
+  // Facts
+  const factsEl = document.getElementById('modalFacts');
+  factsEl.innerHTML = (f.facts || []).map(fact => `
+    <div class="modal-fact"><strong>${fact.k}</strong>${fact.v}</div>
+  `).join('');
+
+  // Quote
+  if (f.quote) {
+    document.getElementById('modalQuoteText').textContent = `"${f.quote.text}"`;
+    document.getElementById('modalQuoteAttr').textContent = `— ${f.quote.attr}`;
+    document.getElementById('modalQuoteBlock').style.display = 'block';
+  } else {
+    document.getElementById('modalQuoteBlock').style.display = 'none';
+  }
+
+  // Wiki link
+  const wikiLink = document.getElementById('modalWikiLink');
+  if (f.wiki) {
+    wikiLink.href = f.wiki;
+    wikiLink.style.display = 'inline-flex';
+  } else {
+    wikiLink.style.display = 'none';
+  }
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
 
 // INIT
 createStars();
