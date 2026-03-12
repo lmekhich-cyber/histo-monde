@@ -351,6 +351,29 @@
   }
   .modal-wiki-link:hover { color: var(--gold); border-color: var(--gold); }
 
+  /* DIAGRAMS */
+  .diagram-card { overflow-x: auto; }
+  .diagram-scroll { min-width: 100%; overflow-x: auto; padding-bottom: 8px; }
+  .diagram-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .diagram-tab {
+    font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.12em;
+    color: var(--gold-dark); border: 1px solid rgba(201,168,76,0.2);
+    background: transparent; padding: 5px 14px; cursor: pointer;
+    transition: all 0.2s; text-transform: uppercase;
+  }
+  .diagram-tab.active, .diagram-tab:hover {
+    color: var(--gold); border-color: rgba(201,168,76,0.5);
+    background: rgba(201,168,76,0.07);
+  }
+  .diagram-pane { display: none; }
+  .diagram-pane.active { display: block; }
+  .diagram-svg-wrap { width: 100%; overflow-x: auto; }
+  .diagram-svg-wrap svg { min-width: 600px; display: block; }
+  .diagram-legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(201,168,76,0.1); }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: var(--smoke); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-line { width: 20px; height: 2px; flex-shrink: 0; }
+
   /* STAT CARDS — données réelles */
   .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .stat-card {
@@ -554,6 +577,231 @@ const ERAS = [
       { label: "Grande Pyramide de Gizeh", value: "146,5 m", source: "hauteur initiale, −2 560" },
       { label: "Population à son apogée", value: "~5 M", source: "sous le Nouvel Empire, ~−1300" },
     ],
+    diagrams: [
+      { title: "Dynasties pharaoniques", svg: `<svg viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond',serif" style="width:100%;max-width:900px">
+        <rect width="900" height="340" fill="#07050300"/>
+        <!-- Frise temporelle -->
+        <line x1="40" y1="60" x2="860" y2="60" stroke="#c9a84c" stroke-width="1.5" opacity="0.4"/>
+        <!-- Ticks temporels -->
+        <g stroke="#c9a84c" stroke-width="1" opacity="0.3" font-size="9" fill="#8b6914" text-anchor="middle">
+          <line x1="40" y1="55" x2="40" y2="65"/><text x="40" y="48" font-size="8">−3150</text>
+          <line x1="160" y1="55" x2="160" y2="65"/><text x="160" y="48" font-size="8">−2700</text>
+          <line x1="280" y1="55" x2="280" y2="65"/><text x="280" y="48" font-size="8">−2000</text>
+          <line x1="400" y1="55" x2="400" y2="65"/><text x="400" y="48" font-size="8">−1500</text>
+          <line x1="520" y1="55" x2="520" y2="65"/><text x="520" y="48" font-size="8">−1000</text>
+          <line x1="640" y1="55" x2="640" y2="65"/><text x="640" y="48" font-size="8">−500</text>
+          <line x1="760" y1="55" x2="760" y2="65"/><text x="760" y="48" font-size="8">−100</text>
+          <line x1="860" y1="55" x2="860" y2="65"/><text x="860" y="48" font-size="8">−30</text>
+        </g>
+        <!-- Dynasties : barres colorées -->
+        <!-- Époque thinite (I-II) −3150 à −2700 -->
+        <rect x="40" y="70" width="120" height="28" rx="2" fill="#c9872a" opacity="0.7"/>
+        <text x="100" y="89" text-anchor="middle" fill="#fff" font-size="10" font-family="'Cinzel',serif">Thinite I-II</text>
+        <!-- Ancien Empire (III-VI) −2700 à −2200 -->
+        <rect x="160" y="70" width="130" height="28" rx="2" fill="#c9a84c" opacity="0.8"/>
+        <text x="225" y="89" text-anchor="middle" fill="#1a1205" font-size="10" font-family="'Cinzel',serif">Ancien Empire</text>
+        <!-- 1ère Période intermédiaire −2200 à −2050 -->
+        <rect x="290" y="70" width="50" height="28" rx="2" fill="#5a4020" opacity="0.6"/>
+        <text x="315" y="82" text-anchor="middle" fill="#c9a84c" font-size="7">1re P.I.</text>
+        <!-- Moyen Empire (XI-XII) −2050 à −1650 -->
+        <rect x="340" y="70" width="110" height="28" rx="2" fill="#7a8a4c" opacity="0.8"/>
+        <text x="395" y="89" text-anchor="middle" fill="#fff" font-size="10" font-family="'Cinzel',serif">Moyen Empire</text>
+        <!-- 2e Période intermédiaire / Hyksos −1650 à −1550 -->
+        <rect x="450" y="70" width="28" height="28" rx="2" fill="#5a3a3a" opacity="0.7"/>
+        <text x="464" y="82" text-anchor="middle" fill="#c9a84c" font-size="7">Hyksos</text>
+        <!-- Nouvel Empire (XVIII-XX) −1550 à −1070 -->
+        <rect x="478" y="70" width="127" height="28" rx="2" fill="#c9a84c" opacity="0.9"/>
+        <text x="541" y="89" text-anchor="middle" fill="#1a1205" font-size="10" font-family="'Cinzel',serif">Nouvel Empire</text>
+        <!-- 3e Période intermédiaire −1070 à −664 -->
+        <rect x="605" y="70" width="78" height="28" rx="2" fill="#5a4020" opacity="0.6"/>
+        <text x="644" y="82" text-anchor="middle" fill="#c9a84c" font-size="8">3e P.I.</text>
+        <!-- Basse Époque −664 à −332 -->
+        <rect x="683" y="70" width="90" height="28" rx="2" fill="#7a6a3a" opacity="0.7"/>
+        <text x="728" y="89" text-anchor="middle" fill="#fff" font-size="9" font-family="'Cinzel',serif">Basse Époque</text>
+        <!-- Époque ptolémaïque −332 à −30 -->
+        <rect x="773" y="70" width="87" height="28" rx="2" fill="#4a6a8a" opacity="0.8"/>
+        <text x="816" y="89" text-anchor="middle" fill="#fff" font-size="9" font-family="'Cinzel',serif">Ptolémaïque</text>
+
+        <!-- FIGURES CLÉS avec lignes de connexion -->
+        <g fill="#c9a84c" stroke="none" font-size="9">
+          <!-- Narmer -->
+          <circle cx="40" cy="60" r="4" fill="#c9872a"/>
+          <line x1="40" y1="99" x2="40" y2="130" stroke="#c9872a" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="40" y="145" text-anchor="middle" fill="#c9a84c" font-size="9">Narmer</text>
+          <text x="40" y="156" text-anchor="middle" fill="#8b6914" font-size="8">−3100</text>
+          <!-- Khéops -->
+          <circle cx="195" cy="60" r="4" fill="#c9a84c"/>
+          <line x1="195" y1="99" x2="195" y2="130" stroke="#c9a84c" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="195" y="145" text-anchor="middle" fill="#c9a84c" font-size="9">Khéops</text>
+          <text x="195" y="156" text-anchor="middle" fill="#8b6914" font-size="8">−2560</text>
+          <!-- Montouhotep II -->
+          <circle cx="345" cy="60" r="4" fill="#7a8a4c"/>
+          <line x1="345" y1="99" x2="345" y2="130" stroke="#7a8a4c" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="345" y="145" text-anchor="middle" fill="#c9a84c" font-size="9">Montouhotep II</text>
+          <text x="345" y="156" text-anchor="middle" fill="#8b6914" font-size="8">−2055</text>
+          <!-- Akhénaton -->
+          <circle cx="520" cy="60" r="4" fill="#c9a84c"/>
+          <line x1="520" y1="99" x2="520" y2="175" stroke="#c9a84c" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="520" y="190" text-anchor="middle" fill="#c9a84c" font-size="9">Akhénaton</text>
+          <text x="520" y="201" text-anchor="middle" fill="#8b6914" font-size="8">−1353</text>
+          <!-- Néfertiti -->
+          <circle cx="530" cy="60" r="3" fill="#e8c870"/>
+          <line x1="545" y1="99" x2="565" y2="175" stroke="#e8c870" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="570" y="190" text-anchor="middle" fill="#e8c870" font-size="9">Néfertiti</text>
+          <!-- Toutankhamon -->
+          <circle cx="540" cy="60" r="4" fill="#c9a84c"/>
+          <line x1="540" y1="99" x2="610" y2="218" stroke="#c9a84c" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="615" y="233" text-anchor="middle" fill="#c9a84c" font-size="9">Toutankhamon</text>
+          <text x="615" y="244" text-anchor="middle" fill="#8b6914" font-size="8">−1336</text>
+          <!-- Ramsès II -->
+          <circle cx="570" cy="60" r="5" fill="#ff9940"/>
+          <line x1="570" y1="99" x2="570" y2="130" stroke="#ff9940" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="570" y="145" text-anchor="middle" fill="#ff9940" font-size="9" font-weight="bold">Ramsès II</text>
+          <text x="570" y="156" text-anchor="middle" fill="#8b6914" font-size="8">−1279</text>
+          <!-- Cléopâtre VII -->
+          <circle cx="856" cy="60" r="5" fill="#4a9abf"/>
+          <line x1="856" y1="99" x2="856" y2="130" stroke="#4a9abf" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="856" y="145" text-anchor="middle" fill="#4a9abf" font-size="9" font-weight="bold">Cléopâtre VII</text>
+          <text x="856" y="156" text-anchor="middle" fill="#8b6914" font-size="8">−51/−30</text>
+        </g>
+
+        <!-- Ligne du temps XVIIIe dynastie zoom -->
+        <rect x="40" y="270" width="820" height="1" fill="#c9a84c" opacity="0.2"/>
+        <text x="40" y="265" fill="#8b6914" font-size="9" font-family="'Cinzel',serif" letter-spacing="2">XVIIIE DYNASTIE (NOUVEL EMPIRE) — ZOOM</text>
+        <g font-size="8" fill="#8b6914" text-anchor="middle">
+          <rect x="78" y="275" width="55" height="20" rx="1" fill="#4a6a2a" opacity="0.6"/>
+          <text x="105" y="289" fill="#c9a84c">Thoutmosis III</text>
+          <rect x="138" y="275" width="38" height="20" rx="1" fill="#5a5a2a" opacity="0.6"/>
+          <text x="157" y="289" fill="#c9a84c">Aménophis III</text>
+          <rect x="181" y="275" width="30" height="20" rx="1" fill="#8a3a3a" opacity="0.7"/>
+          <text x="196" y="289" fill="#fff">Akhénaton</text>
+          <rect x="216" y="275" width="22" height="20" rx="1" fill="#c9a84c" opacity="0.5"/>
+          <text x="227" y="289" fill="#1a1205">Tout.</text>
+          <rect x="243" y="275" width="25" height="20" rx="1" fill="#6a4a1a" opacity="0.6"/>
+          <text x="255" y="289" fill="#c9a84c">Aÿ</text>
+          <rect x="273" y="275" width="35" height="20" rx="1" fill="#4a4a6a" opacity="0.6"/>
+          <text x="290" y="289" fill="#c9a84c">Horemheb</text>
+        </g>
+        <!-- Flèche mariage Akhénaton-Néfertiti -->
+        <path d="M196,285 Q210,295 216,285" fill="none" stroke="#e8c870" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+        <text x="206" y="308" text-anchor="middle" fill="#e8c870" font-size="7">époux</text>
+      </svg>`,
+      legend: [{color:"#c9a84c",type:"dot",label:"Pharaon majeur"},{color:"#e8c870",type:"dot",label:"Grande Épouse royale"},{color:"#4a9abf",type:"dot",label:"Époque ptolémaïque"},{color:"#5a4020",type:"dot",label:"Période intermédiaire"}]
+      },
+      { title: "Famille royale XVIIIe dyn.", svg: `<svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond',serif" style="width:100%;max-width:700px">
+        <rect width="700" height="360" fill="transparent"/>
+        <!-- Titre -->
+        <text x="350" y="24" text-anchor="middle" fill="#c9a84c" font-size="11" font-family="'Cinzel',serif" letter-spacing="3">ARBRE DE LA XVIIIe DYNASTIE</text>
+        <!-- Nœuds avec cartouches stylisés -->
+        <!-- Thoutmosis I -->
+        <rect x="260" y="44" width="120" height="38" rx="19" fill="none" stroke="#c9a84c" stroke-width="1.2"/>
+        <text x="320" y="67" text-anchor="middle" fill="#c9a84c" font-size="10">Thoutmosis I</text>
+        <!-- Thoutmosis II -->
+        <rect x="100" y="130" width="120" height="38" rx="19" fill="none" stroke="#c9a84c" stroke-width="1.2"/>
+        <text x="160" y="153" text-anchor="middle" fill="#c9a84c" font-size="10">Thoutmosis II</text>
+        <!-- Hatchepsout -->
+        <rect x="260" y="130" width="120" height="38" rx="19" fill="none" stroke="#e8c870" stroke-width="1.5"/>
+        <text x="320" y="153" text-anchor="middle" fill="#e8c870" font-size="10">Hatchepsout ♀</text>
+        <!-- Thoutmosis III -->
+        <rect x="100" y="220" width="120" height="38" rx="19" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+        <text x="160" y="243" text-anchor="middle" fill="#c9a84c" font-size="10">Thoutmosis III</text>
+        <!-- Aménophis II -->
+        <rect x="260" y="220" width="120" height="38" rx="19" fill="none" stroke="#c9a84c" stroke-width="1.2"/>
+        <text x="320" y="243" text-anchor="middle" fill="#c9a84c" font-size="10">Aménophis II</text>
+        <!-- Aménophis III -->
+        <rect x="420" y="220" width="120" height="38" rx="19" fill="none" stroke="#c9a84c" stroke-width="1.2"/>
+        <text x="480" y="243" text-anchor="middle" fill="#c9a84c" font-size="10">Aménophis III</text>
+        <!-- Akhénaton -->
+        <rect x="340" y="300" width="120" height="38" rx="19" fill="none" stroke="#ff7744" stroke-width="1.5"/>
+        <text x="400" y="316" text-anchor="middle" fill="#ff7744" font-size="10">Akhénaton</text>
+        <text x="400" y="330" text-anchor="middle" fill="#ff7744" font-size="8">(révolution monothéiste)</text>
+        <!-- Néfertiti -->
+        <rect x="500" y="300" width="100" height="38" rx="19" fill="none" stroke="#e8c870" stroke-width="1.5"/>
+        <text x="550" y="316" text-anchor="middle" fill="#e8c870" font-size="10">Néfertiti ♀</text>
+        <text x="550" y="330" text-anchor="middle" fill="#8b6914" font-size="8">Grande Épouse</text>
+        <!-- Toutankhamon -->
+        <rect x="240" y="300" width="90" height="38" rx="19" fill="none" stroke="#c9a84c" stroke-width="1.2"/>
+        <text x="285" y="316" text-anchor="middle" fill="#c9a84c" font-size="10">Toutankhamon</text>
+        <text x="285" y="330" text-anchor="middle" fill="#8b6914" font-size="8">fils probable</text>
+        <!-- Connexions -->
+        <g stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.5">
+          <line x1="320" y1="82" x2="160" y2="130"/>
+          <line x1="320" y1="82" x2="320" y2="130"/>
+          <line x1="160" y1="168" x2="160" y2="220"/>
+          <line x1="320" y1="168" x2="160" y2="220"/>
+          <line x1="160" y1="258" x2="285" y2="300"/>
+          <line x1="320" y1="168" x2="320" y2="220"/>
+          <line x1="320" y1="258" x2="400" y2="300"/>
+          <line x1="480" y1="258" x2="480" y2="280" stroke="#c9a84c"/>
+          <line x1="480" y1="280" x2="400" y2="300" stroke="#c9a84c"/>
+        </g>
+        <!-- Mariage Akhénaton-Néfertiti -->
+        <line x1="460" y1="319" x2="500" y2="319" stroke="#e8c870" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="480" y="297" text-anchor="middle" fill="#e8c870" font-size="8">époux</text>
+        <!-- Régences légendaires -->
+        <text x="320" y="192" text-anchor="middle" fill="#e8c870" font-size="8" font-style="italic">co-régence ~20 ans</text>
+        <line x1="160" y1="168" x2="320" y2="168" stroke="#e8c870" stroke-width="0.8" stroke-dasharray="2,2"/>
+      </svg>`,
+      legend: [{color:"#c9a84c",type:"dot",label:"Pharaon"},{color:"#e8c870",type:"dot",label:"Reine / Grande Épouse"},{color:"#ff7744",type:"dot",label:"Révolution religieuse"}]
+      },
+      { title: "Frise des pyramides", svg: `<svg viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond',serif" style="width:100%;max-width:820px">
+        <rect width="820" height="240" fill="transparent"/>
+        <text x="410" y="20" text-anchor="middle" fill="#c9a84c" font-size="11" font-family="'Cinzel',serif" letter-spacing="3">GRANDES PYRAMIDES D'ÉGYPTE</text>
+        <!-- Ligne du sol -->
+        <line x1="30" y1="210" x2="790" y2="210" stroke="#7a5a20" stroke-width="2"/>
+        <!-- Pyramide Djéser (Saqqarah) −2650 h=62m -->
+        <g transform="translate(80,210)">
+          <polygon points="0,0 -38,-62 38,-62 0,-62 -38,0 38,0" fill="none" stroke="#7a6a3a" stroke-width="1.5"/>
+          <!-- degrés -->
+          <line x1="-38" y1="-14" x2="38" y2="-14" stroke="#7a6a3a" stroke-width="1" opacity="0.5"/>
+          <line x1="-32" y1="-28" x2="32" y2="-28" stroke="#7a6a3a" stroke-width="1" opacity="0.5"/>
+          <line x1="-24" y1="-42" x2="24" y2="-42" stroke="#7a6a3a" stroke-width="1" opacity="0.5"/>
+          <line x1="-14" y1="-54" x2="14" y2="-54" stroke="#7a6a3a" stroke-width="1" opacity="0.5"/>
+          <path d="M-38,0 L0,-62 L38,0 Z" fill="#7a6a3a" opacity="0.15"/>
+          <text y="18" text-anchor="middle" fill="#c9a84c" font-size="9">Djéser</text>
+          <text y="29" text-anchor="middle" fill="#8b6914" font-size="8">−2650 · 62m</text>
+          <text y="39" text-anchor="middle" fill="#8b6914" font-size="8">Imhotep</text>
+        </g>
+        <!-- Pyramide Khéops (Grande pyramide) −2560 h=146m -->
+        <g transform="translate(250,210)">
+          <path d="M-90,0 L0,-146 L90,0 Z" fill="#c9a84c" opacity="0.12"/>
+          <path d="M-90,0 L0,-146 L90,0 Z" fill="none" stroke="#c9a84c" stroke-width="2"/>
+          <!-- lignes de pierre -->
+          <line x1="-78" y1="-20" x2="78" y2="-20" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+          <line x1="-60" y1="-50" x2="60" y2="-50" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+          <line x1="-42" y1="-80" x2="42" y2="-80" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+          <line x1="-22" y1="-116" x2="22" y2="-116" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+          <!-- Étoile au sommet -->
+          <circle cx="0" cy="-146" r="4" fill="#c9a84c"/>
+          <text y="18" text-anchor="middle" fill="#c9a84c" font-size="11" font-family="'Cinzel',serif">Grande Pyramide</text>
+          <text y="30" text-anchor="middle" fill="#8b6914" font-size="9">Khéops · −2560 · 146,5 m</text>
+          <text y="41" text-anchor="middle" fill="#8b6914" font-size="8">2,3 M blocs · 6 M tonnes</text>
+        </g>
+        <!-- Khéphren −2530 h=136m -->
+        <g transform="translate(460,210)">
+          <path d="M-76,0 L0,-136 L76,0 Z" fill="#b89238" opacity="0.1"/>
+          <path d="M-76,0 L0,-136 L76,0 Z" fill="none" stroke="#b89238" stroke-width="1.5"/>
+          <text y="18" text-anchor="middle" fill="#c9a84c" font-size="9">Khéphren</text>
+          <text y="29" text-anchor="middle" fill="#8b6914" font-size="8">−2530 · 136 m</text>
+        </g>
+        <!-- Mykérinos −2510 h=65m -->
+        <g transform="translate(600,210)">
+          <path d="M-42,0 L0,-65 L42,0 Z" fill="#8a7030" opacity="0.15"/>
+          <path d="M-42,0 L0,-65 L42,0 Z" fill="none" stroke="#8a7030" stroke-width="1.5"/>
+          <text y="18" text-anchor="middle" fill="#c9a84c" font-size="9">Mykérinos</text>
+          <text y="29" text-anchor="middle" fill="#8b6914" font-size="8">−2510 · 65 m</text>
+        </g>
+        <!-- Sphinx -->
+        <g transform="translate(720,210)">
+          <path d="M-40,-20 Q-20,-50 0,-40 Q20,-30 50,-38 Q60,-36 60,-22 Q60,-10 40,-5 L-40,-5 Z" fill="none" stroke="#c9872a" stroke-width="1.5" opacity="0.6"/>
+          <circle cx="-10" cy="-45" r="16" fill="none" stroke="#c9872a" stroke-width="1.5" opacity="0.6"/>
+          <text y="14" text-anchor="middle" fill="#c9a84c" font-size="9">Sphinx</text>
+          <text y="25" text-anchor="middle" fill="#8b6914" font-size="8">~−2500</text>
+        </g>
+      </svg>`,
+      legend: [{color:"#c9a84c",type:"dot",label:"IVe dyn. (Ancien Empire)"},{color:"#7a6a3a",type:"dot",label:"IIIe dyn. (Djéser)"},{color:"#c9872a",type:"dot",label:"Autres monuments"}]
+      }
+    ],
     quote: { text: "L'Égypte est un don du Nil.", source: "Hérodote, Histoires, II, 5" }
   },
   {
@@ -584,6 +832,172 @@ const ERAS = [
       { label: "Cités-États grecques", value: "~1 000", source: "poleis recensées en Méditerranée" },
       { label: "Citoyens à Athènes (Ve s.)", value: "~30 000", source: "sur ~300 000 habitants totaux" },
       { label: "Durée de la période", value: "~770 ans", source: "de −800 à −31 av. J.-C." },
+    ],
+    diagrams: [
+      { title: "Arbre philosophique grec", svg: `<svg viewBox="0 0 820 400" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond',serif" style="width:100%;max-width:820px">
+        <rect width="820" height="400" fill="transparent"/>
+        <text x="410" y="22" text-anchor="middle" fill="#4a7ab5" font-size="11" font-family="'Cinzel',serif" letter-spacing="3">LIGNÉE PHILOSOPHIQUE GRECQUE</text>
+        <!-- Nœud helper -->
+        <!-- PRÉSOCRATIQUES -->
+        <g>
+          <rect x="30" y="40" width="110" height="36" rx="3" fill="none" stroke="#4a5a7a" stroke-width="1.2"/>
+          <text x="85" y="55" text-anchor="middle" fill="#8ab0d0" font-size="9" font-family="'Cinzel',serif">Thalès</text>
+          <text x="85" y="68" text-anchor="middle" fill="#5a7a9a" font-size="8">−624/−546</text>
+        </g>
+        <g>
+          <rect x="155" y="40" width="110" height="36" rx="3" fill="none" stroke="#4a5a7a" stroke-width="1.2"/>
+          <text x="210" y="55" text-anchor="middle" fill="#8ab0d0" font-size="9" font-family="'Cinzel',serif">Pythagore</text>
+          <text x="210" y="68" text-anchor="middle" fill="#5a7a9a" font-size="8">−570/−495</text>
+        </g>
+        <g>
+          <rect x="280" y="40" width="110" height="36" rx="3" fill="none" stroke="#4a5a7a" stroke-width="1.2"/>
+          <text x="335" y="55" text-anchor="middle" fill="#8ab0d0" font-size="9" font-family="'Cinzel',serif">Héraclite</text>
+          <text x="335" y="68" text-anchor="middle" fill="#5a7a9a" font-size="8">−544/−484</text>
+        </g>
+        <g>
+          <rect x="405" y="40" width="110" height="36" rx="3" fill="none" stroke="#4a5a7a" stroke-width="1.2"/>
+          <text x="460" y="55" text-anchor="middle" fill="#8ab0d0" font-size="9" font-family="'Cinzel',serif">Parménide</text>
+          <text x="460" y="68" text-anchor="middle" fill="#5a7a9a" font-size="8">−515/−450</text>
+        </g>
+        <g>
+          <rect x="530" y="40" width="110" height="36" rx="3" fill="none" stroke="#4a5a7a" stroke-width="1.2"/>
+          <text x="585" y="55" text-anchor="middle" fill="#8ab0d0" font-size="9" font-family="'Cinzel',serif">Démocrite</text>
+          <text x="585" y="68" text-anchor="middle" fill="#5a7a9a" font-size="8">−460/−370</text>
+        </g>
+        <!-- Label présocratiques -->
+        <text x="330" y="37" text-anchor="middle" fill="#4a6a8a" font-size="8" font-style="italic">— PRÉSOCRATIQUES —</text>
+        <!-- SOCRATE (pivot) -->
+        <rect x="300" y="130" width="140" height="44" rx="22" fill="#1a2a3a" stroke="#4a9abf" stroke-width="2"/>
+        <text x="370" y="150" text-anchor="middle" fill="#4a9abf" font-size="11" font-family="'Cinzel',serif">SOCRATE</text>
+        <text x="370" y="165" text-anchor="middle" fill="#3a7a9a" font-size="8">−470 / −399</text>
+        <!-- Flèches vers Socrate -->
+        <g stroke="#4a5a7a" stroke-width="1" fill="none" opacity="0.4" stroke-dasharray="3,3">
+          <line x1="85" y1="76" x2="340" y2="130"/>
+          <line x1="210" y1="76" x2="355" y2="130"/>
+          <line x1="335" y1="76" x2="365" y2="130"/>
+          <line x1="460" y1="76" x2="385" y2="130"/>
+          <line x1="585" y1="76" x2="400" y2="130"/>
+        </g>
+        <text x="370" y="120" text-anchor="middle" fill="#4a6a8a" font-size="8" font-style="italic">influence</text>
+        <!-- PLATON -->
+        <rect x="160" y="228" width="130" height="44" rx="22" fill="#0e1a2a" stroke="#6a8ab5" stroke-width="1.8"/>
+        <text x="225" y="248" text-anchor="middle" fill="#8ab0d0" font-size="11" font-family="'Cinzel',serif">PLATON</text>
+        <text x="225" y="263" text-anchor="middle" fill="#5a7a9a" font-size="8">−428 / −348</text>
+        <!-- XÉNOPHON -->
+        <rect x="420" y="228" width="130" height="44" rx="22" fill="#0e1a2a" stroke="#4a6a8a" stroke-width="1.2"/>
+        <text x="485" y="248" text-anchor="middle" fill="#6a90b0" font-size="10" font-family="'Cinzel',serif">Xénophon</text>
+        <text x="485" y="263" text-anchor="middle" fill="#5a7a9a" font-size="8">−430 / −354</text>
+        <!-- Connexions Socrate → élèves -->
+        <line x1="340" y1="174" x2="240" y2="228" stroke="#4a9abf" stroke-width="1.5"/>
+        <line x1="390" y1="174" x2="470" y2="228" stroke="#4a9abf" stroke-width="1" opacity="0.5"/>
+        <text x="280" y="210" fill="#3a7a9a" font-size="8" font-style="italic">élève</text>
+        <!-- ARISTOTE -->
+        <rect x="60" y="326" width="130" height="44" rx="22" fill="#0e1a2a" stroke="#7a9abf" stroke-width="1.8"/>
+        <text x="125" y="346" text-anchor="middle" fill="#9abde0" font-size="11" font-family="'Cinzel',serif">ARISTOTE</text>
+        <text x="125" y="361" text-anchor="middle" fill="#5a7a9a" font-size="8">−384 / −322</text>
+        <!-- SPEUSIPPE -->
+        <rect x="220" y="326" width="120" height="44" rx="22" fill="#0e1a2a" stroke="#4a6a8a" stroke-width="1.2"/>
+        <text x="280" y="346" text-anchor="middle" fill="#6a90b0" font-size="9" font-family="'Cinzel',serif">Speusippe</text>
+        <text x="280" y="361" text-anchor="middle" fill="#5a7a9a" font-size="8">Académie</text>
+        <!-- Connexions Platon → élèves -->
+        <line x1="190" y1="272" x2="140" y2="326" stroke="#6a8ab5" stroke-width="1.5"/>
+        <line x1="225" y1="272" x2="265" y2="326" stroke="#4a6a8a" stroke-width="1" opacity="0.5"/>
+        <text x="145" y="308" fill="#3a7a9a" font-size="8" font-style="italic">élève</text>
+        <!-- Écoles ultérieures -->
+        <rect x="420" y="326" width="110" height="36" rx="3" fill="none" stroke="#3a6a5a" stroke-width="1"/>
+        <text x="475" y="341" text-anchor="middle" fill="#6ab09a" font-size="9" font-family="'Cinzel',serif">Épicure</text>
+        <text x="475" y="353" text-anchor="middle" fill="#3a6a5a" font-size="7">Épicurisme −341</text>
+        <rect x="550" y="326" width="110" height="36" rx="3" fill="none" stroke="#8a7a3a" stroke-width="1"/>
+        <text x="605" y="341" text-anchor="middle" fill="#d0b060" font-size="9" font-family="'Cinzel',serif">Zénon de Kition</text>
+        <text x="605" y="353" text-anchor="middle" fill="#8a7a3a" font-size="7">Stoïcisme −334</text>
+        <rect x="680" y="326" width="110" height="36" rx="3" fill="none" stroke="#5a4a7a" stroke-width="1"/>
+        <text x="735" y="341" text-anchor="middle" fill="#9a8ac0" font-size="9" font-family="'Cinzel',serif">Pyrrhon</text>
+        <text x="735" y="353" text-anchor="middle" fill="#5a4a7a" font-size="7">Scepticisme −360</text>
+        <!-- Flèche Aristote → Stoïcisme -->
+        <line x1="190" y1="348" x2="420" y2="344" stroke="#7a9abf" stroke-width="0.8" stroke-dasharray="4,3" opacity="0.4"/>
+        <text x="310" y="340" text-anchor="middle" fill="#4a6a8a" font-size="7" font-style="italic">inspire</text>
+        <!-- Alexandre le Grand -->
+        <rect x="60" y="385" width="130" height="0" rx="0" fill="none"/>
+        <text x="125" y="395" text-anchor="middle" fill="#c9a84c" font-size="8" font-style="italic">→ précepteur d'Alexandre le Grand</text>
+      </svg>`,
+      legend: [{color:"#4a9abf",type:"dot",label:"Socrate (pivot central)"},{color:"#6a8ab5",type:"dot",label:"École de l'Académie (Platon)"},{color:"#9abde0",type:"dot",label:"Lycée (Aristote)"},{color:"#6ab09a",type:"dot",label:"Autres écoles (Épicure, Stoïcisme…)"}]
+      },
+      { title: "Cités-États & Guerres", svg: `<svg viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond',serif" style="width:100%;max-width:820px">
+        <rect width="820" height="300" fill="transparent"/>
+        <text x="410" y="22" text-anchor="middle" fill="#4a7ab5" font-size="11" font-family="'Cinzel',serif" letter-spacing="3">FRISE DES GUERRES ET CITÉS GRECQUES</text>
+        <!-- Timeline -->
+        <line x1="40" y1="55" x2="780" y2="55" stroke="#4a7ab5" stroke-width="1.5" opacity="0.4"/>
+        <g fill="#5a7a9a" font-size="8" text-anchor="middle">
+          <line x1="40" y1="50" x2="40" y2="60" stroke="#4a7ab5"/><text x="40" y="46">−800</text>
+          <line x1="160" y1="50" x2="160" y2="60" stroke="#4a7ab5"/><text x="160" y="46">−700</text>
+          <line x1="280" y1="50" x2="280" y2="60" stroke="#4a7ab5"/><text x="280" y="46">−600</text>
+          <line x1="400" y1="50" x2="400" y2="60" stroke="#4a7ab5"/><text x="400" y="46">−500</text>
+          <line x1="520" y1="50" x2="520" y2="60" stroke="#4a7ab5"/><text x="520" y="46">−400</text>
+          <line x1="640" y1="50" x2="640" y2="60" stroke="#4a7ab5"/><text x="640" y="46">−300</text>
+          <line x1="780" y1="50" x2="780" y2="60" stroke="#4a7ab5"/><text x="780" y="46">−31</text>
+        </g>
+        <!-- Périodes colorées -->
+        <!-- Archaïque -->
+        <rect x="40" y="65" width="260" height="20" rx="2" fill="#3a4a6a" opacity="0.7"/>
+        <text x="170" y="79" text-anchor="middle" fill="#8ab0d0" font-size="9" font-family="'Cinzel',serif">Époque archaïque</text>
+        <!-- Classique -->
+        <rect x="300" y="65" width="270" height="20" rx="2" fill="#2a4a7a" opacity="0.8"/>
+        <text x="435" y="79" text-anchor="middle" fill="#a0c0e0" font-size="9" font-family="'Cinzel',serif">Époque classique (Âge d'or)</text>
+        <!-- Hellénistique -->
+        <rect x="570" y="65" width="210" height="20" rx="2" fill="#2a3a6a" opacity="0.6"/>
+        <text x="675" y="79" text-anchor="middle" fill="#7a9abf" font-size="9" font-family="'Cinzel',serif">Époque hellénistique</text>
+        <!-- Événements clés -->
+        <g>
+          <!-- Jeux olympiques -->
+          <line x1="75" y1="85" x2="75" y2="120" stroke="#c9a84c" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <circle cx="75" cy="85" r="3" fill="#c9a84c"/>
+          <text x="75" y="134" text-anchor="middle" fill="#c9a84c" font-size="8">1ers J.O.</text>
+          <text x="75" y="145" text-anchor="middle" fill="#8b6914" font-size="7">−776</text>
+          <!-- Démocratie Clisthène -->
+          <line x1="340" y1="85" x2="340" y2="155" stroke="#4a9abf" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <circle cx="340" cy="85" r="4" fill="#4a9abf"/>
+          <text x="340" y="169" text-anchor="middle" fill="#4a9abf" font-size="8">Démocratie</text>
+          <text x="340" y="180" text-anchor="middle" fill="#8b6914" font-size="7">Clisthène −508</text>
+          <!-- Marathon -->
+          <line x1="370" y1="85" x2="370" y2="205" stroke="#c94a4a" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <circle cx="370" cy="85" r="3" fill="#c94a4a"/>
+          <text x="370" y="219" text-anchor="middle" fill="#c94a4a" font-size="8">Marathon</text>
+          <text x="370" y="230" text-anchor="middle" fill="#8b6914" font-size="7">−490</text>
+          <!-- Thermopyles -->
+          <line x1="390" y1="85" x2="390" y2="240" stroke="#c94a4a" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <circle cx="390" cy="85" r="3" fill="#c94a4a"/>
+          <text x="390" y="254" text-anchor="middle" fill="#c94a4a" font-size="8">Thermopyles</text>
+          <text x="390" y="265" text-anchor="middle" fill="#8b6914" font-size="7">−480 (300 Spartiates)</text>
+          <!-- Périclès / Parthénon -->
+          <line x1="435" y1="85" x2="435" y2="120" stroke="#e8c870" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <circle cx="435" cy="85" r="4" fill="#e8c870"/>
+          <text x="435" y="134" text-anchor="middle" fill="#e8c870" font-size="8">Parthénon</text>
+          <text x="435" y="145" text-anchor="middle" fill="#8b6914" font-size="7">Périclès −447</text>
+          <!-- Mort de Socrate -->
+          <line x1="488" y1="85" x2="488" y2="155" stroke="#9a6abf" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <circle cx="488" cy="85" r="3" fill="#9a6abf"/>
+          <text x="488" y="169" text-anchor="middle" fill="#9a6abf" font-size="8">Mort Socrate</text>
+          <text x="488" y="180" text-anchor="middle" fill="#8b6914" font-size="7">−399 (ciguë)</text>
+          <!-- Alexandre -->
+          <line x1="635" y1="85" x2="635" y2="120" stroke="#ff9940" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <circle cx="635" cy="85" r="4" fill="#ff9940"/>
+          <text x="635" y="134" text-anchor="middle" fill="#ff9940" font-size="8">Alexandre</text>
+          <text x="635" y="145" text-anchor="middle" fill="#8b6914" font-size="7">−336 / −323</text>
+        </g>
+        <!-- Légende cités -->
+        <g font-size="9" font-family="'Cinzel',serif">
+          <rect x="40" y="270" width="12" height="12" rx="2" fill="#4a9abf" opacity="0.7"/>
+          <text x="58" y="281" fill="#8ab0d0">Athènes (démocratie)</text>
+          <rect x="200" y="270" width="12" height="12" rx="2" fill="#8a3a3a" opacity="0.7"/>
+          <text x="218" y="281" fill="#c07060">Sparte (oligarchie)</text>
+          <rect x="350" y="270" width="12" height="12" rx="2" fill="#6a4a8a" opacity="0.7"/>
+          <text x="368" y="281" fill="#9a7abf">Macédoine (monarchie)</text>
+          <rect x="520" y="270" width="12" height="12" rx="2" fill="#3a6a5a" opacity="0.7"/>
+          <text x="538" y="281" fill="#6ab09a">Corinthe (commerce)</text>
+        </g>
+      </svg>`,
+      legend: [{color:"#4a9abf",type:"dot",label:"Athènes"},{color:"#c94a4a",type:"dot",label:"Guerres médiques"},{color:"#e8c870",type:"dot",label:"Âge d'or (Périclès)"},{color:"#ff9940",type:"dot",label:"Alexandre le Grand"}]
+      }
     ],
     quote: { text: "L'homme est la mesure de toutes choses.", source: "Protagoras d'Abdère, ~−450 av. J.-C." }
   },
@@ -678,6 +1092,113 @@ const ERAS = [
       { label: "Americas : 1ère traversée", value: "70 jours", source: "Colomb, 3 août – 12 oct. 1492" },
     ],
     quote: { text: "La simplicité est la sophistication suprême.", source: "Léonard de Vinci" }
+  },
+  {
+    id: "monarchies",
+    period: "987 — 1789",
+    title: "Monarchies d'Europe",
+    tagline: "Par la grâce de Dieu, rois et reines",
+    icon: "👑",
+    color: "#7a3a8a",
+    description: "Du couronnement des Capétiens à la Révolution française, l'Europe se construit autour de grandes dynasties rivales — Capétiens, Tudors, Habsbourg, Bourbons, Hohenzollern. Ces siècles voient naître les États-nations modernes, les guerres de religion, le droit des gens et la diplomatie européenne. Rois bâtisseurs, reines stratèges, empereurs conquérants : le pouvoir absolu atteint sa splendeur — et ses contradictions fatales.",
+    events: [
+      { date: "987",   desc: "Hugues Capet élu roi des Francs — fondation de la dynastie capétienne en France" },
+      { date: "1066",  desc: "Guillaume le Conquérant envahit l'Angleterre — naissance de la monarchie normande" },
+      { date: "1215",  desc: "Magna Carta : le roi Jean d'Angleterre limite son propre pouvoir face aux barons" },
+      { date: "1469",  desc: "Mariage d'Isabelle de Castille et Ferdinand d'Aragon — unification de l'Espagne" },
+      { date: "1516",  desc: "Charles Quint hérite d'un empire sur lequel le soleil ne se couche jamais" },
+      { date: "1598",  desc: "Édit de Nantes — Henri IV accorde la liberté de culte aux protestants français" },
+      { date: "1682",  desc: "Louis XIV s'installe à Versailles — apogée de la monarchie absolue en Europe" },
+      { date: "1789",  desc: "Révolution française — chute de la monarchie absolue, exécution de Louis XVI (1793)" },
+    ],
+    figures: [
+      {
+        name: "Louis XIV",
+        role: "Roi-Soleil, monarque absolu de France (1643–1715)",
+        period: "1638 — 1715",
+        emoji: "☀️",
+        bio: "Louis XIV règne 72 ans — le plus long règne d'un monarque souverain en Europe. Surnommé le Roi-Soleil, il incarne la monarchie absolue de droit divin. Il fait construire le château de Versailles, symbole de sa toute-puissance, centralise l'État, mène des guerres d'expansion qui façonnent les frontières de la France moderne. Sa cour impose à toute l'Europe la langue, la mode et les arts français.",
+        quote: { text: "L'État, c'est moi.", attr: "Attribué à Louis XIV (formule apocryphe, ~1655)" },
+        facts: [{k:"Naissance", v:"5 sept. 1638, Saint-Germain"},{k:"Mort", v:"1er sept. 1715, Versailles"},{k:"Règne", v:"72 ans (record)"},{k:"Versailles", v:"Construction 1661–1710"}],
+        wiki: "https://fr.wikipedia.org/wiki/Louis_XIV"
+      },
+      {
+        name: "Élisabeth Ire d'Angleterre",
+        role: "La Reine Vierge, âge d'or élisabéthain",
+        period: "1533 — 1603",
+        emoji: "⚔️",
+        bio: "Fille d'Henri VIII et d'Anne Boleyn, Élisabeth Ire monte sur le trône à 25 ans et règne 44 ans sur l'Angleterre. Célibataire par choix politique, elle joue les prétendants européens les uns contre les autres. Sous son règne, Shakespeare écrit ses grandes pièces, la flotte anglaise détruit l'Invincible Armada espagnole (1588) et l'Angleterre commence son expansion maritime mondiale.",
+        quote: { text: "Je sais que j'ai le corps d'une faible femme, mais j'ai le cœur et le ventre d'un roi.", attr: "Élisabeth Ire, discours de Tilbury, 1588" },
+        facts: [{k:"Naissance", v:"7 sept. 1533, Greenwich"},{k:"Mort", v:"24 mars 1603"},{k:"Règne", v:"1558 — 1603 (44 ans)"},{k:"Surnom", v:"La Reine Vierge"}],
+        wiki: "https://fr.wikipedia.org/wiki/%C3%89lisabeth_Ire_(reine_d%27Angleterre)"
+      },
+      {
+        name: "Charles Quint",
+        role: "Maître de l'Europe et du Nouveau Monde",
+        period: "1500 — 1558",
+        emoji: "🌍",
+        bio: "Charles Quint cumule par héritage les couronnes d'Espagne, des Pays-Bas, de Naples, de la Sicile et de l'Empire germanique. Il règne sur un territoire où 'le soleil ne se couche jamais', incluant les Amériques. Il lutte toute sa vie contre François Ier de France, l'Empire ottoman de Soliman le Magnifique et les princes protestants allemands. Épuisé, il abdique en 1556 et se retire dans un monastère.",
+        quote: { text: "Je parle espagnol à Dieu, italien aux femmes, français aux hommes et allemand à mon cheval.", attr: "Attribué à Charles Quint" },
+        facts: [{k:"Naissance", v:"24 fév. 1500, Gand"},{k:"Mort", v:"21 sept. 1558, Yuste"},{k:"Titres", v:"Roi d'Espagne + Empereur germanique"},{k:"Empire", v:"~4 millions km² en Europe + Amériques"}],
+        wiki: "https://fr.wikipedia.org/wiki/Charles_Quint"
+      },
+      {
+        name: "Isabelle de Castille",
+        role: "Reine unificatrice d'Espagne, mécène de Colomb",
+        period: "1451 — 1504",
+        emoji: "⚓",
+        bio: "Isabelle Ire de Castille est, avec son époux Ferdinand d'Aragon, la fondatrice de l'Espagne unifiée. Elle finance l'expédition de Christophe Colomb (1492), instaure l'Inquisition espagnole, achève la Reconquista en prenant Grenade et unifie les lois du royaume. Femme de caractère dans un monde d'hommes, elle est canonisée en procès de béatification.",
+        quote: { text: "Je prendrai l'entreprise pour ma couronne de Castille.", attr: "Isabelle Ire, accordant les fonds à Colomb, 1492" },
+        facts: [{k:"Naissance", v:"22 avr. 1451, Madrigal"},{k:"Mort", v:"26 nov. 1504, Medina del Campo"},{k:"Règne", v:"1474 — 1504"},{k:"Acte", v:"Financement de Colomb, 1492"}],
+        wiki: "https://fr.wikipedia.org/wiki/Isabelle_Ire_de_Castille"
+      },
+      {
+        name: "Frédéric II de Prusse",
+        role: "Le Grand — despote éclairé, stratège militaire",
+        period: "1712 — 1786",
+        emoji: "⚔️",
+        bio: "Frédéric II de Prusse, dit Frédéric le Grand, transforme la Prusse en grande puissance européenne. Philosophe ami de Voltaire, flûtiste, auteur de traités politiques, il est aussi un général de génie qui remporte la guerre de Sept Ans contre une coalition de grandes puissances. Son règne modernise l'administration prussienne et jette les bases de ce qui deviendra l'Allemagne.",
+        quote: { text: "Un prince est le premier serviteur de l'État.", attr: "Frédéric II de Prusse" },
+        facts: [{k:"Naissance", v:"24 jan. 1712, Berlin"},{k:"Mort", v:"17 août 1786, Sans-Souci"},{k:"Règne", v:"1740 — 1786 (46 ans)"},{k:"Ami", v:"Voltaire (résidence à Sans-Souci)"}],
+        wiki: "https://fr.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_II_(roi_de_Prusse)"
+      },
+      {
+        name: "Henri IV de France",
+        role: "Le Bon Roi Henri, édificateur de la paix religieuse",
+        period: "1553 — 1610",
+        emoji: "🕊️",
+        bio: "Henri de Navarre, premier roi Bourbon de France, met fin aux guerres de Religion qui déchirent le royaume depuis 1562. Ancien protestant converti au catholicisme ('Paris vaut bien une messe'), il signe l'Édit de Nantes (1598) qui garantit la liberté de culte. Roi populaire surnommé le Vert-Galant, il est assassiné par Ravaillac en 1610 après dix-sept tentatives d'assassinat.",
+        quote: { text: "Je veux qu'il n'y ait si pauvre paysan en mon royaume qu'il n'ait tous les dimanches sa poule au pot.", attr: "Henri IV de France" },
+        facts: [{k:"Naissance", v:"13 déc. 1553, Pau"},{k:"Mort", v:"14 mai 1610, Paris (assassiné)"},{k:"Règne", v:"1589 — 1610"},{k:"Édit de Nantes", v:"13 avril 1598"}],
+        wiki: "https://fr.wikipedia.org/wiki/Henri_IV_de_France"
+      },
+      {
+        name: "Marie-Thérèse d'Autriche",
+        role: "Impératrice des Habsbourg, mère de 16 enfants dont Marie-Antoinette",
+        period: "1717 — 1780",
+        emoji: "👑",
+        bio: "Marie-Thérèse est la seule femme à avoir régné sur les territoires des Habsbourg. À 23 ans, elle défend son héritage face à la Prusse de Frédéric II dans la guerre de Succession d'Autriche. Mère de 16 enfants (dont Marie-Antoinette, future reine de France), elle modernise l'administration, abolit la torture et réforme l'éducation. Elle reste la souveraine la plus puissante d'Europe de son temps.",
+        quote: { text: "Je suis reine, je suis impératrice, mais j'ai aussi un cœur de femme.", attr: "Marie-Thérèse d'Autriche" },
+        facts: [{k:"Naissance", v:"13 mai 1717, Vienne"},{k:"Mort", v:"29 nov. 1780, Vienne"},{k:"Règne", v:"1740 — 1780 (40 ans)"},{k:"Enfants", v:"16, dont Marie-Antoinette"}],
+        wiki: "https://fr.wikipedia.org/wiki/Marie-Th%C3%A9r%C3%A8se_Ire_(imp%C3%A9ratrice)"
+      },
+      {
+        name: "Soliman le Magnifique",
+        role: "Sultan ottoman, maître de la Méditerranée",
+        period: "1494 — 1566",
+        emoji: "🌙",
+        bio: "Soliman Ier, dit le Magnifique en Occident et le Législateur en Orient, est le plus grand sultan de l'Empire ottoman. Il porte l'empire à son apogée : de Budapest à Bagdad, d'Alger à Aden. Il assiège Vienne en 1529, domine la Méditerranée et passe des alliances avec François Ier contre Charles Quint. Poète et législateur, il codifie les lois et patronne les arts et l'architecture (mosquée Süleymaniye).",
+        quote: { text: "Le trône du monde n'appartient qu'à celui qui a le pouvoir de l'occuper.", attr: "Soliman le Magnifique" },
+        facts: [{k:"Naissance", v:"6 nov. 1494, Trébizonde"},{k:"Mort", v:"7 sept. 1566, Szigetvár"},{k:"Règne", v:"1520 — 1566 (46 ans)"},{k:"Empire", v:"~3,5 millions km²"}],
+        wiki: "https://fr.wikipedia.org/wiki/Soliman_le_Magnifique"
+      },
+    ],
+    stats: [
+      { label: "Règne le plus long d'Europe", value: "72 ans", source: "Louis XIV de France, 1643–1715" },
+      { label: "Maisons royales européennes", value: "~20", source: "Capétiens, Tudors, Habsbourg, Bourbons…" },
+      { label: "Guerres de Religion en France", value: "36 ans", source: "1562 – 1598, 8 guerres civiles" },
+    ],
+    quote: { text: "Paris vaut bien une messe.", source: "Attribué à Henri IV, 1593" }
   },
   {
     id: "lumieres",
@@ -891,6 +1412,20 @@ function renderEra(era, index) {
           `).join('')}
         </div>
       </div>
+
+      ${era.diagrams ? `
+      <div class="card diagram-card">
+        <div class="card-title">Schémas & Frises</div>
+        <div class="diagram-tabs" id="dtabs-${era.id}">
+          ${era.diagrams.map((d,i) => `<button class="diagram-tab${i===0?' active':''}" onclick="switchDiagram('${era.id}',${i})">${d.title}</button>`).join('')}
+        </div>
+        ${era.diagrams.map((d,i) => `
+          <div class="diagram-pane${i===0?' active':''}" id="dpane-${era.id}-${i}">
+            <div class="diagram-svg-wrap">${d.svg}</div>
+            ${d.legend ? `<div class="diagram-legend">${d.legend.map(l => `<div class="legend-item"><div class="${l.type==='line'?'legend-line':'legend-dot'}" style="background:${l.color}"></div><span>${l.label}</span></div>`).join('')}</div>` : ''}
+          </div>
+        `).join('')}
+      </div>` : ''}
 
       <div class="era-quote">
         <div class="quote-text">"${era.quote.text}"</div>
@@ -2034,6 +2569,630 @@ function closeModalDirect() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
+
+function switchDiagram(eraId, idx) {
+  document.querySelectorAll(`#dtabs-${eraId} .diagram-tab`).forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll(`[id^="dpane-${eraId}-"]`).forEach((p,i) => p.classList.toggle('active', i===idx));
+}
+
+// ============================================================
+// DIAGRAMS — frises, arbres dynastiques, schémas de liens
+// ============================================================
+
+const C = {
+  gold:'#c9a84c', goldL:'#e8c97a', goldD:'#8b6914',
+  ink:'#0e0b07', stone:'#2a2318', smoke:'#6b5f45',
+  red:'#8b2a2a', blue:'#2a4a8b', green:'#2a6b2a', purple:'#5a2a8b',
+  teal:'#1a6b6b', orange:'#8b4a1a',
+};
+
+function hexToRgb(hex) {
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+function svgWrap(w,h,content) {
+  return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:${w}px;background:#0a0703;display:block">${content}</svg>`;
+}
+function cTxt(s,x,y,{size=11,anchor='middle',fill=C.gold,font='Cinzel',weight=400,style='',opacity=1,ls=0}={}) {
+  return `<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="'${font}',serif" font-size="${size}" fill="${fill}" font-weight="${weight}" font-style="${style}" opacity="${opacity}" letter-spacing="${ls}">${s}</text>`;
+}
+function cLine(x1,y1,x2,y2,{stroke=C.gold,sw=1,dash='',op=1}={}) {
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="${sw}" stroke-dasharray="${dash}" opacity="${op}"/>`;
+}
+function cBox(x,y,w,h,label,sub='',color=C.gold) {
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(${hexToRgb(color)},0.1)" stroke="${color}" stroke-width="1.2" rx="2"/>`
+    +`<text x="${x+w/2}" y="${y+h/2-(sub?4:0)}" text-anchor="middle" font-family="'Cinzel',serif" font-size="9" fill="${color}" font-weight="600">${label}</text>`
+    +(sub?`<text x="${x+w/2}" y="${y+h/2+9}" text-anchor="middle" font-family="'EB Garamond',serif" font-size="8" fill="${color}" opacity="0.7">${sub}</text>`:'');
+}
+function cArrow(x1,y1,x2,y2,color=C.gold,sw=1.2) {
+  const a=Math.atan2(y2-y1,x2-x1);
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${sw}" opacity="0.7"/>
+  <polygon points="${x2},${y2} ${x2-8*Math.cos(a-.4)},${y2-8*Math.sin(a-.4)} ${x2-8*Math.cos(a+.4)},${y2-8*Math.sin(a+.4)}" fill="${color}" opacity="0.7"/>`;
+}
+
+// ── FRISE GÉNÉRALE ────────────────────────────────────────────────────────────
+function makeFriseGenerale() {
+  const periods = [
+    {label:'Préhistoire',sub:'−3,8 Ma\n−3000',x:20,w:108,color:'#8b6914'},
+    {label:'Égypte',sub:'−3150\n−30',x:136,w:88,color:'#c9872a'},
+    {label:'Grèce',sub:'−800\n−31',x:232,w:78,color:'#4a7ab5'},
+    {label:'Rome',sub:'−753\n476',x:318,w:80,color:'#8b2a2a'},
+    {label:'Moyen Âge',sub:'476\n1492',x:406,w:88,color:'#7a5c8a'},
+    {label:'Renaissance',sub:'1400\n1600',x:502,w:78,color:'#c17a2b'},
+    {label:'Lumières',sub:'1600\n1800',x:588,w:74,color:'#4a7c9e'},
+    {label:'XIXe s.',sub:'1800\n1914',x:670,w:64,color:'#5a7a45'},
+    {label:'XXe s.',sub:'1914\n1991',x:742,w:66,color:'#8b2a2a'},
+    {label:'Contemp.',sub:'1991\nauj.',x:816,w:64,color:'#2a6e8a'},
+  ];
+  let c = cTxt('FRISE GÉNÉRALE — GRANDES PÉRIODES DE L\'HISTOIRE',460,22,{size:12,fill:C.gold,ls:2});
+  c += cLine(10,28,900,28,{op:0.12});
+  c += cLine(10,115,900,115,{stroke:C.gold,sw:1.5,op:0.35});
+  c += `<polygon points="900,115 892,111 892,119" fill="${C.gold}" opacity="0.35"/>`;
+  c += cTxt('TEMPS →',912,119,{size:9,anchor:'start',fill:C.goldD,font:'EB Garamond'});
+  periods.forEach(p => {
+    const fg=`rgba(${hexToRgb(p.color)},0.14)`;
+    c += `<rect x="${p.x}" y="42" width="${p.w}" height="66" fill="${fg}" stroke="${p.color}" stroke-width="1.5" rx="2"/>`;
+    p.label.split('').length && (c+=cTxt(p.label,p.x+p.w/2,62,{size:8.5,fill:p.color,font:'Cinzel',weight:600}));
+    p.sub.split('\n').forEach((l,i)=>{ c+=cTxt(l,p.x+p.w/2,76+i*12,{size:7.5,fill:p.color,font:'EB Garamond',opacity:0.65}); });
+    c+=cLine(p.x+p.w/2,108,p.x+p.w/2,115,{stroke:p.color,sw:1.5,op:0.7});
+  });
+  return svgWrap(940,130,c);
+}
+
+// ── DYNASTIES ÉGYPTIENNES ─────────────────────────────────────────────────────
+function makeDynastiesEgypte() {
+  const dyn=[
+    {label:'Époque Thinite (Ire–IIe)',sub:'−3150 / −2700',y:50,color:'#c9872a',ph:['Narmer','Aha','Djéser (IIIe)']},
+    {label:'Ancien Empire (IIIe–VIe)',sub:'−2700 / −2181',y:130,color:'#e8c97a',ph:['Djéser','Snéfrou','Khéops','Khéphren','Mykérinos']},
+    {label:'1re Période Intermédiaire',sub:'−2181 / −2055',y:210,color:'#6b5040',ph:['Déclin – guerres civiles – famines']},
+    {label:'Moyen Empire (XIe–XIIe)',sub:'−2055 / −1650',y:270,color:'#c9872a',ph:['Montouhotep II','Amenemhat I','Sésostris III']},
+    {label:'2e Période Intermédiaire',sub:'−1650 / −1550',y:350,color:'#6b5040',ph:['Hyksos (Asiatiques) – domination étrangère']},
+    {label:'Nouvel Empire (XVIIIe–XXe)',sub:'−1550 / −1069',y:410,color:'#e8c97a',ph:['Hatchepsout','Akhénaton','Toutânkhamon','Ramsès II ★','Ramsès III']},
+    {label:'3e Période Intermédiaire',sub:'−1069 / −664',y:490,color:'#6b5040',ph:['Fragmentation – pharaons libyens – nubiens (XXVe)']},
+    {label:'Basse Époque (XXVIe–XXXe)',sub:'−664 / −332',y:550,color:'#c9872a',ph:['Psammétique I','Nectanebo I','Nectanebo II (dernier)']},
+    {label:'Période Ptolémaïque',sub:'−332 / −30',y:620,color:'#4a7ab5',ph:['Alexandre le Grand','Ptolémée I Sôter','…','Cléopâtre VII ★']},
+  ];
+  let c=cTxt('DYNASTIES DE L\'ÉGYPTE ANCIENNE (−3150 / −30)',400,22,{size:13,fill:C.gold,ls:2});
+  c+=cLine(40,30,760,30,{op:0.12});
+  c+=cLine(50,48,50,690,{stroke:C.gold,sw:2,op:0.25});
+  c+=cTxt('−3 150 av. J.-C.',60,52,{size:8,anchor:'start',fill:C.goldD,font:'EB Garamond'});
+  c+=cTxt('−30 av. J.-C.',60,668,{size:8,anchor:'start',fill:C.goldD,font:'EB Garamond'});
+  c+=`<polygon points="50,695 46,687 54,687" fill="${C.gold}" opacity="0.25"/>`;
+  dyn.forEach(d=>{
+    const isMaj=d.color==='#e8c97a';
+    const fg=`rgba(${hexToRgb(d.color)},${isMaj?0.14:0.07})`;
+    c+=`<rect x="50" y="${d.y}" width="700" height="60" fill="${fg}" stroke="${d.color}" stroke-width="${isMaj?2:1}" rx="2"/>`;
+    c+=cLine(46,d.y+30,50,d.y+30,{stroke:d.color,sw:2});
+    c+=cTxt(d.label,58,d.y+16,{size:10,fill:d.color,anchor:'start',font:'Cinzel',weight:600});
+    c+=cTxt(d.sub,58,d.y+30,{size:8.5,fill:d.color,anchor:'start',font:'EB Garamond',opacity:0.65});
+    const step=Math.min(160,(700-10)/d.ph.length);
+    d.ph.forEach((p,i)=>{
+      const px=60+i*step;
+      if(px+step-10<=750){
+        c+=`<rect x="${px}" y="${d.y+38}" width="${step-8}" height="16" fill="rgba(14,11,7,0.35)" stroke="${d.color}" stroke-width="0.7" rx="1"/>`;
+        c+=cTxt(p,px+(step-8)/2,d.y+49,{size:8,fill:d.color,font:'EB Garamond',opacity:0.9});
+      }
+    });
+  });
+  return svgWrap(800,710,c);
+}
+
+// ── ARBRE DYNASTIQUE — NOUVEL EMPIRE ─────────────────────────────────────────
+function makeArbreNouvelEmpire() {
+  let c=cTxt('NOUVEL EMPIRE — ARBRE DYNASTIQUE (−1550 / −1069)',480,22,{size:12,fill:C.gold,ls:1});
+  c+=cLine(40,30,920,30,{op:0.12});
+
+  // Nœuds [id, label, sub, x, y, color]
+  const N={
+    ahmosis: ['Ahmosis Ier','−1550/−1525',160,80,'#c9872a'],
+    thotmes1:['Thoutmosis I','−1504/−1492',80,180,'#c9872a'],
+    thotmes2:['Thoutmosis II','−1492/−1479',280,180,'#c9872a'],
+    hatchep: ['Hatchepsout ♀','−1479/−1458 (régente)',160,280,'#e8a0c0'],
+    thotmes3:['Thoutmosis III ★','−1479/−1425',400,280,'#e8c97a'],
+    amen2:   ['Amenhotep II','−1425/−1400',400,380,'#c9872a'],
+    thotmes4:['Thoutmosis IV','−1400/−1390',400,460,'#c9872a'],
+    amen3:   ['Amenhotep III ★','−1390/−1353',400,540,'#e8c97a'],
+    akhen:   ['Akhénaton','−1353/−1336',240,640,'#c9a84c'],
+    nefer:   ['Néfertiti ♀','−1370/−1330',520,640,'#e8a0c0'],
+    smenk:   ['Smenkharê','−1336',400,720,'#8b6914'],
+    toutankh:['Toutânkhamon ★','−1336/−1327',240,800,'#e8c97a'],
+    ay:      ['Ay','−1327/−1323',520,800,'#8b6914'],
+    horemheb:['Horemheb','−1323/−1295',700,720,'#8b6914'],
+    ramses1: ['Ramsès Ier','−1295/−1294',700,800,'#c9872a'],
+    seti1:   ['Séti Ier','−1294/−1279',700,880,'#c9872a'],
+    ramses2: ['Ramsès II ★★','−1279/−1213',480,960,'#e8c97a'],
+    mernept: ['Mérneptah','−1213/−1203',480,1040,'#c9872a'],
+  };
+
+  const links=[
+    ['ahmosis','thotmes1',C.gold,'enfant'],['ahmosis','thotmes2',C.gold,'enfant'],
+    ['thotmes2','hatchep','#e8a0c0','épouse'],['thotmes2','thotmes3',C.gold,'enfant'],
+    ['hatchep','thotmes3',C.goldD,'régente →','4,3'],
+    ['thotmes3','amen2',C.gold,'enfant'],['amen2','thotmes4',C.gold,'enfant'],
+    ['thotmes4','amen3',C.gold,'enfant'],['amen3','akhen',C.gold,'enfant'],
+    ['akhen','nefer','#e8a0c0','épouse'],['akhen','smenk',C.gold,'enfant'],
+    ['akhen','toutankh',C.gold,'enfant (supposé)','4,3'],
+    ['smenk','toutankh',C.gold,'successeur'],
+    ['toutankh','ay',C.goldD,'successeur','5,3'],
+    ['horemheb','ramses1',C.goldD,'désigne','5,3'],
+    ['ramses1','seti1',C.gold,'enfant'],['seti1','ramses2',C.gold,'enfant'],
+    ['ramses2','mernept',C.gold,'enfant'],
+  ];
+
+  links.forEach(([from,to,col,type,dash=''])=>{
+    const nf=N[from],nt=N[to];
+    if(!nf||!nt)return;
+    const [,, fx,fy]=nf,[,,tx,ty]=nt;
+    const isDown=ty>fy;
+    const y1=fy+14, y2=ty-14;
+    const mx=(fx+tx)/2;
+    c+=`<path d="M${fx},${y1} C${fx},${(y1+y2)/2} ${tx},${(y1+y2)/2} ${tx},${y2}" fill="none" stroke="${col}" stroke-width="1.2" stroke-dasharray="${dash}" opacity="0.55"/>`;
+    if(isDown) c+=`<polygon points="${tx},${y2} ${tx-4},${y2-7} ${tx+4},${y2-7}" fill="${col}" opacity="0.6"/>`;
+    if(type&&type!=='enfant') {
+      c+=cTxt(type,mx,(y1+y2)/2,{size:7,fill:col,font:'EB Garamond',opacity:0.6});
+    }
+  });
+
+  Object.entries(N).forEach(([id,[label,sub,x,y,col]])=>{
+    const isMaj=col==='#e8c97a';
+    const w=154,h=26;
+    c+=`<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" fill="rgba(${hexToRgb(col)},0.12)" stroke="${col}" stroke-width="${isMaj?2:1}" rx="3"/>`;
+    c+=cTxt(label,x,y+4,{size:isMaj?9:8,fill:col,font:'Cinzel',weight:isMaj?600:400});
+    c+=cTxt(sub,x,y+h/2+10,{size:7,fill:col,font:'EB Garamond',opacity:0.55});
+  });
+
+  // Légende
+  c+=`<rect x="30" y="1080" width="440" height="50" fill="rgba(14,11,7,0.6)" stroke="${C.goldD}" stroke-width="0.5" rx="2"/>`;
+  c+=cTxt('LÉGENDE',250,1097,{size:8,fill:C.goldD,ls:2});
+  [[C.gold,'Filiation directe'],[`#e8a0c0`,'Lien conjugal (♀ = femme pharaon)'],[C.goldD,'Succession / régence (traits pointillés)'],['#e8c97a','★ Pharaon majeur']].forEach(([col,lab],i)=>{
+    const lx=40+i%2*220, ly=1103+Math.floor(i/2)*16;
+    c+=`<line x1="${lx}" y1="${ly}" x2="${lx+18}" y2="${ly}" stroke="${col}" stroke-width="1.2" opacity="0.7"/>`;
+    c+=cTxt(lab,lx+24,ly+4,{size:7.5,fill:C.smoke,anchor:'start',font:'EB Garamond'});
+  });
+
+  return svgWrap(960,1140,c);
+}
+
+// ── CITÉS-ÉTATS GRECQUES ──────────────────────────────────────────────────────
+function makeCarteGrece() {
+  let c=cTxt('GRÈCE ANTIQUE — CITÉS-ÉTATS, ALLIANCES ET RIVALITÉS',450,22,{size:12,fill:C.gold,ls:1});
+  c+=cLine(40,30,860,30,{op:0.12});
+
+  // Mer Égée stylisée
+  c+=`<ellipse cx="560" cy="320" rx="175" ry="130" fill="rgba(42,74,139,0.07)" stroke="#2a4a8b" stroke-width="0.8" stroke-dasharray="6,5" opacity="0.5"/>`;
+  c+=cTxt('MER ÉGÉE',640,260,{size:9,fill:'#2a4a8b',opacity:0.4,font:'EB Garamond'});
+  c+=`<ellipse cx="200" cy="490" rx="90" ry="55" fill="rgba(42,74,139,0.06)" stroke="#2a4a8b" stroke-width="0.7" stroke-dasharray="4,4" opacity="0.35"/>`;
+  c+=cTxt('MER\nIONIENNE',200,488,{size:8,fill:'#2a4a8b',opacity:0.35,font:'EB Garamond'});
+
+  const cites=[
+    {id:'macedo',nom:'MACÉDOINE',x:430,y:80,r:22,col:C.gold,note:'Philippe II → Alexandre ★'},
+    {id:'ath',nom:'ATHÈNES ★',x:430,y:250,r:24,col:'#e8c97a',note:'Démocratie · Ligue de Délos'},
+    {id:'sparte',nom:'SPARTE',x:380,y:430,r:22,col:'#8b2a2a',note:'Oligarchie militaire\nLigue du Péloponnèse'},
+    {id:'corinthe',nom:'CORINTHE',x:330,y:310,r:14,col:C.goldD,note:'Commerce · Isthme'},
+    {id:'thebes',nom:'THÈBES',x:510,y:300,r:16,col:'#5a7a45',note:'Bande Sacrée\nHégémonie −371'},
+    {id:'argos',nom:'ARGOS',x:310,y:400,r:13,col:C.goldD,note:'Rivale de Sparte'},
+    {id:'olympie',nom:'OLYMPIE',x:250,y:450,r:11,col:C.goldD,note:'Jeux depuis −776'},
+    {id:'delphes',nom:'DELPHES',x:380,y:190,r:11,col:C.goldD,note:'Oracle · Panhellénisme'},
+    {id:'milet',nom:'MILET',x:680,y:200,r:14,col:'#4a7ab5',note:'Philosophes ioniens\n(Thalès, Anaximandre)'},
+    {id:'samos',nom:'SAMOS',x:720,y:270,r:11,col:'#4a7ab5',note:'Pythagore'},
+    {id:'ephese',nom:'ÉPHÈSE',x:720,y:170,r:11,col:'#4a7ab5',note:'Héraclite'},
+    {id:'syracuse',nom:'SYRACUSE',x:160,y:490,r:16,col:'#7a5c8a',note:'Grande Grèce\nArchimède'},
+    {id:'perse',nom:'EMPIRE\nPERSE',x:810,y:200,r:20,col:'#8b2a2a',note:'Envahisseur\nGuerres Médiques'},
+  ];
+
+  const liens=[
+    {f:'ath',t:'sparte',col:'#8b2a2a',sw:1.8,dash:'',lab:'Guerre du Péloponnèse\n−431 / −404'},
+    {f:'ath',t:'thebes',col:'#5a7a45',sw:1.2,dash:'3,3',lab:'Alliance temporaire'},
+    {f:'sparte',t:'corinthe',col:'#5a7a45',sw:1.2,dash:''},
+    {f:'sparte',t:'argos',col:'#8b2a2a',sw:1,dash:'4,3'},
+    {f:'ath',t:'milet',col:'#4a7ab5',sw:1.2,dash:'',lab:'Ligue de Délos'},
+    {f:'macedo',t:'ath',col:'#7a5c8a',sw:1.8,dash:'',lab:'Chéronée −338'},
+    {f:'perse',t:'ath',col:'#8b2a2a',sw:2,dash:'',lab:'Guerres Médiques\n−490/−479'},
+    {f:'thebes',t:'sparte',col:'#8b2a2a',sw:1.5,dash:'',lab:'Leuctre −371'},
+    {f:'ath',t:'syracuse',col:'#7a5c8a',sw:1,dash:'4,3',lab:'Expédition de Sicile\n−415 (désastre)'},
+  ];
+
+  const cm={};
+  cites.forEach(ci=>{cm[ci.id]=ci;});
+
+  liens.forEach(l=>{
+    const cf=cm[l.f],ct=cm[l.t];
+    if(!cf||!ct)return;
+    c+=`<line x1="${cf.x}" y1="${cf.y}" x2="${ct.x}" y2="${ct.y}" stroke="${l.col}" stroke-width="${l.sw}" stroke-dasharray="${l.dash}" opacity="0.45"/>`;
+    if(l.lab){
+      const mx=(cf.x+ct.x)/2,my=(cf.y+ct.y)/2;
+      l.lab.split('\n').forEach((ll,i)=>{c+=cTxt(ll,mx,my-4+i*10,{size:7.5,fill:l.col,font:'EB Garamond',opacity:0.7});});
+    }
+  });
+
+  cites.forEach(ci=>{
+    const fg=`rgba(${hexToRgb(ci.col)},0.12)`;
+    c+=`<circle cx="${ci.x}" cy="${ci.y}" r="${ci.r}" fill="${fg}" stroke="${ci.col}" stroke-width="${ci.r>18?2:1.3}"/>`;
+    const nlines=ci.nom.split('\n');
+    nlines.forEach((l,i)=>{ c+=cTxt(l,ci.x,ci.y+(i-nlines.length/2+0.7)*10,{size:ci.r>18?8.5:7.5,fill:ci.col,font:'Cinzel'}); });
+    ci.note.split('\n').forEach((l,i)=>{ c+=cTxt(l,ci.x,ci.y+ci.r+11+i*10,{size:7.5,fill:ci.col,font:'EB Garamond',opacity:0.55}); });
+  });
+
+  // Batailles emblématiques
+  const battles=[
+    {nom:'Marathon',x:510,y:190,date:'−490'},
+    {nom:'Thermopyles',x:440,y:140,date:'−480'},
+    {nom:'Salamine',x:500,y:240,date:'−480'},
+  ];
+  battles.forEach(b=>{
+    c+=`<polygon points="${b.x},${b.y-8} ${b.x-6},${b.y+5} ${b.x+6},${b.y+5}" fill="rgba(139,42,42,0.25)" stroke="#8b2a2a" stroke-width="1"/>`;
+    c+=cTxt(`⚔ ${b.nom} ${b.date}`,b.x,b.y+20,{size:7.5,fill:'#8b2a2a',font:'EB Garamond',opacity:0.8});
+  });
+
+  // Légende
+  c+=`<rect x="30" y="555" width="820" height="35" fill="rgba(14,11,7,0.65)" stroke="${C.goldD}" stroke-width="0.5" rx="2"/>`;
+  [[`#8b2a2a`,'Conflit militaire'],[`#5a7a45`,'Alliance'],[`#7a5c8a`,'Domination'],[`#4a7ab5`,'Liens intellectuels / culturels'],[C.goldD,'Relations commerciales']].forEach(([col,lab],i)=>{
+    const lx=42+i*162;
+    c+=`<line x1="${lx}" y1="571" x2="${lx+16}" y2="571" stroke="${col}" stroke-width="1.5" opacity="0.8"/>`;
+    c+=cTxt(lab,lx+22,575,{size:8,fill:C.smoke,anchor:'start',font:'EB Garamond'});
+  });
+
+  return svgWrap(900,600,c);
+}
+
+// ── FILIATION PHILOSOPHES GRECS ───────────────────────────────────────────────
+function makeFrisePhilosophes() {
+  let c=cTxt('FILIATION INTELLECTUELLE — PHILOSOPHES GRECS',450,22,{size:12,fill:C.gold,ls:1});
+  c+=cLine(40,30,860,30,{op:0.12});
+
+  const toX=d=>60+(d+630)*(800/450);
+  c+=cLine(60,370,870,370,{stroke:C.gold,sw:1.2,op:0.3});
+  [-620,-580,-540,-500,-460,-420,-380,-340,-300,-260,-220,-180].forEach(d=>{
+    const x=toX(d);
+    c+=cLine(x,365,x,375,{stroke:C.gold,sw:d%100===0?1.5:0.8,op:0.3});
+    c+=cTxt(`${d}`,x,387,{size:8,fill:C.goldD,font:'EB Garamond'});
+  });
+
+  const philos=[
+    {nom:'Thalès',n:-624,m:-546,y:55, col:'#c9872a',ecole:'Milésienne : tout est eau'},
+    {nom:'Anaximandre',n:-610,m:-546,y:90,col:'#c9872a',ecole:'L\'Apeiron'},
+    {nom:'Pythagore',n:-570,m:-495,y:130,col:'#8b6914',ecole:'Nombres & harmonie'},
+    {nom:'Héraclite',n:-535,m:-475,y:55,col:'#4a7ab5',ecole:'Tout s\'écoule (πάντα ῥεῖ)'},
+    {nom:'Parménide',n:-515,m:-450,y:170,col:'#5a7a45',ecole:'L\'Être immuable'},
+    {nom:'Empédocle',n:-495,m:-435,y:210,col:'#5a7a45',ecole:'4 éléments'},
+    {nom:'Démocrite',n:-460,m:-370,y:90,col:'#4a7ab5',ecole:'Atomisme'},
+    {nom:'Socrate ★',n:-470,m:-399,y:260,col:'#e8c97a',ecole:'Maïeutique · Connais-toi',maj:true},
+    {nom:'Antisthène',n:-445,m:-365,y:300,col:'#7a5c8a',ecole:'Cynisme'},
+    {nom:'Aristippe',n:-435,m:-356,y:340,col:'#7a5c8a',ecole:'Cyrénaïque'},
+    {nom:'Platon ★',n:-428,m:-348,y:295,col:'#e8c97a',ecole:'Monde des Idées · Académie',maj:true},
+    {nom:'Aristote ★',n:-384,m:-322,y:340,col:'#e8c97a',ecole:'Logique · Lycée · Encyclopédie',maj:true},
+    {nom:'Pyrrhon',n:-365,m:-275,y:55,col:'#6b5040',ecole:'Scepticisme'},
+    {nom:'Épicure',n:-341,m:-270,y:90,col:'#c9a84c',ecole:'Épicurisme · ataraxie'},
+    {nom:'Zénon (stoïc.)',n:-334,m:-262,y:130,col:'#c9a84c',ecole:'Stoïcisme · logos'},
+    {nom:'Théophraste',n:-371,m:-287,y:170,col:'#8b6914',ecole:'Botanique · Lycée'},
+  ];
+
+  const fils=[
+    ['Thalès','Anaximandre'],['Thalès','Pythagore'],['Parménide','Platon'],
+    ['Socrate ★','Platon ★'],['Socrate ★','Antisthène'],['Socrate ★','Aristippe'],
+    ['Platon ★','Aristote ★'],['Aristote ★','Théophraste'],
+    ['Aristote ★','Épicure'],['Aristote ★','Zénon (stoïc.)'],
+    ['Démocrite','Épicure'],
+  ];
+
+  const pm={};
+  philos.forEach(p=>{pm[p.nom]=p;});
+
+  philos.forEach(p=>{
+    const x1=toX(p.n),x2=toX(p.m),w=x2-x1;
+    const fg=`rgba(${hexToRgb(p.col)},${p.maj?0.22:0.14})`;
+    const h=p.maj?22:16;
+    c+=`<rect x="${x1}" y="${p.y}" width="${w}" height="${h}" fill="${fg}" stroke="${p.col}" stroke-width="${p.maj?2:1}" rx="2"/>`;
+    c+=cTxt(p.nom,x1+w/2,p.y+h/2+4,{size:p.maj?8.5:7.5,fill:p.col,font:p.maj?'Cinzel':'Cinzel',weight:p.maj?600:400});
+    c+=cTxt(p.ecole,x1,p.y-3,{size:7,fill:p.col,anchor:'start',font:'EB Garamond',opacity:0.55});
+    c+=cLine(x1,p.y+h,x1,370,{stroke:p.col,sw:0.5,op:0.15,dash:'2,3'});
+  });
+
+  fils.forEach(([from,to])=>{
+    const pf=pm[from],pt=pm[to];
+    if(!pf||!pt)return;
+    const x1=(toX(pf.n)+toX(pf.m))/2, y1=pf.y+(pf.maj?22:16);
+    const x2=(toX(pt.n)+toX(pt.m))/2, y2=pt.y;
+    c+=`<path d="M${x1},${y1} C${x1},${(y1+y2)/2} ${x2},${(y1+y2)/2} ${x2},${y2}" fill="none" stroke="${C.goldD}" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.5"/>`;
+    c+=`<polygon points="${x2},${y2} ${x2-3},${y2-6} ${x2+3},${y2-6}" fill="${C.goldD}" opacity="0.5"/>`;
+  });
+
+  // Écoles
+  c+=`<rect x="40" y="398" width="820" height="38" fill="rgba(14,11,7,0.6)" stroke="${C.goldD}" stroke-width="0.5" rx="2"/>`;
+  [['#c9872a','Présocratiques (Milésiens)'],['#4a7ab5','Matérialistes & atomistes'],['#5a7a45','Éléatiques'],['#e8c97a','★ Socrate – Platon – Aristote'],['#c9a84c','Hellénistiques (Épicure, Stoïcisme)'],['#7a5c8a','Écoles pratiques (Cynisme)']].forEach(([col,lab],i)=>{
+    const ex=50+i*136;
+    c+=`<rect x="${ex}" y="406" width="10" height="10" fill="rgba(${hexToRgb(col)},0.3)" stroke="${col}" stroke-width="1" rx="1"/>`;
+    c+=cTxt(lab,ex+14,415,{size:7.5,fill:C.smoke,anchor:'start',font:'EB Garamond'});
+  });
+  c+=cTxt('──── Filiation directe (enseignant → élève)',500,430,{size:8,fill:C.goldD,font:'EB Garamond'});
+
+  return svgWrap(900,445,c);
+}
+
+// ── EMPEREURS ROMAINS ─────────────────────────────────────────────────────────
+function makeEmpeureursRomains() {
+  let c=cTxt('EMPEREURS ROMAINS — DYNASTIES PRINCIPALES (−27 / 476)',450,22,{size:12,fill:C.gold,ls:1});
+  c+=cLine(40,30,860,30,{op:0.12});
+
+  const dyn=[
+    {label:'JULIO-CLAUDIENNE',color:'#c9872a',y:55,
+     emp:[{n:'Auguste',d:'−27/14',note:'Pax Romana'},{n:'Tibère',d:'14/37'},{n:'Caligula',d:'37/41',note:'Assassiné'},{n:'Claude',d:'41/54'},{n:'Néron',d:'54/68',note:'Suicide'}]},
+    {label:'FLAVIENNE',color:'#5a7a45',y:185,
+     emp:[{n:'Vespasien',d:'69/79',note:'Colisée'},{n:'Titus',d:'79/81',note:'Vésuve'},{n:'Domitien',d:'81/96',note:'Assassiné'}]},
+    {label:'ANTONINE — ÂGE D\'OR ★',color:'#e8c97a',y:285,
+     emp:[{n:'Nerva',d:'96/98'},{n:'Trajan ★',d:'98/117',note:'Apogée 5M km²'},{n:'Hadrien',d:'117/138',note:'Mur d\'Hadrien'},{n:'Antonin',d:'138/161'},{n:'Marc Aurèle ★',d:'161/180',note:'Philosophe-Roi'},{n:'Commode',d:'180/192',note:'Assassiné'}]},
+    {label:'SÉVÉRIENNE',color:'#c9872a',y:415,
+     emp:[{n:'Septime Sévère',d:'193/211'},{n:'Caracalla',d:'211/217',note:'Édit 212'},{n:'Héliogabale',d:'218/222'},{n:'Alexandre S.',d:'222/235'}]},
+    {label:'CRISE DU IIIe SIÈCLE',color:'#6b4040',y:515,
+     emp:[{n:'~50 empereurs en 50 ans',d:'235/284',note:'Anarchie militaire — Empire quasi effondré'}]},
+    {label:'TÉTRARCHIE & BAS-EMPIRE',color:'#4a7ab5',y:585,
+     emp:[{n:'Dioclétien',d:'284/305',note:'Tétrarchie'},{n:'Constantin Ier ★',d:'306/337',note:'Christianisme'},{n:'Théodose ★',d:'379/395',note:'Division de l\'Empire'},{n:'Romulus Aug.',d:'475/476',note:'Dernier Emperor'}]},
+  ];
+
+  dyn.forEach(d=>{
+    const bW=800,bH=100;
+    const fg=`rgba(${hexToRgb(d.color)},${d.color==='#e8c97a'?0.13:0.07})`;
+    c+=`<rect x="40" y="${d.y}" width="${bW}" height="${bH}" fill="${fg}" stroke="${d.color}" stroke-width="${d.color==='#e8c97a'?2:1}" rx="2"/>`;
+    c+=cTxt(d.label,50,d.y+15,{size:9,fill:d.color,anchor:'start',font:'Cinzel',weight:600,ls:1});
+    const step=Math.min(160,(bW-20)/d.emp.length);
+    d.emp.forEach((e,i)=>{
+      const ex=50+i*step+step/2;
+      const ey=d.y+28;
+      c+=`<rect x="${ex-step/2+3}" y="${ey}" width="${step-6}" height="62" fill="rgba(14,11,7,0.35)" stroke="${d.color}" stroke-width="0.7" rx="2"/>`;
+      c+=cTxt(e.n,ex,ey+15,{size:8.5,fill:d.color,font:'Cinzel'});
+      c+=cTxt(e.d,ex,ey+28,{size:8,fill:d.color,font:'EB Garamond',opacity:0.6});
+      if(e.note) c+=cTxt(e.note,ex,ey+44,{size:7.5,fill:C.goldD,font:'EB Garamond',opacity:0.8,style:'italic'});
+    });
+  });
+
+  // Axe vertical
+  c+=cLine(855,55,855,660,{stroke:C.gold,sw:1,op:0.2});
+  c+=`<polygon points="855,668 851,660 859,660" fill="${C.gold}" opacity="0.2"/>`;
+  c+=cTxt('−27',862,59,{size:8,fill:C.goldD,anchor:'start',font:'EB Garamond'});
+  c+=cTxt('476',862,658,{size:8,fill:C.goldD,anchor:'start',font:'EB Garamond'});
+
+  return svgWrap(900,680,c);
+}
+
+// ── DYNASTIES MÉDIÉVALES ──────────────────────────────────────────────────────
+function makeArbreMedieval() {
+  let c=cTxt('DYNASTIES MÉDIÉVALES — EUROPE (Ve–XVe siècle)',450,22,{size:12,fill:C.gold,ls:1});
+  c+=cLine(40,30,860,30,{op:0.12});
+
+  const fam=[
+    {nom:'MÉROVINGIENS\n(Francs)',col:'#8b6914',x:50,y:60,
+     rois:[['Clovis Ier','481/511','Baptême 496'],['Clotaire II','584/629'],['Dagobert Ier','629/639'],['Childéric III','743/751','Renversé']]},
+    {nom:'CAROLINGIENS',col:'#c9872a',x:50,y:320,
+     rois:[['Pépin le Bref','751/768','1er roi carolingien'],['Charlemagne ★','768/814','Couronné 800'],['Louis le Pieux','814/840'],['Partage de Verdun','843','→ France / Germanie / Italie']]},
+    {nom:'CAPÉTIENS DIRECTS\n(France)',col:'#e8c97a',x:50,y:590,
+     rois:[['Hugues Capet','987/996','1er capétien'],['Philippe II Auguste','1180/1223'],['Louis IX (Saint Louis)','1226/1270'],['Philippe IV le Bel','1285/1314']]},
+    {nom:'PLANTAGENÊTS\n(Angleterre)',col:'#4a7ab5',x:490,y:60,
+     rois:[['Henri II','1154/1189'],['Richard Cœur de Lion','1189/1199','3e Croisade'],['Jean sans Terre','1199/1216','Magna Carta 1215'],['Henri III','1216/1272']]},
+    {nom:'HOHENSTAUFEN\n(Saint-Empire)',col:'#5a7a45',x:490,y:330,
+     rois:[['Frédéric Barberousse','1155/1190','Croisade'],['Henri VI','1190/1197'],['Frédéric II ★','1220/1250','Stupor Mundi']]},
+    {nom:'HABSBOURG\n(début)',col:'#7a5c8a',x:490,y:570,
+     rois:[['Rodolphe Ier','1273/1291','1er Habsbourg roi'],['Albert Ier','1298/1308'],['Frédéric III','1452/1493']]},
+  ];
+
+  fam.forEach(f=>{
+    const bW=330,bH=30+f.rois.length*52;
+    const fg=`rgba(${hexToRgb(f.col)},0.09)`;
+    c+=`<rect x="${f.x}" y="${f.y}" width="${bW}" height="${bH}" fill="${fg}" stroke="${f.col}" stroke-width="1.5" rx="3"/>`;
+    f.nom.split('\n').forEach((l,i)=>{ c+=cTxt(l,f.x+bW/2,f.y+16+i*13,{size:9.5,fill:f.col,font:'Cinzel',weight:600,ls:1}); });
+    const nLines=f.nom.split('\n').length;
+    let py=f.y+nLines*14+12;
+    f.rois.forEach((roi,i)=>{
+      c+=`<rect x="${f.x+8}" y="${py}" width="${bW-16}" height="44" fill="rgba(14,11,7,0.35)" stroke="${f.col}" stroke-width="0.8" rx="2"/>`;
+      c+=cTxt(roi[0],f.x+bW/2,py+13,{size:9,fill:f.col,font:'Cinzel'});
+      c+=cTxt(roi[1],f.x+bW/2,py+25,{size:8,fill:f.col,font:'EB Garamond',opacity:0.6});
+      if(roi[2]) c+=cTxt(roi[2],f.x+bW/2,py+37,{size:7.5,fill:C.goldD,font:'EB Garamond',opacity:0.75,style:'italic'});
+      if(i<f.rois.length-1){
+        c+=cLine(f.x+bW/2,py+44,f.x+bW/2,py+52,{stroke:f.col,sw:1,op:0.4});
+        c+=`<polygon points="${f.x+bW/2},${py+52} ${f.x+bW/2-3},${py+46} ${f.x+bW/2+3},${py+46}" fill="${f.col}" opacity="0.4"/>`;
+      }
+      py+=52;
+    });
+  });
+
+  // Liens entre dynasties
+  const interliens=[
+    {x1:380,y1:200,x2:490,y2:200,col:'#8b2a2a',lab:'Rivalités franco-anglaises\n(Guerre de 100 ans 1337–1453)'},
+    {x1:380,y1:450,x2:490,y2:450,col:'#c9a84c',lab:'Héritages féodaux\ncomplexes'},
+    {x1:50+165,y1:340+180,x2:50+165,y2:590,col:'#c9872a',lab:''},
+  ];
+  interliens.forEach(l=>{
+    c+=cLine(l.x1,l.y1,l.x2,l.y2,{stroke:l.col,sw:1.5,dash:'5,4',op:0.45});
+    if(l.lab){
+      const mx=(l.x1+l.x2)/2,my=(l.y1+l.y2)/2;
+      l.lab.split('\n').forEach((ll,i)=>{c+=cTxt(ll,mx,my-4+i*11,{size:7.5,fill:l.col,font:'EB Garamond',opacity:0.65});});
+    }
+  });
+
+  // Contexte : Croisades
+  c+=`<rect x="260" y="880" width="360" height="50" fill="rgba(139,42,42,0.1)" stroke="#8b2a2a" stroke-width="1" rx="2"/>`;
+  c+=cTxt('CROISADES (1096 / 1291)',440,900,{size:10,fill:'#8b2a2a'});
+  c+=cTxt('Toutes ces dynasties y prennent part',440,918,{size:8.5,fill:'#8b2a2a',font:'EB Garamond',opacity:0.7});
+
+  return svgWrap(900,945,c);
+}
+
+// ── RÉSEAU DES LUMIÈRES ───────────────────────────────────────────────────────
+function makeReseauLumieres() {
+  let c=cTxt('RÉSEAU INTELLECTUEL DES LUMIÈRES (XVIIe–XVIIIe s.)',450,22,{size:12,fill:C.gold,ls:1});
+  c+=cLine(40,30,860,30,{op:0.12});
+
+  const p=[
+    {id:'locke',n:'Locke',x:160,y:110,nat:'🇬🇧',d:'1632/1704',col:'#4a7ab5',note:'Droits naturels\nTabula rasa'},
+    {id:'newton',n:'Newton',x:320,y:75,nat:'🇬🇧',d:'1643/1727',col:'#4a7ab5',note:'Gravitation\nOptique · Calcul'},
+    {id:'voltaire',n:'Voltaire',x:470,y:130,nat:'🇫🇷',d:'1694/1778',col:'#e8c97a',note:'Tolérance\nCritique des dogmes'},
+    {id:'montesq',n:'Montesquieu',x:250,y:220,nat:'🇫🇷',d:'1689/1755',col:'#e8c97a',note:'Séparation\ndes pouvoirs'},
+    {id:'rousseau',n:'Rousseau',x:440,y:290,nat:'🇨🇭',d:'1712/1778',col:'#5a7a45',note:'Volonté générale\nContrat social'},
+    {id:'diderot',n:'Diderot',x:630,y:150,nat:'🇫🇷',d:'1713/1784',col:'#e8c97a',note:'Encyclopédie\n71 818 articles'},
+    {id:'dalemb',n:"d'Alembert",x:710,y:240,nat:'🇫🇷',d:'1717/1783',col:'#e8c97a',note:'Maths · Physique'},
+    {id:'kant',n:'Kant',x:620,y:330,nat:'🇩🇪',d:'1724/1804',col:'#7a5c8a',note:'Critique de\nla raison pure'},
+    {id:'hume',n:'Hume',x:150,y:280,nat:'🇬🇧',d:'1711/1776',col:'#4a7ab5',note:'Empirisme\nScepticisme'},
+    {id:'adam',n:'Adam Smith',x:180,y:390,nat:'🇬🇧',d:'1723/1790',col:'#4a7ab5',note:'Richesse des Nations\nLibre marché'},
+    {id:'franklin',n:'Franklin',x:770,y:130,nat:'🇺🇸',d:'1706/1790',col:'#c9872a',note:'Électricité\nIndépendance américaine'},
+    {id:'jeffers',n:'Jefferson',x:780,y:310,nat:'🇺🇸',d:'1743/1826',col:'#c9872a',note:'Déclaration\nd\'Indépendance 1776'},
+    {id:'condor',n:'Condorcet',x:370,y:380,nat:'🇫🇷',d:'1743/1794',col:'#e8c97a',note:'Progrès · Droits\ndes femmes'},
+  ];
+
+  const pm={};
+  p.forEach(pp=>{pm[pp.id]=pp;});
+
+  const inf=[
+    ['locke','voltaire','inspiration'],['locke','montesq','inspiration'],['locke','jeffers','inspiration'],
+    ['newton','voltaire','vulgarisation'],['newton','kant','rupture'],
+    ['montesq','rousseau','débat'],['montesq','jeffers','inspiration'],
+    ['voltaire','diderot','collaboration'],['diderot','dalemb','co-direction Encyclopédie'],
+    ['hume','kant','réveil critique'],['rousseau','kant','influence'],
+    ['locke','adam','économie politique'],['franklin','jeffers','collaboration'],
+    ['voltaire','franklin','correspondance'],['rousseau','condor','influence'],
+    ['diderot','condor','Encyclopédie'],
+  ];
+
+  inf.forEach(([from,to,type])=>{
+    const pf=pm[from],pt=pm[to];
+    if(!pf||!pt)return;
+    const col=type==='collaboration'||type.includes('Encyclopédie')||type==='co-direction Encyclopédie'?'#2a6b2a':
+              type==='débat'?'#8b2a2a':type==='réveil critique'?'#5a2a8b':C.goldD;
+    const dash=type==='correspondance'?'4,3':'';
+    const sw=type.includes('Encyclopédie')?2:1.2;
+    c+=cLine(pf.x,pf.y,pt.x,pt.y,{stroke:col,sw,dash,op:0.4});
+  });
+
+  p.forEach(pp=>{
+    const r=28;
+    const fg=`rgba(${hexToRgb(pp.col)},0.12)`;
+    c+=`<circle cx="${pp.x}" cy="${pp.y}" r="${r}" fill="${fg}" stroke="${pp.col}" stroke-width="1.8"/>`;
+    c+=cTxt(pp.n.split(' ').slice(-1)[0],pp.x,pp.y-5,{size:8.5,fill:pp.col,font:'Cinzel',weight:600});
+    c+=cTxt(pp.d,pp.x,pp.y+7,{size:7,fill:pp.col,font:'EB Garamond',opacity:0.55});
+    pp.note.split('\n').forEach((l,i)=>{c+=cTxt(l,pp.x,pp.y+r+11+i*10,{size:7.5,fill:pp.col,font:'EB Garamond',opacity:0.5});});
+    c+=cTxt(pp.nat,pp.x,pp.y-r-4,{size:11,font:'EB Garamond'});
+  });
+
+  c+=`<rect x="40" y="460" width="820" height="36" fill="rgba(14,11,7,0.6)" stroke="${C.goldD}" stroke-width="0.5" rx="2"/>`;
+  [[C.goldD,'Influence directe'],['#2a6b2a','Collaboration (Encyclopédie)'],['#8b2a2a','Débat contradictoire'],['#5a2a8b','Rupture / éveil critique']].forEach(([col,lab],i)=>{
+    const lx=55+i*202;
+    c+=cLine(lx,477,lx+20,477,{stroke:col,sw:1.5,op:0.8});
+    c+=cTxt(lab,lx+26,481,{size:8.5,fill:C.smoke,anchor:'start',font:'EB Garamond'});
+  });
+
+  return svgWrap(900,508,c);
+}
+
+// ── FRISE XXe SIÈCLE ──────────────────────────────────────────────────────────
+function makeFriseXX() {
+  let c=cTxt('XXe SIÈCLE — FRISE ÉVÉNEMENTS & DIRIGEANTS (1914–1991)',450,22,{size:12,fill:C.gold,ls:1});
+  c+=cLine(40,30,860,30,{op:0.12});
+
+  const toX=y=>55+(y-1914)*(790/77);
+
+  // Blocs de périodes
+  [[1914,1918,'#8b2a2a','1ère Guerre\nMondiale'],
+   [1918,1939,'#5a7a45','Entre-deux-guerres'],
+   [1939,1945,'#8b2a2a','2ème Guerre\nMondiale'],
+   [1947,1991,'#2a4a8b','GUERRE FROIDE']
+  ].forEach(([y1,y2,col,lab])=>{
+    const x1=toX(y1),x2=toX(y2);
+    c+=`<rect x="${x1}" y="50" width="${x2-x1}" height="240" fill="rgba(${hexToRgb(col)},0.1)" stroke="${col}" stroke-width="0.8" rx="1" opacity="0.7"/>`;
+    lab.split('\n').forEach((l,i)=>{c+=cTxt(l,(x1+x2)/2,65+i*13,{size:8,fill:col,opacity:0.75});});
+  });
+
+  // Axe
+  c+=cLine(55,200,860,200,{stroke:C.gold,sw:1.5,op:0.4});
+  for(let y=1914;y<=1991;y++){
+    const x=toX(y);
+    const isDecade=y%10===0;
+    c+=cLine(x,194,x,206,{stroke:C.gold,sw:isDecade?1.5:0.5,op:isDecade?0.5:0.2});
+    if(isDecade) c+=cTxt(`${y}`,x,218,{size:9,fill:C.goldD,font:'EB Garamond'});
+  }
+
+  // Événements [année, texte, offset, couleur]
+  const ev=[
+    {y:1914,l:'Assassinat\nFrancis-Ferdinand',off:-70,col:'#8b2a2a'},
+    {y:1917,l:'Révolution\nRusse',off:55,col:'#c9a84c'},
+    {y:1918,l:'Armistice\n11 nov.',off:-90,col:'#5a7a45'},
+    {y:1929,l:'Krach\nWall St.',off:55,col:'#c9872a'},
+    {y:1933,l:'Hitler\nChancelier',off:-70,col:'#8b2a2a'},
+    {y:1939,l:'Invasion\nde la Pologne',off:75,col:'#8b2a2a'},
+    {y:1941,l:'Pearl Harbor\n& Shoah',off:-90,col:'#8b2a2a'},
+    {y:1945,l:'Hiroshima\nNagasaki',off:75,col:'#8b2a2a'},
+    {y:1947,l:'Plan\nMarshall',off:-80,col:'#4a7ab5'},
+    {y:1948,l:'Droits\nde l\'Homme',off:60,col:'#5a7a45'},
+    {y:1957,l:'Spoutnik\n1er satellite',off:-80,col:'#7a5c8a'},
+    {y:1961,l:'Mur de\nBerlin',off:60,col:'#4a7ab5'},
+    {y:1963,l:'JFK\nassassiné',off:-80,col:'#c9872a'},
+    {y:1969,l:'Lune\nApollo 11',off:60,col:'#4a7ab5'},
+    {y:1975,l:'Fin guerre\nVietnam',off:-80,col:'#5a7a45'},
+    {y:1989,l:'Chute mur\nde Berlin',off:60,col:'#5a7a45'},
+    {y:1991,l:'URSS\ndissous',off:-80,col:'#4a7ab5'},
+  ];
+
+  ev.forEach(e=>{
+    const x=toX(e.y);
+    const up=e.off<0;
+    const ty=200+e.off;
+    c+=cLine(x,200,x,up?ty+22:ty,{stroke:e.col,sw:0.9,op:0.55,dash:'2,2'});
+    c+=`<circle cx="${x}" cy="200" r="4" fill="${e.col}" opacity="0.8"/>`;
+    e.l.split('\n').forEach((l,i)=>{c+=cTxt(l,x,up?ty+i*11:ty+i*11+11,{size:7.5,fill:e.col,font:'EB Garamond',opacity:0.85});});
+  });
+
+  // Dirigeants (barres)
+  const leaders=[
+    {n:'Staline 🇷🇺',y1:1922,y2:1953,row:0,col:'#c9872a'},
+    {n:'Roosevelt 🇺🇸',y1:1933,y2:1945,row:1,col:'#4a7ab5'},
+    {n:'Churchill 🇬🇧',y1:1940,y2:1945,row:2,col:'#4a7ab5'},
+    {n:'De Gaulle 🇫🇷',y1:1944,y2:1969,row:2,col:'#e8c97a'},
+    {n:'Mao 🇨🇳',y1:1949,y2:1976,row:0,col:'#c9a84c'},
+    {n:'Eisenhower 🇺🇸',y1:1953,y2:1961,row:1,col:'#4a7ab5'},
+    {n:'Kennedy 🇺🇸',y1:1961,y2:1963,row:1,col:'#4a7ab5'},
+    {n:'Nixon 🇺🇸',y1:1969,y2:1974,row:1,col:'#4a7ab5'},
+    {n:'Reagan 🇺🇸',y1:1981,y2:1989,row:1,col:'#4a7ab5'},
+    {n:'Gorbatchev 🇷🇺',y1:1985,y2:1991,row:0,col:'#c9872a'},
+    {n:'Thatcher 🇬🇧',y1:1979,y2:1990,row:2,col:'#4a7ab5'},
+  ];
+  const rowY=[260,278,296];
+  cTxt('DIRIGEANTS',55,256,{size:7,fill:C.goldD,anchor:'start',ls:1});
+  leaders.forEach(l=>{
+    const x1=Math.max(55,toX(l.y1)),x2=Math.min(860,toX(l.y2)),w=x2-x1;
+    if(w<4)return;
+    const ry=rowY[l.row]||260;
+    const fg=`rgba(${hexToRgb(l.col)},0.15)`;
+    c+=`<rect x="${x1}" y="${ry}" width="${w}" height="14" fill="${fg}" stroke="${l.col}" stroke-width="0.8" rx="1"/>`;
+    if(w>18) c+=cTxt(l.n,x1+w/2,ry+10,{size:7,fill:l.col,font:'EB Garamond'});
+  });
+
+  return svgWrap(900,320,c);
+}
+
+// ── INJECTION ─────────────────────────────────────────────────────────────────
+(function injectDiagrams(){
+  const map={
+    "prehistoire":[{title:"Frise générale des périodes",svg:makeFriseGenerale(),legend:[]}],
+    "egypte":[
+      {title:"Dynasties égyptiennes",svg:makeDynastiesEgypte(),legend:[{type:'dot',color:'#e8c97a',label:'Apogée (âge d\'or)'},{type:'dot',color:'#c9872a',label:'Période de puissance'},{type:'dot',color:'#6b5040',label:'Période intermédiaire (déclin)'},{type:'dot',color:'#4a7ab5',label:'Époque hellénistique'}]},
+      {title:"Arbre Nouvel Empire",svg:makeArbreNouvelEmpire(),legend:[]},
+    ],
+    "grece":[
+      {title:"Cités-États & alliances",svg:makeCarteGrece(),legend:[]},
+      {title:"Filiation des philosophes",svg:makeFrisePhilosophes(),legend:[]},
+    ],
+    "rome":[
+      {title:"Dynasties impériales",svg:makeEmpeureursRomains(),legend:[]},
+    ],
+    "moyen-age":[
+      {title:"Dynasties médiévales",svg:makeArbreMedieval(),legend:[]},
+    ],
+    "lumieres":[
+      {title:"Réseau des Lumières",svg:makeReseauLumieres(),legend:[]},
+    ],
+    "xxe":[
+      {title:"Frise du XXe siècle",svg:makeFriseXX(),legend:[]},
+    ],
+  };
+  ERAS.forEach(era=>{ if(map[era.id]) era.diagrams=map[era.id]; });
+})();
 
 // INIT
 createStars();
