@@ -255,8 +255,8 @@
   .modal-overlay.open .modal { transform: translateY(0) scale(1); }
 
   .modal-img-wrap {
-    width: 100%; height: 260px; overflow: hidden;
-    position: relative;
+    width: 100%; height: 280px; overflow: hidden;
+    position: relative; background: #0e0b07;
   }
   .modal-img {
     width: 100%; height: 100%; object-fit: cover; object-position: top;
@@ -351,19 +351,29 @@
   }
   .modal-wiki-link:hover { color: var(--gold); border-color: var(--gold); }
 
-  /* STAT BAR */
-  .stat { margin-bottom: 16px; }
-  .stat-label {
-    display: flex; justify-content: space-between;
-    font-size: 0.82rem; margin-bottom: 6px;
-    color: var(--smoke);
+  /* STAT CARDS — données réelles */
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stat-card {
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.12);
+    padding: 14px 12px; text-align: center;
+    transition: border-color 0.3s;
   }
-  .stat-label span:last-child { color: var(--gold); font-family: 'Cinzel', serif; }
-  .stat-bar { height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
-  .stat-fill {
-    height: 100%; border-radius: 2px;
-    background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
-    width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  .stat-card:hover { border-color: rgba(201,168,76,0.35); }
+  .stat-value {
+    font-family: 'Cinzel', serif; font-size: 1.3rem;
+    color: var(--gold); line-height: 1.1;
+    margin-bottom: 6px; font-weight: 600;
+  }
+  .stat-label {
+    font-size: 0.72rem; color: var(--smoke);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    line-height: 1.3;
+  }
+  .stat-source {
+    font-size: 0.62rem; color: var(--gold-dark);
+    font-style: italic; margin-top: 4px;
+    opacity: 0.7;
   }
 
   /* QUOTE */
@@ -478,9 +488,9 @@ const ERAS = [
       { name: "Ötzi", role: "Homme des glaces néolithique (~3 300 av. J.-C.)", period: "~3 300 av. J.-C.", emoji: "🧊", bio: "Ötzi est une momie naturelle découverte en 1991 dans les Alpes tyroliennes. Mort vers 3 300 av. J.-C., il est l'un des individus préhistoriques les mieux conservés. Les analyses ADN révèlent qu'il avait les yeux clairs, était intolérant au lactose et souffrait de maladie de Lyme. Il a été assassiné d'une flèche dans le dos — la plus vieille scène de crime résolue de l'histoire.", quote: { text: "Ötzi est comme une capsule temporelle vivante du Néolithique.", attr: "Albert Zink, Institut de recherche sur les momies, Bolzano" }, facts: [{k:"Décès", v:"~3 300 av. J.-C."},{k:"Âge", v:"~45 ans"},{k:"Taille", v:"1,60 m"},{k:"Découverte", v:"1991, Alpes"}], wiki: "https://fr.wikipedia.org/wiki/%C3%96tzi", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Otzi-Quinson.jpg/440px-Otzi-Quinson.jpg" },
     ],
     stats: [
-      { label: "Extension territoriale", value: 95 },
-      { label: "Durée relative", value: 99 },
-      { label: "Innovations technologiques", value: 25 },
+      { label: "Durée de la période", value: "3,8 Ma", source: "du premier hominidé à −3 000" },
+      { label: "Population mondiale (fin)", value: "~14 M", source: "vers −3 000 av. J.-C." },
+      { label: "Espèces Homo recensées", value: "20+", source: "dont Sapiens, Néandertal, Erectus…" },
     ],
     quote: { text: "Nous ne savons pas qui nous sommes si nous ne savons pas d'où nous venons.", source: "Proverbe anthropologique" }
   },
@@ -509,14 +519,106 @@ const ERAS = [
       { name: "César Auguste", role: "Premier emperor romain, Pax Romana", period: "63 av. J.-C. — 14 apr. J.-C.", emoji: "🏛️", bio: "Octave Auguste, neveu et fils adoptif de Jules César, est le premier véritable empereur romain. Après avoir vaincu Marc Antoine et Cléopâtre, il instaure la Pax Romana, deux siècles de paix relative. Il réforme l'administration, construit de grands monuments à Rome et patronne les arts — l'âge d'Auguste est l'apogée de la littérature latine (Virgile, Ovide, Horace).", quote: { text: "J'ai trouvé Rome en briques et je la laisse en marbre.", attr: "Auguste, selon Suétone" }, facts: [{k:"Naissance", v:"63 av. J.-C."},{k:"Règne", v:"27 av. J.-C. — 14 apr."},{k:"Durée", v:"41 ans d'empire"},{k:"Mort", v:"14 apr. J.-C., Nola"}], wiki: "https://fr.wikipedia.org/wiki/Auguste", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Statue-Augustus.jpg/440px-Statue-Augustus.jpg" },
     ],
     stats: [
-      { label: "Expansion territoriale", value: 70 },
-      { label: "Développement culturel", value: 85 },
-      { label: "Innovation technologique", value: 55 },
+      { label: "Durée de la période", value: "3 476 ans", source: "de −3000 à 476 apr. J.-C." },
+      { label: "Population mondiale (fin)", value: "~300 M", source: "vers 400 apr. J.-C." },
+      { label: "Superficie de l'Empire romain", value: "5 M km²", source: "à son apogée, 117 apr. J.-C." },
     ],
     quote: { text: "Je suis venu, j'ai vu, j'ai vaincu.", source: "Jules César" }
   },
   {
-    id: "moyen-age",
+    id: "egypte",
+    period: "−3 150 — −30 av. J.-C.",
+    title: "Égypte Ancienne",
+    tagline: "Le don du Nil, l'éternité de pierre",
+    icon: "𓂀",
+    color: "#c9872a",
+    description: "Pendant plus de trois millénaires, la civilisation égyptienne s'épanouit le long du Nil dans une continuité stupéfiante. Pharaons-dieux, pyramides colossales, momification, hiéroglyphes, architecture solaire — l'Égypte ancienne invente une relation unique à la mort, au sacré et au pouvoir. Son héritage imprègne l'ensemble des cultures méditerranéennes et fascine l'humanité entière depuis l'Antiquité.",
+    events: [
+      { date: "−3 150", desc: "Unification de la Haute et Basse Égypte par le roi Narmer — naissance du premier État" },
+      { date: "−2 700", desc: "Ancien Empire : construction de la pyramide de Djéser à Saqqarah (architecte Imhotep)" },
+      { date: "−2 560", desc: "Règne de Khéops — construction de la Grande Pyramide de Gizeh, 7e merveille du monde" },
+      { date: "−1 353", desc: "Akhénaton instaure le monothéisme solaire (Aton) — révolution religieuse sans lendemain" },
+      { date: "−1 279", desc: "Règne de Ramsès II — bataille de Qadesh, traité de paix le plus ancien du monde" },
+      { date: "−1 336", desc: "Règne de Toutankhamon — courte vie, tombe intacte découverte en 1922 par Howard Carter" },
+      { date: "−332", desc: "Alexandre le Grand conquiert l'Égypte, fonde Alexandrie — ère hellénistique" },
+      { date: "−30", desc: "Mort de Cléopâtre VII — l'Égypte devient province romaine, fin de 3 000 ans de pharaons" },
+    ],
+    figures: [
+      { name: "Ramsès II", role: "Le Grand — pharaon bâtisseur et guerrier", period: "v. 1303 — 1213 av. J.-C.", bio: "Ramsès II règne 66 ans sur l'Égypte, le plus long règne de l'histoire pharaonique. Guerrier à la bataille de Qadesh contre les Hittites (−1274), il signe le premier traité de paix international connu. Bâtisseur prolifique, il fait ériger Abou Simbel, le Ramesseum et signe des dizaines de temples. Il a probablement eu plus de 100 enfants.", quote: { text: "Je suis le soleil qui brille sur le trône de son père.", attr: "Ramsès II, inscriptions du Ramesseum" }, facts: [{k:"Règne", v:"−1279 / −1213 av. J.-C."},{k:"Durée", v:"66 ans"},{k:"Batailles", v:"Qadesh (−1274)"},{k:"Monuments", v:"Abou Simbel, Ramesseum"}], wiki: "https://fr.wikipedia.org/wiki/Ramsès_II" },
+      { name: "Néfertiti", role: "Grande épouse royale d'Akhénaton, icône de beauté éternelle", period: "v. 1370 — 1330 av. J.-C.", bio: "Néfertiti est la grande épouse royale d'Akhénaton et l'une des femmes les plus puissantes de l'Égypte ancienne. Son buste peint, conservé à Berlin, est l'un des portraits les plus célèbres de l'Antiquité. Elle joue un rôle central dans la révolution religieuse amarnienne qui impose le culte d'Aton. Son destin après la mort d'Akhénaton reste mystérieux.", quote: { text: "La belle est venue.", attr: "Traduction de Néfertiti en égyptien ancien" }, facts: [{k:"Époque", v:"XVIIIe dynastie"},{k:"Époux", v:"Akhénaton"},{k:"Buste", v:"Musée de Berlin"},{k:"Signification", v:"La belle est venue"}], wiki: "https://fr.wikipedia.org/wiki/N%C3%A9fertiti" },
+      { name: "Imhotep", role: "Architecte de la première pyramide, premier génie universel", period: "v. 2650 — 2600 av. J.-C.", bio: "Imhotep est le vizir, architecte et médecin du pharaon Djéser. Il conçoit la pyramide à degrés de Saqqarah, première grande structure en pierre de l'histoire humaine. Médecin génial, il sera divinisé après sa mort et assimilé au dieu grec Asclépios. Il est le premier individu nommément identifié dans l'histoire de l'architecture et de la médecine.", quote: { text: "Manger peu, la santé arrive.", attr: "Imhotep, papyrus Edwin Smith" }, facts: [{k:"Époque", v:"IIIe dynastie, ~−2650"},{k:"Titre", v:"Vizir, architecte, médecin"},{k:"Œuvre", v:"Pyramide de Saqqarah"},{k:"Statut", v:"Divinisé après sa mort"}], wiki: "https://fr.wikipedia.org/wiki/Imhotep" },
+      { name: "Toutankhamon", role: "Pharaon enfant, tombe au trésor inviolé", period: "v. 1341 — 1323 av. J.-C.", bio: "Toutankhamon monte sur le trône à 9 ans et meurt à 19 ans. Son règne est bref et son rôle historique modeste — mais la découverte de sa tombe intacte en 1922 par Howard Carter est l'événement archéologique du siècle. Le masque funéraire en or massif et les 5 000 objets de son tombeau révèlent la splendeur de la civilisation égyptienne dans toute son éclat.", quote: { text: "Des merveilles et des merveilles encore.", attr: "Howard Carter, découvrant la tombe, 4 novembre 1922" }, facts: [{k:"Règne", v:"−1336 / −1327 av. J.-C."},{k:"Âge à la mort", v:"19 ans"},{k:"Tombe", v:"Découverte le 4 nov. 1922"},{k:"Trésor", v:"5 398 objets, masque en or"}], wiki: "https://fr.wikipedia.org/wiki/Toutankhamon" },
+    ],
+    stats: [
+      { label: "Durée de la civilisation", value: "~3 120 ans", source: "de −3150 à −30 av. J.-C." },
+      { label: "Grande Pyramide de Gizeh", value: "146,5 m", source: "hauteur initiale, −2 560" },
+      { label: "Population à son apogée", value: "~5 M", source: "sous le Nouvel Empire, ~−1300" },
+    ],
+    quote: { text: "L'Égypte est un don du Nil.", source: "Hérodote, Histoires, II, 5" }
+  },
+  {
+    id: "grece",
+    period: "−800 — −31 av. J.-C.",
+    title: "Grèce Antique",
+    tagline: "L'invention de la pensée libre",
+    icon: "⚡",
+    color: "#4a7ab5",
+    description: "En quelques siècles, les cités grecques produisent une explosion intellectuelle sans précédent qui fonde la philosophie, la démocratie, le théâtre, les mathématiques, la médecine rationnelle et l'histoire. Athènes sous Périclès atteint un équilibre unique entre liberté politique et création artistique. L'héritage grec nourrit encore notre manière de penser, de gouverner et de créer.",
+    events: [
+      { date: "−776", desc: "Premiers Jeux olympiques à Olympie — naissance du sport comme lien entre cités" },
+      { date: "−508", desc: "Clisthène instaure la démocratie à Athènes — première du monde" },
+      { date: "−490", desc: "Victoire de Marathon : 10 000 Athéniens repoussent 25 000 Perses" },
+      { date: "−480", desc: "Bataille des Thermopyles — Léonidas et 300 Spartiates face à Xerxès" },
+      { date: "−447", desc: "Construction du Parthénon sur l'Acropole d'Athènes sous Périclès" },
+      { date: "−399", desc: "Procès et mort de Socrate — condamné pour impiété et corruption de la jeunesse" },
+      { date: "−338", desc: "Bataille de Chéronée — Philippe II de Macédoine unifie la Grèce" },
+      { date: "−323", desc: "Mort d'Alexandre le Grand à Babylone — fin de l'ère classique grecque" },
+    ],
+    figures: [
+      { name: "Socrate", role: "Père de la philosophie occidentale, martyr de la pensée libre", period: "−470 — −399 av. J.-C.", bio: "Socrate n'a rien écrit — nous le connaissons par les dialogues de Platon et Xénophon. Philosophe de l'agora athénienne, il pratique la maïeutique : l'art de faire accoucher les esprits de la vérité par le questionnement. Condamné à mort pour impiété et corruption de la jeunesse, il boit la ciguë avec sérénité. Sa mort fonde le modèle du philosophe martyr.", quote: { text: "Je sais que je ne sais rien.", attr: "Socrate (selon Platon, Apologie)" }, facts: [{k:"Naissance", v:"−470, Athènes"},{k:"Mort", v:"−399, Athènes"},{k:"Méthode", v:"Maïeutique (dialogue)"},{k:"Condamnation", v:"Impiété, mort par ciguë"}], wiki: "https://fr.wikipedia.org/wiki/Socrate" },
+      { name: "Périclès", role: "Stratège d'Athènes, architecte de la démocratie et du Parthénon", period: "−495 — −429 av. J.-C.", bio: "Périclès domine la vie politique athénienne pendant 30 ans. Sous sa direction, Athènes connaît son âge d'or : le Parthénon est construit, la flotte est la plus puissante de Méditerranée, les arts et la philosophie fleurissent. Il perfectionne la démocratie directe et paie les citoyens pour participer à la vie publique. Il meurt de la grande peste d'Athènes (−430).", quote: { text: "Nous n'avons pas besoin d'un Homère pour chanter nos louanges.", attr: "Périclès, Oraison funèbre (Thucydide, II, 41)" }, facts: [{k:"Naissance", v:"−495, Athènes"},{k:"Mort", v:"−429, Athènes"},{k:"Règne", v:"Stratège ~30 ans"},{k:"Œuvre", v:"Parthénon, démocratie directe"}], wiki: "https://fr.wikipedia.org/wiki/P%C3%A9ricl%C3%A8s" },
+      { name: "Platon", role: "Philosophe, fondateur de l'Académie et de la philosophie idéaliste", period: "−428 — −348 av. J.-C.", bio: "Élève de Socrate, maître d'Aristote, Platon fonde l'Académie d'Athènes (−387) — la première université de l'histoire. Ses Dialogues explorent la justice, l'amour, la connaissance et le politique. Sa théorie des Idées postule un monde intelligible supérieur au monde sensible. La République décrit l'État idéal gouverné par des philosophes-rois.", quote: { text: "La mesure de l'homme est ce qu'il fait avec ce qu'il reçoit.", attr: "Platon" }, facts: [{k:"Naissance", v:"−428, Athènes"},{k:"Mort", v:"−348 av. J.-C."},{k:"École", v:"L'Académie, −387"},{k:"Œuvre", v:"La République, Le Banquet, Phédon"}], wiki: "https://fr.wikipedia.org/wiki/Platon" },
+      { name: "Archimède", role: "Mathématicien, physicien, ingénieur de génie", period: "−287 — −212 av. J.-C.", bio: "Archimède de Syracuse est le plus grand mathématicien et ingénieur de l'Antiquité. Il découvre le principe de la poussée hydrostatique (la fameuse exclamation Eurêka !), calcule π avec une précision stupéfiante, invente la vis d'Archimède et des machines de guerre qui repoussent les Romains pendant deux ans. Il est tué par un soldat romain lors de la prise de Syracuse.", quote: { text: "Donnez-moi un point d'appui et je soulèverai la Terre.", attr: "Archimède" }, facts: [{k:"Naissance", v:"−287, Syracuse"},{k:"Mort", v:"−212, Syracuse"},{k:"Découverte", v:"Principe d'Archimède"},{k:"Pi", v:"Calcul de π entre 3,1408 et 3,1429"}], wiki: "https://fr.wikipedia.org/wiki/Archim%C3%A8de" },
+    ],
+    stats: [
+      { label: "Cités-États grecques", value: "~1 000", source: "poleis recensées en Méditerranée" },
+      { label: "Citoyens à Athènes (Ve s.)", value: "~30 000", source: "sur ~300 000 habitants totaux" },
+      { label: "Durée de la période", value: "~770 ans", source: "de −800 à −31 av. J.-C." },
+    ],
+    quote: { text: "L'homme est la mesure de toutes choses.", source: "Protagoras d'Abdère, ~−450 av. J.-C." }
+  },
+  {
+    id: "rome",
+    period: "−753 — 476 apr. J.-C.",
+    title: "Rome Antique",
+    tagline: "Urbs et orbis — la ville et le monde",
+    icon: "🦅",
+    color: "#8b2a2a",
+    description: "De la bourgade latine du Palatin à l'empire dominant trois continents, Rome réalise l'une des aventures politiques les plus extraordinaires de l'histoire. République puis empire, elle codifie le droit, invente la notion de citoyenneté universelle, construit 80 000 km de routes et laisse un héritage juridique, linguistique et institutionnel qui structure encore l'Europe et le monde entier.",
+    events: [
+      { date: "−753", desc: "Fondation légendaire de Rome par Romulus — naissance de la cité sur les sept collines" },
+      { date: "−509", desc: "Fin de la royauté — instauration de la République romaine et du Sénat" },
+      { date: "−264", desc: "Première guerre punique contre Carthage — Rome devient puissance méditerranéenne" },
+      { date: "−44", desc: "Assassinat de Jules César aux Ides de Mars par Brutus et Cassius" },
+      { date: "−27", desc: "Auguste devient premier emperor — fin de la République, début de l'Empire" },
+      { date: "79", desc: "Éruption du Vésuve — destruction de Pompéi et Herculanum en quelques heures" },
+      { date: "313", desc: "Édit de Milan — Constantin Ier accorde la liberté religieuse, christianise l'Empire" },
+      { date: "476", desc: "Romulus Augustule déposé par Odoacre — chute de l'Empire romain d'Occident" },
+    ],
+    figures: [
+      { name: "Jules César", role: "Général, dictateur, réformateur — et victime des ides de mars", period: "−100 — −44 av. J.-C.", bio: "Caius Julius Caesar est le plus célèbre Romain de l'histoire. Général brillant, il conquiert la Gaule (−58 à −50), franchit le Rubicon et s'empare de Rome. Dictateur à vie, il réforme le calendrier (calendrier julien), consolide le droit romain et centralise le pouvoir. Assassiné le 15 mars −44 par 23 coups de poignard au Sénat, il ouvre la voie à l'Empire.", quote: { text: "Le sort en est jeté.", attr: "Jules César, franchissant le Rubicon, −49 av. J.-C." }, facts: [{k:"Naissance", v:"−100, Rome"},{k:"Mort", v:"15 mars −44, Rome"},{k:"Guerre des Gaules", v:"−58 / −50"},{k:"Assassinat", v:"23 coups de poignard"}], wiki: "https://fr.wikipedia.org/wiki/Jules_C%C3%A9sar" },
+      { name: "César Auguste", role: "Premier Empereur romain, architecte de la Pax Romana", period: "−63 — 14 apr. J.-C.", bio: "Octave Auguste, neveu et fils adoptif de Jules César, est le premier véritable emperor romain. Après avoir vaincu Marc Antoine et Cléopâtre, il instaure la Pax Romana, deux siècles de paix relative sur 50 millions de personnes. Il réforme l'administration, construit de grands monuments à Rome et patronne les arts — Virgile, Ovide et Horace sont ses contemporains.", quote: { text: "J'ai trouvé Rome en briques et je la laisse en marbre.", attr: "Auguste, selon Suétone" }, facts: [{k:"Naissance", v:"−63 av. J.-C."},{k:"Règne", v:"−27 av. J.-C. / 14 apr."},{k:"Durée", v:"41 ans d'empire"},{k:"Pax Romana", v:"200 ans de paix relative"}], wiki: "https://fr.wikipedia.org/wiki/Auguste" },
+      { name: "Cicéron", role: "Orateur, philosophe, défenseur de la République", period: "−106 — −43 av. J.-C.", bio: "Marcus Tullius Cicero est le plus grand orateur et juriste de Rome. Consul en −63, il déjoue la conjuration de Catilina. Ses discours, lettres et traités philosophiques constituent le sommet de la prose latine classique et transmettent la philosophie grecque à l'Occident latin. Opposé à Antoine après la mort de César, il est assassiné sur ordre du triumvirat — ses mains et sa tête sont exposées au Forum.", quote: { text: "La loi est la raison suprême, inhérente à la nature.", attr: "Cicéron, De Legibus" }, facts: [{k:"Naissance", v:"−106, Arpinum"},{k:"Mort", v:"−43, assassiné"},{k:"Consul", v:"−63 av. J.-C."},{k:"Œuvres", v:"Catilinaires, De Republica, De Officis"}], wiki: "https://fr.wikipedia.org/wiki/Cic%C3%A9ron" },
+      { name: "Marc Aurèle", role: "Philosophe-Empereur, dernier des Antonins", period: "121 — 180 apr. J.-C.", bio: "Marc Aurèle est l'incarnation du philosophe-roi rêvé par Platon. Empereur de 161 à 180, il passe ses nuits à écrire ses Pensées pour lui-même — un journal stoïcien d'une profondeur inégalée. Il gouverne un empire de 70 millions d'habitants en campagne militaire permanente contre les Marcomans et les Parthes, sans jamais perdre sa sérénité intérieure.", quote: { text: "Commence le matin par te dire : j'aurai aujourd'hui à faire avec un indiscret, un ingrat, un insolent.", attr: "Marc Aurèle, Pensées, II, 1" }, facts: [{k:"Naissance", v:"121, Rome"},{k:"Mort", v:"180, Vienne"},{k:"Règne", v:"161 — 180 apr. J.-C."},{k:"Œuvre", v:"Pensées pour moi-même (stoïcisme)"}], wiki: "https://fr.wikipedia.org/wiki/Marc_Aur%C3%A8le" },
+    ],
+    stats: [
+      { label: "Superficie maximale (Empire)", value: "5 M km²", source: "sous Trajan, 117 apr. J.-C." },
+      { label: "Population de l'Empire", value: "~70 M", source: "au IIe siècle apr. J.-C." },
+      { label: "Routes construites", value: "80 000 km", source: "réseau viaire romain" },
+    ],
+    quote: { text: "Rome n'a pas été construite en un jour.", source: "Proverbe latin" }
+  },
+  {
     period: "476 — 1 492",
     title: "Moyen Âge",
     tagline: "Entre foi, fer et pestilence",
@@ -540,9 +642,9 @@ const ERAS = [
       { name: "Avicenne", role: "Médecin et philosophe perse, pilier de la science arabe", period: "980 — 1037", emoji: "📖", bio: "Ibn Sina, connu en Occident sous le nom d'Avicenne, est le plus grand médecin et philosophe du monde islamique médiéval. Son Canon de la médecine est utilisé comme manuel universitaire en Europe jusqu'au XVIIe siècle. Il synthétise Aristote et le néoplatonisme avec la théologie islamique et jette les bases de la pharmacologie moderne.", quote: { text: "Le corps humain est la maison de l'âme, et il faut en prendre soin.", attr: "Avicenne, Canon de la médecine" }, facts: [{k:"Naissance", v:"980, Perse (Ouzbékistan)"},{k:"Mort", v:"1037, Hamadan"},{k:"Œuvres", v:"450 traités"},{k:"Spécialités", v:"Médecine, philosophie, astronomie"}], wiki: "https://fr.wikipedia.org/wiki/Avicenne", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Avicenna-miniatur.jpg/440px-Avicenna-miniatur.jpg" },
     ],
     stats: [
-      { label: "Puissance religieuse", value: 95 },
-      { label: "Développement intellectuel", value: 60 },
-      { label: "Conflits armés", value: 80 },
+      { label: "Victimes de la Peste Noire", value: "~25 M", source: "1/3 de la pop. européenne, 1347–51" },
+      { label: "Durée de la période", value: "1 016 ans", source: "de 476 à 1492" },
+      { label: "Empire mongol de Gengis Khan", value: "24 M km²", source: "le plus grand empire terrestre" },
     ],
     quote: { text: "Nul ne peut connaître Dieu sinon celui qui L'aime.", source: "Thomas d'Aquin" }
   },
@@ -571,9 +673,9 @@ const ERAS = [
       { name: "Copernic", role: "Révolution astronomique, héliocentrisme", period: "1473 — 1543", emoji: "🌍", bio: "Nicolas Copernic est l'astronome polonais qui décentra la Terre de l'univers. Son traité De revolutionibus orbium coelestium (1543) propose que la Terre et les planètes tournent autour du Soleil — et non l'inverse. Cette révolution copernicienne provoque une crise intellectuelle et religieuse majeure, ouvrant la voie à Galilée, Kepler et Newton.", quote: { text: "Savoir que nous savons ce que nous savons, savoir que nous ne savons pas ce que nous ne savons pas : c'est la vraie science.", attr: "Nicolas Copernic" }, facts: [{k:"Naissance", v:"19 fév. 1473, Toruń"},{k:"Mort", v:"24 mai 1543"},{k:"Œuvre", v:"De revolutionibus, 1543"},{k:"Nationalité", v:"Polonais"}], wiki: "https://fr.wikipedia.org/wiki/Nicolas_Copernic", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Nikolaj_Kopernik.jpg/440px-Nikolaj_Kopernik.jpg" },
     ],
     stats: [
-      { label: "Explosion artistique", value: 98 },
-      { label: "Révolution scientifique", value: 75 },
-      { label: "Expansion géographique", value: 85 },
+      { label: "Livres imprimés (1450–1500)", value: "~20 M", source: "grâce à Gutenberg, en 50 ans" },
+      { label: "Carnets de Léonard de Vinci", value: "13 000 p.", source: "dessins et notes conservés" },
+      { label: "Americas : 1ère traversée", value: "70 jours", source: "Colomb, 3 août – 12 oct. 1492" },
     ],
     quote: { text: "La simplicité est la sophistication suprême.", source: "Léonard de Vinci" }
   },
@@ -602,9 +704,9 @@ const ERAS = [
       { name: "Olympe de Gouges", role: "Militante des droits des femmes, guillotinée", period: "1748 — 1793", emoji: "✊", bio: "Marie Gouze, dite Olympe de Gouges, est une femme de lettres et militante politique française. Auteure de la Déclaration des droits de la femme et de la citoyenne (1791), elle affirme que si la femme a le droit de monter à l'échafaud, elle doit aussi avoir celui de monter à la tribune. Guillotinée en 1793 pour ses pamphlets contre Robespierre, elle reste une icône du féminisme.", quote: { text: "La femme a le droit de monter sur l'échafaud, elle doit avoir également le droit de monter à la Tribune.", attr: "Olympe de Gouges, 1791" }, facts: [{k:"Naissance", v:"7 mai 1748, Montauban"},{k:"Mort", v:"3 nov. 1793, Paris"},{k:"Œuvre", v:"Déclaration des droits de la femme"},{k:"Mort", v:"Guillotinée"}], wiki: "https://fr.wikipedia.org/wiki/Olympe_de_Gouges", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Olympedegouges.jpg/440px-Olympedegouges.jpg" },
     ],
     stats: [
-      { label: "Bouleversement politique", value: 95 },
-      { label: "Avancées scientifiques", value: 80 },
-      { label: "Changement social", value: 85 },
+      { label: "Articles de l'Encyclopédie", value: "71 818", source: "Diderot & d'Alembert, 1751–1772" },
+      { label: "Morts de la Révolution française", value: "~40 000", source: "dont 2 700 guillotinés à Paris" },
+      { label: "Empire napoléonien (max.)", value: "2,1 M km²", source: "1812, avant la retraite de Russie" },
     ],
     quote: { text: "Que chacun examine ses propres pensées, il les trouvera toujours occupées au passé et à l'avenir.", source: "Blaise Pascal" }
   },
@@ -633,9 +735,9 @@ const ERAS = [
       { name: "Abraham Lincoln", role: "Président, abolition de l'esclavage aux États-Unis", period: "1809 — 1865", emoji: "🗽", bio: "Abraham Lincoln est le 16e président des États-Unis, élu en 1860. Son élection provoque la sécession des États du Sud et la guerre de Sécession. Il proclame l'émancipation des esclaves en 1863 et conduit l'Union à la victoire. Assassiné par John Wilkes Booth au Ford's Theatre le 14 avril 1865, il est considéré comme le plus grand président américain de l'histoire.", quote: { text: "On peut tromper tout le monde quelque temps, et quelques-uns tout le temps, mais on ne peut pas tromper tout le monde tout le temps.", attr: "Abraham Lincoln" }, facts: [{k:"Naissance", v:"12 fév. 1809, Kentucky"},{k:"Mort", v:"15 avril 1865, Washington"},{k:"Mandat", v:"1861 — 1865"},{k:"Émancipation", v:"1er jan. 1863"}], wiki: "https://fr.wikipedia.org/wiki/Abraham_Lincoln", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Abraham_Lincoln_O-77_matte_collodion_print.jpg/440px-Abraham_Lincoln_O-77_matte_collodion_print.jpg" },
     ],
     stats: [
-      { label: "Colonisation mondiale", value: 90 },
-      { label: "Révolution industrielle", value: 95 },
-      { label: "Tensions politiques", value: 75 },
+      { label: "Territoires colonisés (1914)", value: "84 %", source: "de la surface terrestre sous contrôle européen" },
+      { label: "Empire britannique", value: "33,7 M km²", source: "à son apogée, 1920" },
+      { label: "Pop. mondiale en 1800 → 1900", value: "1 → 1,6 Md", source: "doublement en un siècle" },
     ],
     quote: { text: "Un spectre hante l'Europe — le spectre du communisme.", source: "Karl Marx & Friedrich Engels, 1848" }
   },
@@ -664,9 +766,9 @@ const ERAS = [
       { name: "Simone de Beauvoir", role: "Philosophe, pionnière du féminisme moderne", period: "1908 — 1986", emoji: "✍️", bio: "Simone de Beauvoir est la philosophe existentialiste dont l'œuvre Le Deuxième Sexe (1949) fonde le féminisme contemporain. Sa thèse 'On ne naît pas femme, on le devient' révolutionne la pensée du genre. Compagne de Sartre, elle mène une vie délibérément libre et non-conformiste, et s'engage dans les luttes de décolonisation et pour le droit à l'avortement.", quote: { text: "On ne naît pas femme, on le devient.", attr: "Simone de Beauvoir, Le Deuxième Sexe, 1949" }, facts: [{k:"Naissance", v:"9 jan. 1908, Paris"},{k:"Mort", v:"14 avril 1986, Paris"},{k:"Œuvre", v:"Le Deuxième Sexe, 1949"},{k:"Prix", v:"Goncourt, 1954 (Les Mandarins)"}], wiki: "https://fr.wikipedia.org/wiki/Simone_de_Beauvoir", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Simone_de_Beauvoir2.png/440px-Simone_de_Beauvoir2.png" },
     ],
     stats: [
-      { label: "Mortalité par conflits", value: 90 },
-      { label: "Avancées scientifiques", value: 99 },
-      { label: "Bouleversements politiques", value: 95 },
+      { label: "Morts des deux guerres mondiales", value: "~95 M", source: "dont 70–85 M pour la WWII" },
+      { label: "Premiers pas sur la Lune", value: "384 400 km", source: "distance Terre–Lune, Apollo 11, 1969" },
+      { label: "Pop. mondiale 1914 → 1991", value: "1,8 → 5,4 Md", source: "tripled en 77 ans" },
     ],
     quote: { text: "On ne naît pas femme, on le devient.", source: "Simone de Beauvoir, 1949" }
   },
@@ -695,9 +797,9 @@ const ERAS = [
       { name: "Elon Musk", role: "Entrepreneur spatial et technologique controversé", period: "né en 1971", emoji: "🚀", bio: "Elon Musk est l'entrepreneur sud-africain fondateur de Tesla (voitures électriques), SpaceX (fusées réutilisables), et X (ex-Twitter). SpaceX révolutionne l'accès à l'espace en rendant les lanceurs réutilisables. Homme le plus riche du monde par intermittence, il concentre des pouvoirs économiques et d'influence sans précédent, suscitant à la fois admiration et inquiétude.", quote: { text: "Quand quelque chose est assez important pour toi, tu le fais même si les probabilités ne sont pas en ta faveur.", attr: "Elon Musk" }, facts: [{k:"Naissance", v:"28 juin 1971, Pretoria"},{k:"Entreprises", v:"Tesla, SpaceX, X, Neuralink"},{k:"SpaceX", v:"Fondée en 2002"},{k:"Fortune", v:"Parmi les 3 premières mondiales"}], wiki: "https://fr.wikipedia.org/wiki/Elon_Musk", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg/440px-Elon_Musk_Royal_Society_%28crop2%29.jpg" },
     ],
     stats: [
-      { label: "Connectivité numérique", value: 95 },
-      { label: "Crise environnementale", value: 85 },
-      { label: "Tensions géopolitiques", value: 70 },
+      { label: "Internautes dans le monde", value: "5,4 Md", source: "soit 67 % de la population, 2024" },
+      { label: "Réchauffement climatique", value: "+1,2 °C", source: "depuis l'ère préindustrielle, 2023" },
+      { label: "Population mondiale", value: "8,1 Md", source: "record historique absolu, 2024" },
     ],
     quote: { text: "Notre maison brûle et nous regardons ailleurs.", source: "Jacques Chirac, Sommet de la Terre, 2002" }
   }
@@ -753,13 +855,16 @@ function renderEra(era, index) {
       </div>
 
       <div class="card">
-        <div class="card-title">Indicateurs clés</div>
-        ${era.stats.map(s => `
-          <div class="stat">
-            <div class="stat-label"><span>${s.label}</span><span>${s.value}%</span></div>
-            <div class="stat-bar"><div class="stat-fill" data-value="${s.value}" style="width:0%"></div></div>
-          </div>
-        `).join('')}
+        <div class="card-title">Données clés</div>
+        <div class="stats-grid">
+          ${era.stats.map(s => `
+            <div class="stat-card">
+              <div class="stat-value">${s.value}</div>
+              <div class="stat-label">${s.label}</div>
+              ${s.source ? `<div class="stat-source">${s.source}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
       </div>
 
       <div class="card">
@@ -813,13 +918,6 @@ function selectEra(index) {
   const panel = document.getElementById(`panel-${ERAS[index].id}`);
   panel.classList.add('active');
 
-  // Animate stat bars
-  setTimeout(() => {
-    panel.querySelectorAll('.stat-fill').forEach(fill => {
-      fill.style.width = fill.dataset.value + '%';
-    });
-  }, 100);
-
   // Progress bar
   const progress = ((index + 1) / ERAS.length) * 100;
   document.getElementById('progressFill').style.width = progress + '%';
@@ -839,15 +937,1061 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModalDirect();
 });
 
+// ICONS — style ligne dorée, minimaliste
+const PORTRAITS = {};
+
+// Génère une icône moderne style ligne dorée sur fond sombre
+function getPortrait(name, symbol, paths, label) {
+  return `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <defs>
+      <radialGradient id="bg_${symbol}" cx="50%" cy="50%" r="60%">
+        <stop offset="0%" stop-color="#1e1808"/>
+        <stop offset="100%" stop-color="#0a0703"/>
+      </radialGradient>
+      <filter id="glow_${symbol}">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <!-- fond -->
+    <rect width="400" height="280" fill="url(#bg_${symbol})"/>
+    <!-- cercle décoratif extérieur -->
+    <circle cx="200" cy="130" r="110" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.2"/>
+    <circle cx="200" cy="130" r="95" fill="none" stroke="#c9a84c" stroke-width="0.3" opacity="0.15"/>
+    <!-- cercle central -->
+    <circle cx="200" cy="130" r="78" fill="#0e0b06" stroke="#c9a84c" stroke-width="1.5" opacity="0.9" filter="url(#glow_${symbol})"/>
+    <!-- icône -->
+    <g transform="translate(200,130)" stroke="#c9a84c" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow_${symbol})">
+      ${paths}
+    </g>
+    <!-- ornements coins -->
+    <g stroke="#c9a84c" stroke-width="0.8" opacity="0.35" fill="none">
+      <path d="M25,25 L25,42 M25,25 L42,25"/>
+      <path d="M375,25 L375,42 M375,25 L358,25"/>
+      <path d="M25,255 L25,238 M25,255 L42,255"/>
+      <path d="M375,255 L375,238 M375,255 L358,255"/>
+    </g>
+    <!-- petits diamants décoratifs -->
+    <rect x="196" y="23" width="8" height="8" transform="rotate(45,200,27)" fill="#c9a84c" opacity="0.25"/>
+    <rect x="196" y="242" width="8" height="8" transform="rotate(45,200,246)" fill="#c9a84c" opacity="0.25"/>
+    <!-- label -->
+    <text x="200" y="268" text-anchor="middle" font-family="'Cinzel', serif" font-size="8.5" fill="#8b6914" letter-spacing="3" opacity="0.8">${label}</text>
+  </svg>`;
+}
+
+// ── PRÉHISTOIRE ──────────────────────────────────────────────
+PORTRAITS["Lucy"] = getPortrait("Lucy","lucy",`
+  <!-- squelette humain simplifié -->
+  <ellipse cx="0" cy="-42" rx="16" ry="19" stroke-width="1.8"/>
+  <line x1="0" y1="-23" x2="0" y2="18"/>
+  <line x1="-22" y1="-10" x2="22" y2="-10"/>
+  <line x1="0" y1="18" x2="-14" y2="48"/>
+  <line x1="0" y1="18" x2="14" y2="48"/>
+  <line x1="-14" y1="48" x2="-10" y2="68"/>
+  <line x1="14" y1="48" x2="10" y2="68"/>
+  <line x1="-22" y1="-10" x2="-30" y2="12"/>
+  <line x1="22" y1="-10" x2="30" y2="12"/>
+`, "LUCY · −3,2 Ma");
+
+PORTRAITS["Homo neanderthalensis"] = getPortrait("Homo neanderthalensis","nean",`
+  <!-- crâne de profil avec arcade sourcilière proéminente -->
+  <path d="M-8,-48 Q-32,-48 -34,-22 Q-36,6 -22,20 Q-8,32 8,30 Q28,28 34,12 Q40,-8 30,-30 Q18,-48 -8,-48Z" stroke-width="2"/>
+  <path d="M-34,-22 Q-28,-30 -16,-32" stroke-width="3"/>
+  <ellipse cx="-18" cy="-16" rx="10" ry="8"/>
+  <!-- feu stylisé en bas -->
+  <path d="M-18,50 Q-10,32 0,42 Q8,28 18,50" stroke-width="1.5" opacity="0.7"/>
+  <path d="M-8,50 Q0,38 8,50" stroke-width="1.5" opacity="0.5"/>
+`, "NÉANDERTAL · −400 000 / −40 000");
+
+PORTRAITS["L'homme de Cro-Magnon"] = getPortrait("L'homme de Cro-Magnon","cro",`
+  <!-- main levée (peinture rupestre) -->
+  <path d="M-10,60 Q-28,50 -30,28 Q-32,8 -22,-4"/>
+  <path d="M-22,-4 Q-26,-22 -18,-30 Q-10,-36 -6,-26 Q-2,-16 -10,-8"/>
+  <path d="M-6,-26 Q-4,-42 4,-46 Q12,-48 12,-36 Q12,-24 6,-18"/>
+  <path d="M12,-36 Q14,-52 22,-52 Q30,-50 28,-38 Q26,-26 20,-22"/>
+  <path d="M28,-38 Q32,-50 38,-46 Q44,-40 40,-28 Q36,-18 28,-14"/>
+  <path d="M40,-28 Q46,-32 46,-22 Q44,-10 36,-4"/>
+  <!-- bison stylisé petit en haut à gauche -->
+  <path d="M-60,-52 Q-48,-62 -36,-56 Q-26,-50 -28,-42 Q-30,-34 -40,-32 Q-52,-30 -58,-38 Q-64,-48 -60,-52Z" stroke-width="1.2" opacity="0.6"/>
+`, "HOMO SAPIENS · ARTISTE · −35 000");
+
+PORTRAITS["Ötzi"] = getPortrait("Ötzi","otzi",`
+  <!-- silhouette momie avec hache en cuivre -->
+  <ellipse cx="0" cy="-44" rx="14" ry="16"/>
+  <path d="M0,-28 L0,10"/>
+  <path d="M-18,-14 L18,-14"/>
+  <path d="M0,10 L-12,40 M0,10 L12,40"/>
+  <!-- hache en cuivre -->
+  <line x1="22" y1="-28" x2="38" y2="10" stroke-width="2.5"/>
+  <path d="M22,-28 Q32,-38 40,-26 Q34,-18 22,-28Z" fill="#c9a84c" opacity="0.5"/>
+  <!-- cristaux de glace -->
+  <g opacity="0.4" stroke-width="1">
+    <line x1="-48" y1="-48" x2="-48" y2="-32"/>
+    <line x1="-56" y1="-40" x2="-40" y2="-40"/>
+    <line x1="-56" y1="-48" x2="-40" y2="-32"/>
+    <line x1="-40" y1="-48" x2="-56" y2="-32"/>
+    <line x1="52" y1="30" x2="52" y2="46"/>
+    <line x1="44" y1="38" x2="60" y2="38"/>
+  </g>
+`, "ÖTZI · L'HOMME DES GLACES · −3 300");
+
+// ── ANTIQUITÉ ────────────────────────────────────────────────
+PORTRAITS["Alexandre le Grand"] = getPortrait("Alexandre le Grand","alex",`
+  <!-- casque corinthien avec cimier -->
+  <path d="M0,-62 Q-26,-62 -30,-40 Q-34,-18 -26,-8 Q-18,2 0,4 Q18,2 26,-8 Q34,-18 30,-40 Q26,-62 0,-62Z" stroke-width="2"/>
+  <path d="M-30,-40 Q-36,-30 -34,-18 M30,-40 Q36,-30 34,-18"/>
+  <!-- cimier du casque -->
+  <path d="M-22,-62 Q0,-72 22,-62" stroke-width="2.5"/>
+  <!-- épée -->
+  <line x1="0" y1="4" x2="0" y2="55" stroke-width="2.5"/>
+  <line x1="-18" y1="14" x2="18" y2="14" stroke-width="2"/>
+  <path d="M-4,55 L0,65 L4,55"/>
+  <!-- étoile de Macédoine -->
+  <g opacity="0.6">
+    <line x1="-48" y1="-48" x2="0" y2="-32"/>
+    <line x1="48" y1="-48" x2="0" y2="-32"/>
+    <line x1="0" y1="-64" x2="0" y2="-32"/>
+    <line x1="-52" y1="-32" x2="0" y2="-32"/>
+    <line x1="52" y1="-32" x2="0" y2="-32"/>
+    <circle cx="0" cy="-32" r="4" fill="#c9a84c" opacity="0.5"/>
+  </g>
+`, "ALEXANDRE III · ROI DE MACÉDOINE · −356/−323");
+
+PORTRAITS["Cléopâtre VII"] = getPortrait("Cléopâtre VII","cleo",`
+  <!-- nemes égyptien + uraeus -->
+  <path d="M0,-60 Q-24,-60 -28,-38 Q-30,-20 -22,-8 Q-12,4 0,6 Q12,4 22,-8 Q30,-20 28,-38 Q24,-60 0,-60Z" stroke-width="2"/>
+  <!-- bandes du nemes -->
+  <path d="M-28,-38 L-38,-20 Q-40,0 -36,16" stroke-width="1.5"/>
+  <path d="M28,-38 L38,-20 Q40,0 36,16" stroke-width="1.5"/>
+  <!-- uraeus (cobra) -->
+  <path d="M0,-60 Q6,-70 10,-64 Q14,-56 6,-52" stroke-width="1.8"/>
+  <!-- ankh -->
+  <circle cx="0" cy="28" r="10" stroke-width="2"/>
+  <line x1="0" y1="38" x2="0" y2="62" stroke-width="2"/>
+  <line x1="-14" y1="48" x2="14" y2="48" stroke-width="2"/>
+  <!-- œil d'Horus stylisé -->
+  <path d="M-40,-42 Q-34,-48 -26,-44 Q-34,-40 -40,-42Z" stroke-width="1.5" opacity="0.6"/>
+  <line x1="-40" y1="-42" x2="-46" y2="-36" opacity="0.6"/>
+  <line x1="-26" y1="-44" x2="-22" y2="-50" opacity="0.6"/>
+`, "CLÉOPÂTRE VII · REINE D'ÉGYPTE · −69/−30");
+
+PORTRAITS["Aristote"] = getPortrait("Aristote","aristo",`
+  <!-- tête de philosophe avec rouleau -->
+  <circle cx="0" cy="-38" r="22" stroke-width="2"/>
+  <!-- couronne de laurier -->
+  <path d="M-22,-52 Q0,-62 22,-52" stroke-width="1.5"/>
+  <g stroke-width="1" opacity="0.6">
+    <path d="M-22,-52 Q-26,-46 -20,-44"/><path d="M-14,-58 Q-16,-50 -10,-50"/>
+    <path d="M-6,-62 Q-6,-54 0,-54"/><path d="M6,-62 Q6,-54 12,-54"/>
+    <path d="M14,-58 Q16,-50 20,-50"/><path d="M22,-52 Q26,-46 20,-44"/>
+  </g>
+  <!-- rouleau de parchemin -->
+  <rect x="-24" y="8" width="48" height="30" rx="4" stroke-width="2"/>
+  <line x1="-18" y1="18" x2="18" y2="18" stroke-width="1.2"/>
+  <line x1="-18" y1="26" x2="18" y2="26" stroke-width="1.2"/>
+  <line x1="-18" y1="32" x2="10" y2="32" stroke-width="1.2"/>
+  <!-- colonnes en fond -->
+  <g opacity="0.3" stroke-width="1.2">
+    <line x1="-56" y1="-62" x2="-56" y2="62"/>
+    <line x1="56" y1="-62" x2="56" y2="62"/>
+    <line x1="-62" y1="-62" x2="62" y2="-62"/>
+  </g>
+`, "ARISTOTE DE STAGIRE · −384/−322");
+
+PORTRAITS["César Auguste"] = getPortrait("César Auguste","auguste",`
+  <!-- couronne de laurier impériale -->
+  <path d="M-32,-58 Q0,-72 32,-58" stroke-width="2"/>
+  <g stroke-width="1.2" opacity="0.7">
+    <path d="M-32,-58 Q-38,-48 -30,-44"/><path d="M-20,-66 Q-22,-56 -14,-54"/>
+    <path d="M-8,-70 Q-8,-60 0,-60"/><path d="M8,-70 Q8,-60 14,-60"/>
+    <path d="M20,-66 Q22,-56 28,-56"/><path d="M32,-58 Q38,-48 30,-44"/>
+  </g>
+  <!-- tête -->
+  <ellipse cx="0" cy="-30" rx="20" ry="24"/>
+  <!-- armure cuirasse musclée -->
+  <path d="M-28,8 Q-32,30 -28,52 Q-14,62 0,64 Q14,62 28,52 Q32,30 28,8 Q14,2 0,0 Q-14,2 -28,8Z" stroke-width="2"/>
+  <path d="M-20,14 Q0,22 20,14" stroke-width="1.2"/>
+  <path d="M-22,28 Q0,36 22,28" stroke-width="1.2"/>
+  <!-- aigle romain -->
+  <g opacity="0.5" stroke-width="1.2">
+    <path d="M-52,-50 Q-44,-58 -36,-50 Q-44,-42 -52,-50Z"/>
+    <line x1="-44" y1="-50" x2="-44" y2="-36"/>
+    <path d="M-52,-42 L-36,-42"/>
+  </g>
+`, "IMPERATOR AUGUSTUS · −63 / +14");
+
+// ── MOYEN ÂGE ────────────────────────────────────────────────
+PORTRAITS["Charlemagne"] = getPortrait("Charlemagne","charle",`
+  <!-- couronne impériale -->
+  <path d="M-28,-64 L-28,-44 L28,-44 L28,-64" stroke-width="2"/>
+  <path d="M-28,-64 L-20,-76 L-12,-64 M-8,-64 L0,-78 L8,-64 M12,-64 L20,-76 L28,-64" stroke-width="2"/>
+  <!-- gemmes de la couronne -->
+  <circle cx="-16" cy="-52" r="3" fill="#c9a84c" opacity="0.6"/>
+  <circle cx="0" cy="-54" r="3" fill="#c9a84c" opacity="0.6"/>
+  <circle cx="16" cy="-52" r="3" fill="#c9a84c" opacity="0.6"/>
+  <!-- croix sur la couronne -->
+  <line x1="0" y1="-78" x2="0" y2="-88" stroke-width="2"/>
+  <line x1="-6" y1="-84" x2="6" y2="-84" stroke-width="2"/>
+  <!-- sceptre -->
+  <line x1="36" y1="-44" x2="36" y2="62" stroke-width="2.5"/>
+  <circle cx="36" cy="-50" r="8" stroke-width="2"/>
+  <!-- orbe impérial -->
+  <circle cx="-36" cy="20" r="18" stroke-width="2"/>
+  <line x1="-36" y1="2" x2="-36" y2="6"/>
+  <line x1="-46" y1="16" x2="-42" y2="16"/>
+  <path d="M-48,24 Q-36,34 -24,24"/>
+  <!-- silhouette royale torse -->
+  <path d="M-24,-44 Q-32,-20 -32,20 Q-28,50 0,56 Q28,50 32,20 Q32,-20 24,-44"/>
+`, "CHARLEMAGNE · CAROLUS MAGNUS · 742/814");
+
+PORTRAITS["Gengis Khan"] = getPortrait("Gengis Khan","gengis",`
+  <!-- casque mongol avec pointe -->
+  <path d="M0,-72 Q-24,-62 -28,-40 Q-30,-22 -22,-10 Q-12,0 0,2 Q12,0 22,-10 Q30,-22 28,-40 Q24,-62 0,-72Z" stroke-width="2"/>
+  <line x1="0" y1="-72" x2="0" y2="-82" stroke-width="2.5"/>
+  <!-- protège-joues -->
+  <path d="M-28,-40 Q-36,-28 -34,-14" stroke-width="1.5"/>
+  <path d="M28,-40 Q36,-28 34,-14" stroke-width="1.5"/>
+  <!-- arc mongol -->
+  <path d="M-20,20 Q-40,10 -38,50 Q-20,60 0,55 Q20,60 38,50 Q40,10 20,20 Q10,30 0,28 Q-10,30 -20,20Z" stroke-width="2"/>
+  <!-- corde de l'arc -->
+  <path d="M-20,20 Q0,16 20,20" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <!-- flèche -->
+  <line x1="-50" y1="-50" x2="20" y2="30" stroke-width="1.8"/>
+  <path d="M-50,-50 L-44,-42 L-56,-44Z" fill="#c9a84c" opacity="0.6"/>
+`, "GENGIS KHAN · TEMÜJIN · v.1162/1227");
+
+PORTRAITS["Jeanne d'Arc"] = getPortrait("Jeanne d'Arc","jeanne",`
+  <!-- heaume médiéval -->
+  <path d="M0,-62 Q-22,-62 -24,-42 Q-26,-24 -20,-12 Q-12,-2 0,0 Q12,-2 20,-12 Q26,-24 24,-42 Q22,-62 0,-62Z" stroke-width="2"/>
+  <!-- visière levée -->
+  <path d="M-24,-42 Q-26,-32 -22,-24 Q-14,-20 0,-20 Q14,-20 22,-24 Q26,-32 24,-42"/>
+  <!-- épée tenue vers le haut -->
+  <line x1="0" y1="0" x2="0" y2="58" stroke-width="2.5"/>
+  <line x1="-16" y1="12" x2="16" y2="12" stroke-width="2"/>
+  <path d="M-4,58 L0,68 L4,58"/>
+  <!-- bannière fleurdelisée -->
+  <line x1="26" y1="-62" x2="26" y2="30" stroke-width="1.5"/>
+  <path d="M26,-62 Q46,-55 44,-40 Q42,-25 26,-20" stroke-width="1.5"/>
+  <!-- fleur de lys sur bannière -->
+  <g transform="translate(36,-42)" stroke-width="1.2" opacity="0.7">
+    <path d="M0,-6 Q4,-2 0,4 Q-4,-2 0,-6Z"/>
+    <line x1="-6" y1="2" x2="6" y2="2"/>
+    <line x1="0" y1="4" x2="0" y2="9"/>
+  </g>
+  <!-- halo -->
+  <circle cx="0" cy="-38" r="30" stroke-width="0.8" stroke-dasharray="4,5" opacity="0.35"/>
+`, "JEANNE D'ARC · LA PUCELLE · 1412/1431");
+
+PORTRAITS["Avicenne"] = getPortrait("Avicenne","avicenne",`
+  <!-- turban -->
+  <path d="M-28,-50 Q-20,-68 0,-70 Q20,-68 28,-50 Q32,-36 28,-24 Q20,-14 0,-12 Q-20,-14 -28,-24 Q-32,-36 -28,-50Z" stroke-width="2"/>
+  <path d="M-28,-50 Q-20,-56 0,-58 Q20,-56 28,-50" stroke-width="1.5"/>
+  <!-- rouleau médical -->
+  <rect x="-22" y="8" width="44" height="34" rx="4" stroke-width="2"/>
+  <line x1="-16" y1="18" x2="16" y2="18" stroke-width="1.2"/>
+  <line x1="-16" y1="26" x2="16" y2="26" stroke-width="1.2"/>
+  <line x1="-16" y1="34" x2="8" y2="34" stroke-width="1.2"/>
+  <!-- caducée médical simplifié -->
+  <g transform="translate(34,20)" stroke-width="1.5" opacity="0.6">
+    <line x1="0" y1="-24" x2="0" y2="24"/>
+    <path d="M-10,-10 Q0,-4 10,-10 Q0,-16 -10,-10"/>
+    <path d="M-10,4 Q0,10 10,4 Q0,-2 -10,4"/>
+  </g>
+  <!-- étoile islamique -->
+  <g transform="translate(-42,20)" opacity="0.4" stroke-width="1">
+    <polygon points="0,-12 3,-3 12,-3 5,3 8,12 0,7 -8,12 -5,3 -12,-3 -3,-3" fill="none"/>
+  </g>
+`, "AVICENNE · IBN SINA · 980/1037");
+
+// ── RENAISSANCE ──────────────────────────────────────────────
+PORTRAITS["Léonard de Vinci"] = getPortrait("Léonard de Vinci","leo",`
+  <!-- L'homme de Vitruve - icône emblématique -->
+  <!-- cercle -->
+  <circle cx="0" cy="-10" r="52" stroke-width="1.5" opacity="0.5"/>
+  <!-- carré -->
+  <rect x="-38" y="-48" width="76" height="76" stroke-width="1.5" opacity="0.5"/>
+  <!-- figure humaine au centre -->
+  <circle cx="0" cy="-28" r="10" stroke-width="2"/>
+  <line x1="0" y1="-18" x2="0" y2="16"/>
+  <!-- bras tendus -->
+  <line x1="-36" y1="-8" x2="36" y2="-8" stroke-width="2"/>
+  <!-- bras diagonaux -->
+  <line x1="-36" y1="-24" x2="36" y2="-24" stroke-width="1.5" opacity="0.5"/>
+  <!-- jambes écartées -->
+  <line x1="0" y1="16" x2="-24" y2="48" stroke-width="2"/>
+  <line x1="0" y1="16" x2="24" y2="48" stroke-width="2"/>
+  <!-- jambes droites -->
+  <line x1="0" y1="16" x2="-14" y2="48" stroke-width="1.5" opacity="0.5"/>
+  <line x1="0" y1="16" x2="14" y2="48" stroke-width="1.5" opacity="0.5"/>
+`, "LÉONARD DE VINCI · 1452/1519");
+
+PORTRAITS["Michel-Ange"] = getPortrait("Michel-Ange","michel",`
+  <!-- main de Michel-Ange (référence Sixtine - doigt de Dieu) -->
+  <!-- bras droit tendu -->
+  <path d="M-52,30 Q-30,20 -10,10 Q0,4 10,-2" stroke-width="3"/>
+  <!-- main droite avec index tendu -->
+  <path d="M10,-2 Q16,-8 20,-14 Q24,-8 20,-2 Q18,2 14,4"/>
+  <path d="M20,-14 Q26,-18 28,-10 Q26,-4 20,-2"/>
+  <path d="M28,-10 Q34,-12 34,-4 Q32,2 26,2"/>
+  <path d="M34,-4 Q38,-4 38,2 Q36,8 30,8"/>
+  <path d="M10,-2 Q10,6 14,10 Q18,8 20,-2"/>
+  <!-- bras gauche tendu depuis la droite (Adam) -->
+  <path d="M52,40 Q30,30 10,20 Q4,16 -2,10" stroke-width="3" opacity="0.5"/>
+  <!-- doigt gauche qui tend vers le droit -->
+  <path d="M-2,10 Q-8,4 -12,0" stroke-width="2.5" opacity="0.5"/>
+  <!-- éclair / étincelle entre les deux doigts -->
+  <path d="M-12,0 Q-4,-6 0,-4 Q4,-8 10,-2" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.8"/>
+  <!-- marteau de sculpteur -->
+  <g transform="translate(-42,-38)" stroke-width="1.8" opacity="0.5">
+    <line x1="0" y1="-16" x2="0" y2="16"/>
+    <rect x="-8" y="-6" width="16" height="10" rx="2"/>
+  </g>
+`, "MICHEL-ANGE BUONARROTI · 1475/1564");
+
+PORTRAITS["Érasme de Rotterdam"] = getPortrait("Érasme de Rotterdam","erasme",`
+  <!-- plume d'oie + encrier -->
+  <!-- plume -->
+  <path d="M-10,-60 Q10,-40 0,30" stroke-width="2"/>
+  <path d="M-10,-60 Q-30,-40 0,30"/>
+  <path d="M-10,-60 Q-20,-30 -4,20"/>
+  <path d="M-10,-60 Q2,-28 2,18"/>
+  <!-- tuyau de la plume -->
+  <line x1="0" y1="30" x2="4" y2="48" stroke-width="2.5"/>
+  <!-- encrier -->
+  <path d="M-14,48 Q-14,62 0,64 Q14,62 14,48 Q14,40 0,38 Q-14,40 -14,48Z" stroke-width="2"/>
+  <!-- livre ouvert -->
+  <path d="M-44,-8 Q-44,20 -44,36 Q-28,32 0,34 Q28,32 44,36 Q44,20 44,-8 Q28,-12 0,-10 Q-28,-12 -44,-8Z" stroke-width="1.8" opacity="0.5"/>
+  <line x1="0" y1="-10" x2="0" y2="34" opacity="0.5"/>
+`, "ÉRASME DE ROTTERDAM · 1469/1536");
+
+PORTRAITS["Copernic"] = getPortrait("Copernic","copernic",`
+  <!-- système héliocentrique -->
+  <!-- soleil central -->
+  <circle cx="0" cy="0" r="10" fill="#c9a84c" opacity="0.3" stroke-width="2"/>
+  <g opacity="0.6" stroke-width="1.2">
+    <line x1="0" y1="-16" x2="0" y2="-20"/>
+    <line x1="0" y1="16" x2="0" y2="20"/>
+    <line x1="-16" y1="0" x2="-20" y2="0"/>
+    <line x1="16" y1="0" x2="20" y2="0"/>
+    <line x1="-11" y1="-11" x2="-14" y2="-14"/>
+    <line x1="11" y1="-11" x2="14" y2="-14"/>
+    <line x1="-11" y1="11" x2="-14" y2="14"/>
+    <line x1="11" y1="11" x2="14" y2="14"/>
+  </g>
+  <!-- orbites planétaires -->
+  <circle cx="0" cy="0" r="28" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.5"/>
+  <circle cx="0" cy="0" r="44" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.4"/>
+  <circle cx="0" cy="0" r="62" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.3"/>
+  <!-- planètes -->
+  <circle cx="28" cy="0" r="4" fill="#c9a84c" opacity="0.5" stroke-width="1.5"/>
+  <circle cx="-32" cy="-30" r="5" fill="#c9a84c" opacity="0.4" stroke-width="1.5"/>
+  <circle cx="44" cy="44" r="5" fill="#c9a84c" opacity="0.35" stroke-width="1.5"/>
+`, "NICOLAS COPERNIC · 1473/1543");
+
+// ── LUMIÈRES ──────────────────────────────────────────────────
+PORTRAITS["Voltaire"] = getPortrait("Voltaire","voltaire",`
+  <!-- perruque poudrée 18e siècle + plume ironique -->
+  <!-- perruque -->
+  <path d="M0,-62 Q-30,-62 -34,-40 Q-36,-22 -28,-10 Q-16,0 0,2 Q16,0 28,-10 Q36,-22 34,-40 Q30,-62 0,-62Z" stroke-width="2"/>
+  <!-- boucles de perruque -->
+  <path d="M-34,-40 Q-44,-36 -42,-22 Q-36,-14 -28,-16"/>
+  <path d="M34,-40 Q44,-36 42,-22 Q36,-14 28,-16"/>
+  <path d="M-36,-24 Q-46,-18 -44,-8"/>
+  <path d="M36,-24 Q46,-18 44,-8"/>
+  <!-- plume d'écrivain levée -->
+  <path d="M24,8 Q40,-10 50,-32 Q52,-48 44,-52 Q36,-54 32,-42 Q28,-28 28,8"/>
+  <path d="M24,8 Q44,-14 50,-32"/>
+  <!-- point d'exclamation / point d'ironie -->
+  <line x1="-36" y1="30" x2="-36" y2="52" stroke-width="2.5"/>
+  <circle cx="-36" cy="62" r="3" fill="#c9a84c" opacity="0.7"/>
+  <!-- livre -->
+  <rect x="-22" y="20" width="34" height="26" rx="2" stroke-width="1.8" opacity="0.6"/>
+  <line x1="-5" y1="20" x2="-5" y2="46" opacity="0.6"/>
+`, "VOLTAIRE · AROUET · 1694/1778");
+
+PORTRAITS["Napoléon Bonaparte"] = getPortrait("Napoléon Bonaparte","napoleon",`
+  <!-- bicorne iconique vu de face -->
+  <path d="M-44,-52 Q-40,-64 0,-66 Q40,-64 44,-52 Q46,-44 38,-40 Q20,-36 0,-36 Q-20,-36 -38,-40 Q-46,-44 -44,-52Z" stroke-width="2.5"/>
+  <path d="M-44,-52 L-52,-44 Q-50,-34 -38,-40"/>
+  <path d="M44,-52 L52,-44 Q50,-34 38,-40"/>
+  <!-- cocarde -->
+  <circle cx="-30" cy="-50" r="5" stroke-width="1.5"/>
+  <circle cx="-30" cy="-50" r="2.5" fill="#c9a84c" opacity="0.5"/>
+  <!-- main dans le manteau -->
+  <path d="M-24,8 Q-30,18 -26,32 Q-18,38 -8,34 Q-4,28 -8,20 Q-16,12 -24,8Z" stroke-width="2"/>
+  <!-- épaulette -->
+  <path d="M24,-14 Q36,-18 44,-12 Q44,0 36,4 Q28,6 20,2 Q16,-4 24,-14Z" stroke-width="1.8"/>
+  <!-- franges épaulette -->
+  <g stroke-width="1" opacity="0.6">
+    <line x1="26" y1="4" x2="22" y2="16"/><line x1="32" y1="6" x2="30" y2="18"/>
+    <line x1="38" y1="4" x2="38" y2="16"/><line x1="44" y1="0" x2="46" y2="12"/>
+  </g>
+  <!-- médaille Légion d'honneur -->
+  <circle cx="-8" cy="52" r="8" stroke-width="1.8"/>
+  <line x1="-8" y1="44" x2="-8" y2="26" stroke-width="1.5"/>
+  <path d="M-14,40 L-8,34 L-2,40"/>
+`, "NAPOLÉON Ier · EMPEREUR DES FRANÇAIS · 1769/1821");
+
+PORTRAITS["Isaac Newton"] = getPortrait("Isaac Newton","newton",`
+  <!-- pomme tombant + vecteur de gravité -->
+  <!-- arbre -->
+  <line x1="-30" y1="62" x2="-30" y2="-20" stroke-width="2"/>
+  <ellipse cx="-30" cy="-34" rx="22" ry="18" stroke-width="1.8"/>
+  <!-- pomme qui tombe avec trajectoire -->
+  <circle cx="-30" cy="10" r="7" stroke-width="2"/>
+  <!-- queue de la pomme -->
+  <line x1="-30" y1="3" x2="-28" y2="-2" stroke-width="1.5"/>
+  <!-- flèche de gravité -->
+  <line x1="-30" y1="17" x2="-30" y2="42" stroke-width="2" stroke-dasharray="3,3"/>
+  <path d="M-34,40 L-30,50 L-26,40"/>
+  <!-- formule F=ma / gravitation -->
+  <line x1="10" y1="-50" x2="62" y2="-50" stroke-width="1" opacity="0.4"/>
+  <line x1="10" y1="-40" x2="62" y2="-40" stroke-width="1" opacity="0.4"/>
+  <line x1="10" y1="-30" x2="55" y2="-30" stroke-width="1" opacity="0.4"/>
+  <!-- prisme + spectre de lumière -->
+  <path d="M20,10 L44,-10 L44,30 Z" stroke-width="2" opacity="0.6"/>
+  <line x1="10" y1="10" x2="20" y2="10" stroke-width="1.5" opacity="0.5"/>
+  <g opacity="0.4" stroke-width="1">
+    <line x1="44" y1="-8" x2="62" y2="-18"/>
+    <line x1="44" y1="0" x2="62" y2="0"/>
+    <line x1="44" y1="8" x2="62" y2="14"/>
+    <line x1="44" y1="16" x2="62" y2="28"/>
+    <line x1="44" y1="24" x2="62" y2="42"/>
+  </g>
+`, "ISAAC NEWTON · 1643/1727");
+
+PORTRAITS["Olympe de Gouges"] = getPortrait("Olympe de Gouges","olympe",`
+  <!-- plume + déclaration + guillotine stylisée -->
+  <!-- plume d'écriture -->
+  <path d="M-8,-62 Q12,-42 2,28" stroke-width="2"/>
+  <path d="M-8,-62 Q-28,-42 2,28"/>
+  <path d="M-8,-62 Q-18,-32 -2,20"/>
+  <line x1="2" y1="28" x2="6" y2="46" stroke-width="2.5"/>
+  <!-- parchemin / déclaration -->
+  <rect x="-44" y="-18" width="36" height="46" rx="3" stroke-width="1.8" opacity="0.6"/>
+  <line x1="-38" y1="-8" x2="-14" y2="-8" opacity="0.6" stroke-width="1"/>
+  <line x1="-38" y1="-2" x2="-14" y2="-2" opacity="0.6" stroke-width="1"/>
+  <line x1="-38" y1="4" x2="-14" y2="4" opacity="0.6" stroke-width="1"/>
+  <line x1="-38" y1="10" x2="-22" y2="10" opacity="0.6" stroke-width="1"/>
+  <!-- symbole ♀ féminin -->
+  <circle cx="36" cy="-16" r="16" stroke-width="2"/>
+  <line x1="36" y1="0" x2="36" y2="28" stroke-width="2"/>
+  <line x1="26" y1="16" x2="46" y2="16" stroke-width="2"/>
+  <!-- chaîne brisée -->
+  <g transform="translate(20,46)" stroke-width="1.8" opacity="0.6">
+    <path d="M-14,0 Q-14,-8 -6,-8 Q2,-8 2,0 Q2,8 -6,8 Q-14,8 -14,0"/>
+    <line x1="2" y1="0" x2="8" y2="0"/>
+    <path d="M8,0 Q8,-8 16,-8 Q24,-8 24,0" stroke-dasharray="2,2"/>
+  </g>
+`, "OLYMPE DE GOUGES · 1748/1793");
+
+// ── XIXe SIÈCLE ───────────────────────────────────────────────
+PORTRAITS["Karl Marx"] = getPortrait("Karl Marx","marx",`
+  <!-- poing levé + livre + engrenage industriel -->
+  <!-- poing levé -->
+  <path d="M-14,-62 Q-14,-42 -10,-28 Q-4,-18 0,-12" stroke-width="2.5"/>
+  <path d="M-14,-62 Q-22,-50 -20,-36 Q-16,-26 -10,-22"/>
+  <path d="M-14,-62 Q-28,-52 -28,-38 Q-26,-26 -18,-22"/>
+  <path d="M-14,-62 Q-34,-52 -34,-38 Q-32,-24 -22,-18"/>
+  <path d="M-22,-18 Q-14,-10 0,-12 Q-10,-28 -14,-62"/>
+  <path d="M-34,-38 Q-42,-34 -40,-24 Q-36,-16 -26,-16"/>
+  <!-- Le Capital - livre -->
+  <rect x="-8" y="4" width="40" height="50" rx="2" stroke-width="2"/>
+  <line x1="4" y1="4" x2="4" y2="54" stroke-width="1"/>
+  <line x1="-2" y1="16" x2="42" y2="16" stroke-width="0.8" opacity="0.6"/>
+  <line x1="-2" y1="24" x2="42" y2="24" stroke-width="0.8" opacity="0.6"/>
+  <!-- engrenage industriel -->
+  <circle cx="-34" cy="32" r="16" stroke-width="1.8" opacity="0.5"/>
+  <circle cx="-34" cy="32" r="8" stroke-width="1.5" opacity="0.5"/>
+  <g opacity="0.4" stroke-width="1.5">
+    <line x1="-34" y1="14" x2="-34" y2="18"/>
+    <line x1="-34" y1="46" x2="-34" y2="50"/>
+    <line x1="-52" y1="32" x2="-48" y2="32"/>
+    <line x1="-20" y1="32" x2="-16" y2="32"/>
+    <line x1="-46" y1="20" x2="-43" y2="23"/>
+    <line x1="-25" y1="41" x2="-22" y2="44"/>
+    <line x1="-46" y1="44" x2="-43" y2="41"/>
+    <line x1="-25" y1="23" x2="-22" y2="20"/>
+  </g>
+`, "KARL MARX · 1818/1883");
+
+PORTRAITS["Charles Darwin"] = getPortrait("Charles Darwin","darwin",`
+  <!-- arbre de l'évolution (Tree of Life) -->
+  <!-- tronc -->
+  <line x1="0" y1="60" x2="0" y2="10" stroke-width="3"/>
+  <!-- branches principales -->
+  <line x1="0" y1="10" x2="-36" y2="-20" stroke-width="2.2"/>
+  <line x1="0" y1="10" x2="36" y2="-20" stroke-width="2.2"/>
+  <line x1="0" y1="20" x2="-14" y2="0" stroke-width="1.8"/>
+  <line x1="0" y1="20" x2="14" y2="0" stroke-width="1.8"/>
+  <!-- branches secondaires -->
+  <line x1="-36" y1="-20" x2="-52" y2="-42" stroke-width="1.5"/>
+  <line x1="-36" y1="-20" x2="-22" y2="-44" stroke-width="1.5"/>
+  <line x1="36" y1="-20" x2="22" y2="-44" stroke-width="1.5"/>
+  <line x1="36" y1="-20" x2="52" y2="-42" stroke-width="1.5"/>
+  <line x1="-14" y1="0" x2="-28" y2="-16" stroke-width="1.2"/>
+  <line x1="14" y1="0" x2="28" y2="-16" stroke-width="1.2"/>
+  <!-- petites feuilles / nœuds -->
+  <g fill="#c9a84c" opacity="0.5">
+    <circle cx="-52" cy="-44" r="4"/><circle cx="-22" cy="-46" r="4"/>
+    <circle cx="22" cy="-46" r="4"/><circle cx="52" cy="-44" r="4"/>
+    <circle cx="-28" cy="-18" r="3"/><circle cx="28" cy="-18" r="3"/>
+  </g>
+  <!-- tortue des Galápagos -->
+  <ellipse cx="28" cy="46" rx="16" ry="10" stroke-width="1.8" opacity="0.5"/>
+  <circle cx="28" cy="40" r="5" opacity="0.5"/>
+  <line x1="16" y1="52" x2="14" y2="60" opacity="0.5"/>
+  <line x1="40" y1="52" x2="42" y2="60" opacity="0.5"/>
+`, "CHARLES DARWIN · 1809/1882");
+
+PORTRAITS["Queen Victoria"] = getPortrait("Queen Victoria","victoria",`
+  <!-- couronne impériale + globe / carte empire -->
+  <!-- couronne -->
+  <path d="M-32,-58 L-32,-40 L32,-40 L32,-58" stroke-width="2"/>
+  <path d="M-32,-58 L-24,-72 L-16,-58 M-8,-58 L0,-74 L8,-58 M16,-58 L24,-72 L32,-58" stroke-width="2"/>
+  <path d="M-38,-40 L38,-40" stroke-width="2"/>
+  <!-- croix sur la couronne -->
+  <line x1="0" y1="-74" x2="0" y2="-84" stroke-width="2"/>
+  <line x1="-6" y1="-80" x2="6" y2="-80" stroke-width="2"/>
+  <!-- gemmes -->
+  <circle cx="-20" cy="-50" r="3" fill="#c9a84c" opacity="0.6"/>
+  <circle cx="0" cy="-52" r="3" fill="#c9a84c" opacity="0.6"/>
+  <circle cx="20" cy="-50" r="3" fill="#c9a84c" opacity="0.6"/>
+  <!-- globe terrestre -->
+  <circle cx="0" cy="20" r="32" stroke-width="2"/>
+  <!-- méridiens -->
+  <ellipse cx="0" cy="20" rx="18" ry="32" stroke-width="1" opacity="0.4"/>
+  <ellipse cx="0" cy="20" rx="32" ry="18" stroke-width="1" opacity="0.4"/>
+  <line x1="-32" y1="20" x2="32" y2="20" stroke-width="1" opacity="0.4"/>
+  <!-- "The sun never sets" - trait rouge empire -->
+  <path d="M-28,10 Q-10,6 8,14 Q20,18 30,12" stroke-width="2" stroke="#c9a84c" opacity="0.7"/>
+`, "QUEEN VICTORIA · EMPIRE BRITANNIQUE · 1819/1901");
+
+PORTRAITS["Abraham Lincoln"] = getPortrait("Abraham Lincoln","lincoln",`
+  <!-- chapeau haut-de-forme iconique -->
+  <rect x="-22" y="-72" width="44" height="42" rx="2" stroke-width="2.5"/>
+  <path d="M-30,-30 Q-26,-26 0,-24 Q26,-26 30,-30" stroke-width="2"/>
+  <!-- ruban du chapeau -->
+  <line x1="-22" y1="-44" x2="22" y2="-44" stroke-width="2" opacity="0.5"/>
+  <!-- silhouette très grande et maigre -->
+  <ellipse cx="0" cy="-10" rx="16" ry="18"/>
+  <!-- cravate / nœud papillon -->
+  <path d="M-8,8 L0,14 L8,8 L0,4 Z" fill="#c9a84c" opacity="0.4" stroke-width="1.5"/>
+  <!-- manteau long -->
+  <path d="M-22,8 Q-28,30 -26,62 M22,8 Q28,30 26,62"/>
+  <path d="M-22,8 Q-10,20 0,22 Q10,20 22,8"/>
+  <!-- chaînes brisées -->
+  <g transform="translate(-38,38)" stroke-width="1.8" opacity="0.6">
+    <path d="M0,-8 Q-8,-8 -8,0 Q-8,8 0,8 Q8,8 8,0 Q8,-8 0,-8"/>
+    <line x1="8" y1="0" x2="16" y2="0"/>
+    <path d="M16,-8 Q24,-8 24,0" stroke-dasharray="2,2"/>
+  </g>
+  <!-- étoile américaine -->
+  <g transform="translate(36,40)" opacity="0.5" stroke-width="1.5">
+    <polygon points="0,-12 3,-4 12,-4 5,2 8,12 0,6 -8,12 -5,2 -12,-4 -3,-4" fill="none"/>
+  </g>
+`, "ABRAHAM LINCOLN · 16e PRÉSIDENT · 1809/1865");
+
+// ── XXe SIÈCLE ────────────────────────────────────────────────
+PORTRAITS["Winston Churchill"] = getPortrait("Winston Churchill","churchill",`
+  <!-- chapeau melon + cigare + V -->
+  <!-- chapeau melon -->
+  <path d="M0,-62 Q-24,-62 -26,-44 Q-28,-28 -22,-18 Q-12,-8 0,-6 Q12,-8 22,-18 Q28,-28 26,-44 Q24,-62 0,-62Z" stroke-width="2.5"/>
+  <path d="M-30,-30 Q-26,-24 0,-22 Q26,-24 30,-30" stroke-width="2"/>
+  <!-- gros cigare caractéristique -->
+  <path d="M22,4 Q40,-4 50,-18 Q56,-28 50,-34 Q44,-38 36,-30 Q28,-22 22,4"/>
+  <line x1="22" y1="4" x2="18" y2="12" stroke-width="2"/>
+  <!-- volutes de fumée -->
+  <path d="M50,-18 Q56,-8 52,2 Q56,8 52,18" stroke-width="1" stroke-dasharray="2,3" opacity="0.5"/>
+  <!-- signe V de la victoire -->
+  <g transform="translate(-36,20)" stroke-width="3">
+    <line x1="-10" y1="-20" x2="0" y2="20"/>
+    <line x1="10" y1="-20" x2="0" y2="20"/>
+  </g>
+  <!-- bulldog (emblème) -->
+  <path d="M-52,50 Q-44,38 -32,40 Q-22,42 -20,52 Q-22,62 -32,64 Q-44,66 -52,58 Q-58,52 -52,50Z" stroke-width="1.5" opacity="0.4"/>
+`, "SIR WINSTON CHURCHILL · 1874/1965");
+
+PORTRAITS["Nelson Mandela"] = getPortrait("Nelson Mandela","mandela",`
+  <!-- poing levé (lutte) + soleil levant + cercle brisé et réparé -->
+  <!-- soleil levant -->
+  <path d="M0,-10 Q-52,0 -52,40 Q-52,80 0,70 Q52,80 52,40 Q52,0 0,-10Z" stroke-width="1.5" opacity="0.2" fill="#c9a84c"/>
+  <!-- rayons du soleil -->
+  <g opacity="0.35" stroke-width="1.2">
+    <line x1="0" y1="-10" x2="0" y2="-30"/>
+    <line x1="16" y1="-6" x2="28" y2="-18"/>
+    <line x1="-16" y1="-6" x2="-28" y2="-18"/>
+    <line x1="28" y1="8" x2="44" y2="2"/>
+    <line x1="-28" y1="8" x2="-44" y2="2"/>
+  </g>
+  <!-- poing levé fort -->
+  <path d="M-14,-58 L-10,-32 M-22,-56 L-18,-30 M-30,-52 L-26,-28 M-38,-46 L-34,-24" stroke-width="2"/>
+  <path d="M-38,-46 Q-42,-38 -38,-28 Q-30,-20 -14,-22 Q0,-24 2,-36 Q4,-48 -14,-58" stroke-width="2"/>
+  <path d="M-38,-28 Q-36,-18 -28,-16 Q-16,-14 -8,-20"/>
+  <!-- chaîne brisée et réunie -->
+  <g transform="translate(20,30)" stroke-width="2">
+    <path d="M-20,0 Q-20,-12 -10,-12 Q0,-12 0,0 Q0,12 -10,12 Q-20,12 -20,0"/>
+    <line x1="0" y1="0" x2="10" y2="0"/>
+    <path d="M10,-12 Q20,-12 20,0 Q20,12 10,12 Q2,12 2,0"/>
+    <!-- cercle de réconciliation autour -->
+    <circle cx="-2" cy="0" r="30" stroke-width="1" stroke-dasharray="5,4" opacity="0.4"/>
+  </g>
+`, "NELSON MANDELA · 1918/2013");
+
+PORTRAITS["Albert Einstein"] = getPortrait("Albert Einstein","einstein",`
+  <!-- E=mc² + espace-temps courbé + atome -->
+  <!-- espace-temps courbé (grille) -->
+  <g opacity="0.3" stroke-width="1">
+    <line x1="-56" y1="-40" x2="56" y2="-40"/>
+    <line x1="-56" y1="-20" x2="56" y2="-20"/>
+    <line x1="-56" y1="0" x2="56" y2="0"/>
+    <line x1="-56" y1="20" x2="56" y2="20"/>
+    <line x1="-40" y1="-56" x2="-40" y2="36"/>
+    <line x1="-20" y1="-56" x2="-20" y2="36"/>
+    <line x1="0" y1="-56" x2="0" y2="36"/>
+    <line x1="20" y1="-56" x2="20" y2="36"/>
+    <line x1="40" y1="-56" x2="40" y2="36"/>
+  </g>
+  <!-- masse qui courbe l'espace-temps -->
+  <circle cx="0" cy="-10" r="22" fill="#0e0b06" stroke="#c9a84c" stroke-width="2.5"/>
+  <!-- distorsion de la grille autour -->
+  <path d="M-56,-20 Q-36,-16 -22,-10 Q-8,-2 0,-10" stroke-width="1.5" opacity="0.5"/>
+  <path d="M56,-20 Q36,-16 22,-10 Q8,-2 0,-10" stroke-width="1.5" opacity="0.5"/>
+  <path d="M-56,0 Q-34,2 -22,-6" stroke-width="1.2" opacity="0.4"/>
+  <path d="M56,0 Q34,2 22,-6" stroke-width="1.2" opacity="0.4"/>
+  <!-- E=mc² au centre -->
+  <text x="0" y="-6" text-anchor="middle" font-family="'Cinzel',serif" font-size="14" fill="#c9a84c" stroke="none">E=mc²</text>
+  <!-- électron en orbite -->
+  <ellipse cx="0" cy="-10" rx="40" ry="14" stroke-width="1.5" opacity="0.6" transform="rotate(-30,0,-10)"/>
+  <circle cx="34" cy="-22" r="4" fill="#c9a84c" opacity="0.7"/>
+`, "ALBERT EINSTEIN · PRIX NOBEL 1921 · 1879/1955");
+
+PORTRAITS["Simone de Beauvoir"] = getPortrait("Simone de Beauvoir","beauvoir",`
+  <!-- plume + miroir (identité) + symboles ♀♂ égaux -->
+  <!-- plume d'écriture -->
+  <path d="M-6,-62 Q14,-42 4,22" stroke-width="2"/>
+  <path d="M-6,-62 Q-26,-42 4,22"/>
+  <path d="M-6,-62 Q-16,-34 0,14"/>
+  <line x1="4" y1="22" x2="8" y2="40" stroke-width="2.5"/>
+  <!-- Le Deuxième Sexe - livre -->
+  <rect x="-44" y="-22" width="32" height="42" rx="2" stroke-width="1.8" opacity="0.6"/>
+  <line x1="-38" y1="-12" x2="-18" y2="-12" opacity="0.5" stroke-width="1"/>
+  <line x1="-38" y1="-6" x2="-18" y2="-6" opacity="0.5" stroke-width="1"/>
+  <line x1="-38" y1="0" x2="-18" y2="0" opacity="0.5" stroke-width="1"/>
+  <!-- symbole ♀ -->
+  <circle cx="36" cy="-30" r="14" stroke-width="2"/>
+  <line x1="36" y1="-16" x2="36" y2="4" stroke-width="2"/>
+  <line x1="28" y1="-4" x2="44" y2="-4" stroke-width="2"/>
+  <!-- = égalité -->
+  <line x1="16" y1="22" x2="56" y2="22" stroke-width="2.5"/>
+  <line x1="16" y1="34" x2="56" y2="34" stroke-width="2.5"/>
+  <!-- étoile existentialiste (5 branches) -->
+  <g transform="translate(-32,48)" opacity="0.5" stroke-width="1.2">
+    <polygon points="0,-10 2.4,-3.3 9.5,-3.3 4,-1 6,6 0,2 -6,6 -4,-1 -9.5,-3.3 -2.4,-3.3" fill="none"/>
+  </g>
+`, "SIMONE DE BEAUVOIR · 1908/1986");
+
+// ── ÉGYPTE ANCIENNE ──────────────────────────────────────────
+PORTRAITS["Ramsès II"] = getPortrait("Ramsès II","ramses",`
+  <!-- double couronne pschent + khépesh (cimeterre) + cartouche -->
+  <!-- couronne blanche (Haute Égypte) -->
+  <path d="M0,-72 Q-12,-72 -14,-50 Q-16,-30 -10,-18 Q-4,-8 0,-6 Q4,-8 10,-18 Q16,-30 14,-50 Q12,-72 0,-72Z" stroke-width="2"/>
+  <ellipse cx="0" cy="-72" rx="10" ry="5" stroke-width="1.5"/>
+  <!-- couronne rouge (Basse Égypte) autour -->
+  <path d="M-22,-44 Q-28,-50 -28,-38 Q-28,-18 -14,-6" stroke-width="2"/>
+  <path d="M22,-44 Q22,-58 14,-62" stroke-width="2"/>
+  <path d="M-28,-30 L-38,-22 Q-36,-14 -28,-18" stroke-width="1.8"/>
+  <!-- cartouche royal ovale -->
+  <ellipse cx="36" cy="-10" rx="14" ry="22" stroke-width="2" opacity="0.6"/>
+  <line x1="22" y1="12" x2="50" y2="12" stroke-width="2" opacity="0.6"/>
+  <!-- hiéroglyphes dans le cartouche -->
+  <line x1="30" y1="-22" x2="42" y2="-22" stroke-width="1" opacity="0.5"/>
+  <line x1="30" y1="-14" x2="42" y2="-14" stroke-width="1" opacity="0.5"/>
+  <circle cx="36" cy="-6" r="3" opacity="0.5"/>
+  <!-- khépesh (cimeterre) -->
+  <path d="M-10,10 Q-30,0 -40,16 Q-44,28 -34,36 Q-22,40 -10,30 Q-2,22 -10,10Z" stroke-width="2"/>
+  <line x1="-10" y1="10" x2="-8" y2="50" stroke-width="2.5"/>
+  <!-- soleil de Rê -->
+  <circle cx="0" cy="-10" r="6" fill="#c9a84c" opacity="0.4" stroke-width="1.5"/>
+`, "RAMSÈS II · LE GRAND · −1279/−1213");
+
+PORTRAITS["Néfertiti"] = getPortrait("Néfertiti","nefertiti",`
+  <!-- couronne cylindrique bleue emblématique + collier oushebti -->
+  <!-- couronne cylindrique haute -->
+  <rect x="-16" y="-72" width="32" height="38" rx="2" stroke-width="2"/>
+  <line x1="-16" y1="-58" x2="16" y2="-58" stroke-width="1" opacity="0.5"/>
+  <line x1="-16" y1="-48" x2="16" y2="-48" stroke-width="1" opacity="0.5"/>
+  <!-- bandeaux frontaux -->
+  <path d="M-16,-34 Q-24,-30 -26,-18" stroke-width="1.8"/>
+  <path d="M16,-34 Q24,-30 26,-18" stroke-width="1.8"/>
+  <!-- uraeus (cobra) -->
+  <path d="M-4,-72 Q-8,-82 -4,-86 Q2,-88 6,-82 Q4,-76 -4,-72" stroke-width="1.8"/>
+  <!-- visage élégant -->
+  <path d="M-22,-34 Q-24,-16 -20,-4 Q-12,10 0,14 Q12,10 20,-4 Q24,-16 22,-34" stroke-width="2"/>
+  <!-- œil en amande + kohl -->
+  <path d="M-18,-18 Q-12,-22 -6,-18 Q-12,-14 -18,-18Z" stroke-width="1.5"/>
+  <line x1="-18" y1="-18" x2="-24" y2="-16" stroke-width="1.5"/>
+  <path d="M6,-18 Q12,-22 18,-18 Q12,-14 6,-18Z" stroke-width="1.5"/>
+  <line x1="18" y1="-18" x2="24" y2="-16" stroke-width="1.5"/>
+  <!-- long cou gracieux -->
+  <line x1="-8" y1="14" x2="-10" y2="34" stroke-width="1.5"/>
+  <line x1="8" y1="14" x2="10" y2="34" stroke-width="1.5"/>
+  <!-- grand collier ousekh -->
+  <path d="M-28,34 Q-28,50 0,56 Q28,50 28,34 Q14,28 0,26 Q-14,28 -28,34Z" stroke-width="2"/>
+  <g opacity="0.5">
+    <circle cx="-20" cy="38" r="2.5"/><circle cx="-10" cy="44" r="2.5"/>
+    <circle cx="0" cy="46" r="2.5"/><circle cx="10" cy="44" r="2.5"/>
+    <circle cx="20" cy="38" r="2.5"/>
+  </g>
+`, "NÉFERTITI · GRANDE ÉPOUSE ROYALE · ~−1370/−1330");
+
+PORTRAITS["Imhotep"] = getPortrait("Imhotep","imhotep",`
+  <!-- pyramide à degrés de Saqqarah + papyrus médical -->
+  <!-- pyramide à degrés -->
+  <path d="M0,-60 L-48,30 L48,30 Z" stroke-width="2.5"/>
+  <line x1="-38" y1="10" x2="38" y2="10" stroke-width="1.5"/>
+  <line x1="-26" y1="-10" x2="26" y2="-10" stroke-width="1.5"/>
+  <line x1="-14" y1="-30" x2="14" y2="-30" stroke-width="1.5"/>
+  <!-- soleil levant derrière la pyramide -->
+  <path d="M0,-60 Q-6,-70 0,-72 Q6,-70 0,-60" stroke-width="1.5" opacity="0.7"/>
+  <g opacity="0.3" stroke-width="1">
+    <line x1="-20" y1="-68" x2="-16" y2="-62"/>
+    <line x1="20" y1="-68" x2="16" y2="-62"/>
+    <line x1="-28" y1="-58" x2="-22" y2="-56"/>
+    <line x1="28" y1="-58" x2="22" y2="-56"/>
+  </g>
+  <!-- papyrus roulé (médecin) -->
+  <rect x="-48" y="38" width="30" height="22" rx="4" stroke-width="1.8"/>
+  <line x1="-44" y1="46" x2="-22" y2="46" stroke-width="1" opacity="0.6"/>
+  <line x1="-44" y1="52" x2="-22" y2="52" stroke-width="1" opacity="0.6"/>
+  <!-- caducée d'Imhotep -->
+  <g transform="translate(28,44)" stroke-width="1.5">
+    <line x1="0" y1="-18" x2="0" y2="18"/>
+    <path d="M-8,-6 Q0,0 8,-6 Q0,-12 -8,-6"/>
+    <path d="M-8,6 Q0,12 8,6 Q0,0 -8,6"/>
+  </g>
+`, "IMHOTEP · VIZIR & ARCHITECTE · ~−2650");
+
+PORTRAITS["Toutankhamon"] = getPortrait("Toutankhamon","toutankhamon",`
+  <!-- masque funéraire iconique + scarabée khépri -->
+  <!-- némès du masque -->
+  <path d="M0,-62 Q-28,-60 -32,-36 Q-34,-12 -26,0 Q-14,12 0,14 Q14,12 26,0 Q34,-12 32,-36 Q28,-60 0,-62Z" stroke-width="2.5"/>
+  <!-- rayures du némès -->
+  <g opacity="0.4" stroke-width="1">
+    <line x1="-32" y1="-36" x2="-36" y2="-22"/><line x1="-31" y1="-28" x2="-36" y2="-14"/>
+    <line x1="-30" y1="-20" x2="-35" y2="-6"/>
+    <line x1="32" y1="-36" x2="36" y2="-22"/><line x1="31" y1="-28" x2="36" y2="-14"/>
+    <line x1="30" y1="-20" x2="35" y2="-6"/>
+  </g>
+  <!-- cobra + vautour sur le front -->
+  <path d="M-6,-62 Q-10,-72 -6,-76 Q-2,-78 2,-74 Q6,-68 -6,-62" stroke-width="1.8"/>
+  <!-- yeux en amande dessinés (style masque) -->
+  <path d="M-20,-28 Q-12,-34 -4,-28 Q-12,-22 -20,-28Z" stroke-width="2"/>
+  <line x1="-20" y1="-28" x2="-28" y2="-24" stroke-width="2"/>
+  <path d="M4,-28 Q12,-34 20,-28 Q12,-22 4,-28Z" stroke-width="2"/>
+  <line x1="20" y1="-28" x2="28" y2="-24" stroke-width="2"/>
+  <!-- barbe divine postiche -->
+  <path d="M-6,14 L-8,38 Q-6,44 0,46 Q6,44 8,38 L6,14" stroke-width="2"/>
+  <!-- lignes horizontales sur la barbe -->
+  <line x1="-6" y1="22" x2="6" y2="22" stroke-width="1" opacity="0.6"/>
+  <line x1="-6" y1="30" x2="6" y2="30" stroke-width="1" opacity="0.6"/>
+  <line x1="-5" y1="38" x2="5" y2="38" stroke-width="1" opacity="0.6"/>
+  <!-- scarabée khépri -->
+  <ellipse cx="0" cy="62" rx="14" ry="10" stroke-width="1.8" opacity="0.5"/>
+  <line x1="-10" y1="56" x2="-16" y2="48" opacity="0.5"/><line x1="10" y1="56" x2="16" y2="48" opacity="0.5"/>
+  <line x1="0" y1="52" x2="0" y2="44" opacity="0.5"/>
+`, "TOUTANKHAMON · PHARAON ENFANT · −1336/−1327");
+
+// ── GRÈCE ANTIQUE ─────────────────────────────────────────────
+PORTRAITS["Socrate"] = getPortrait("Socrate","socrate",`
+  <!-- ciguë + point d'interrogation + agora -->
+  <!-- grand ? symbolisant la maïeutique -->
+  <path d="M0,-62 Q18,-62 18,-44 Q18,-30 8,-22 Q2,-18 0,-10" stroke-width="3"/>
+  <circle cx="0" cy="4" r="3" fill="#c9a84c" opacity="0.7"/>
+  <!-- coupe de ciguë -->
+  <path d="M-18,30 Q-22,28 -20,48 Q-18,58 0,62 Q18,58 20,48 Q22,28 18,30 Q10,34 0,34 Q-10,34 -18,30Z" stroke-width="2"/>
+  <path d="M-22,30 L22,30" stroke-width="1.5"/>
+  <!-- tige de ciguë avec feuilles -->
+  <line x1="0" y1="-10" x2="0" y2="30" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <path d="M0,8 Q-10,4 -12,10 Q-6,14 0,8"/>
+  <path d="M0,18 Q10,14 12,20 Q6,24 0,18"/>
+  <!-- colonnes de l'agora en fond -->
+  <g opacity="0.25" stroke-width="1.2">
+    <line x1="-52" y1="-68" x2="-52" y2="62"/>
+    <line x1="-44" y1="-68" x2="-44" y2="62"/>
+    <line x1="44" y1="-68" x2="44" y2="62"/>
+    <line x1="52" y1="-68" x2="52" y2="62"/>
+    <line x1="-56" y1="-68" x2="56" y2="-68"/>
+    <line x1="-56" y1="62" x2="56" y2="62"/>
+  </g>
+`, "SOCRATE · PHILOSOPHE · −470/−399");
+
+PORTRAITS["Périclès"] = getPortrait("Périclès","pericles",`
+  <!-- casque corinthien + Parthénon + chouette d'Athéna -->
+  <!-- casque corinthien emblématique de Périclès -->
+  <path d="M0,-65 Q-26,-65 -28,-44 Q-30,-24 -22,-12 Q-12,-2 0,0 Q12,-2 22,-12 Q30,-24 28,-44 Q26,-65 0,-65Z" stroke-width="2.5"/>
+  <!-- visière remontée sur le front (style Périclès) -->
+  <path d="M-28,-44 Q-30,-34 -26,-26 Q-18,-16 0,-14 Q18,-16 26,-26 Q30,-34 28,-44"/>
+  <!-- cimier / crête -->
+  <path d="M-20,-65 Q0,-74 20,-65" stroke-width="2"/>
+  <!-- Parthénon stylisé -->
+  <g transform="translate(0,40)" stroke-width="1.8">
+    <line x1="-38" y1="-4" x2="38" y2="-4"/>
+    <line x1="-38" y1="4" x2="38" y2="4"/>
+    <line x1="-38" y1="16" x2="38" y2="16"/>
+    <g stroke-width="1.4">
+      <line x1="-30" y1="-4" x2="-30" y2="16"/><line x1="-20" y1="-4" x2="-20" y2="16"/>
+      <line x1="-10" y1="-4" x2="-10" y2="16"/><line x1="0" y1="-4" x2="0" y2="16"/>
+      <line x1="10" y1="-4" x2="10" y2="16"/><line x1="20" y1="-4" x2="20" y2="16"/>
+      <line x1="30" y1="-4" x2="30" y2="16"/>
+    </g>
+    <!-- fronton triangulaire -->
+    <path d="M-42,-4 L0,-20 L42,-4"/>
+  </g>
+  <!-- chouette d'Athéna -->
+  <g transform="translate(-44,-40)" stroke-width="1.5" opacity="0.6">
+    <path d="M0,-12 Q-8,-12 -8,0 Q-8,12 0,14 Q8,12 8,0 Q8,-12 0,-12Z"/>
+    <circle cx="-4" cy="-4" r="3"/><circle cx="4" cy="-4" r="3"/>
+    <path d="M-4,4 L0,8 L4,4"/>
+  </g>
+`, "PÉRICLÈS · STRATÈGE D'ATHÈNES · −495/−429");
+
+PORTRAITS["Platon"] = getPortrait("Platon","platon",`
+  <!-- allégorie de la caverne : ombre + lumière + idée -->
+  <!-- caverne / voûte -->
+  <path d="M-56,40 Q-56,-30 0,-56 Q56,-30 56,40" stroke-width="2" fill="none"/>
+  <!-- sol de la caverne -->
+  <line x1="-56" y1="40" x2="56" y2="40" stroke-width="1.5"/>
+  <!-- personnage enchaîné (ombre) -->
+  <circle cx="-24" cy="18" r="6" stroke-width="1.5" opacity="0.5"/>
+  <line x1="-24" y1="24" x2="-24" y2="40" stroke-width="1.5" opacity="0.5"/>
+  <line x1="-34" y1="30" x2="-14" y2="30" stroke-width="1.5" opacity="0.5"/>
+  <!-- chaînes -->
+  <line x1="-30" y1="40" x2="-30" y2="32" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+  <line x1="-18" y1="40" x2="-18" y2="32" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+  <!-- lumière / feu (idée pure) -->
+  <circle cx="30" cy="-20" r="12" stroke-width="2"/>
+  <g opacity="0.5" stroke-width="1.2">
+    <line x1="30" y1="-36" x2="30" y2="-40"/>
+    <line x1="42" y1="-28" x2="46" y2="-26"/>
+    <line x1="46" y1="-14" x2="50" y2="-12"/>
+    <line x1="18" y1="-28" x2="14" y2="-26"/>
+    <line x1="14" y1="-14" x2="10" y2="-12"/>
+  </g>
+  <!-- ombre projetée sur le mur -->
+  <path d="M-24,18 Q0,-10 30,-20" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
+  <!-- soleil (monde des idées) en haut -->
+  <circle cx="0" cy="-50" r="8" fill="#c9a84c" opacity="0.3" stroke-width="2"/>
+  <g opacity="0.4" stroke-width="1">
+    <line x1="0" y1="-40" x2="0" y2="-36"/>
+    <line x1="10" y1="-44" x2="12" y2="-40"/>
+    <line x1="-10" y1="-44" x2="-12" y2="-40"/>
+  </g>
+`, "PLATON · FONDATEUR DE L'ACADÉMIE · −428/−348");
+
+PORTRAITS["Archimède"] = getPortrait("Archimède","archimede",`
+  <!-- levier + baignoire (eurêka) + cercle π -->
+  <!-- grand levier / principe du levier -->
+  <line x1="-58" y1="-20" x2="58" y2="20" stroke-width="3"/>
+  <!-- point d'appui (triangle) -->
+  <path d="M-4,22 L0,8 L4,22 Z" fill="#c9a84c" opacity="0.5" stroke-width="1.5"/>
+  <!-- masse à gauche -->
+  <rect x="-62" y="-32" width="18" height="14" rx="2" stroke-width="2"/>
+  <!-- Terre à droite (soulevée) -->
+  <circle cx="52" cy="28" r="14" stroke-width="2" opacity="0.6"/>
+  <ellipse cx="52" cy="28" rx="6" ry="14" stroke-width="1" opacity="0.4"/>
+  <!-- π entouré d'un cercle -->
+  <circle cx="0" cy="-42" r="20" stroke-width="1.8" opacity="0.6"/>
+  <text x="0" y="-36" text-anchor="middle" font-family="serif" font-size="18" fill="#c9a84c" stroke="none" opacity="0.8">π</text>
+  <!-- spirale d'Archimède -->
+  <path d="M-38,52 Q-30,44 -24,52 Q-18,60 -10,52 Q-2,44 4,54" stroke-width="1.5" fill="none" opacity="0.5"/>
+`, "ARCHIMÈDE DE SYRACUSE · −287/−212");
+
+// ── ROME ANTIQUE ──────────────────────────────────────────────
+PORTRAITS["Jules César"] = getPortrait("Jules César","cesar",`
+  <!-- couronne de laurier + SPQR + poignards des ides de mars -->
+  <!-- couronne de laurier -->
+  <path d="M-30,-52 Q0,-66 30,-52" stroke-width="2"/>
+  <g stroke-width="1.2" opacity="0.7">
+    <path d="M-30,-52 Q-36,-44 -28,-40"/><path d="M-18,-60 Q-20,-50 -12,-48"/>
+    <path d="M-6,-64 Q-6,-54 0,-52"/><path d="M6,-64 Q6,-54 12,-52"/>
+    <path d="M18,-60 Q20,-50 26,-50"/><path d="M30,-52 Q36,-44 28,-40"/>
+  </g>
+  <!-- tête / buste -->
+  <path d="M-22,-40 Q-24,-18 -18,-4 Q-10,10 0,12 Q10,10 18,-4 Q24,-18 22,-40" stroke-width="2"/>
+  <!-- toga avec épaule -->
+  <path d="M-22,-40 Q-38,-30 -44,-10 Q-46,12 -36,28"/>
+  <path d="M22,-40 Q38,-30 44,-10 Q46,12 36,28"/>
+  <!-- SPQR sur bouclier -->
+  <rect x="-14" y="18" width="28" height="34" rx="3" stroke-width="2" opacity="0.7"/>
+  <text x="0" y="31" text-anchor="middle" font-family="'Cinzel',serif" font-size="7" fill="#c9a84c" stroke="none" opacity="0.9">SPQR</text>
+  <line x1="-10" y1="34" x2="10" y2="34" stroke-width="0.8" opacity="0.5"/>
+  <line x1="-10" y1="40" x2="10" y2="40" stroke-width="0.8" opacity="0.5"/>
+  <!-- poignard (ides de mars) -->
+  <path d="M34,-20 L44,14" stroke-width="2.5" opacity="0.6"/>
+  <path d="M34,-20 Q40,-28 44,-22 Q42,-16 34,-20Z" fill="#c9a84c" opacity="0.5"/>
+  <line x1="30" y1="-10" x2="38" y2="-10" stroke-width="1.5" opacity="0.5"/>
+`, "JULES CÉSAR · DICTATEUR · −100/−44");
+
+PORTRAITS["Cicéron"] = getPortrait("Cicéron","ciceron",`
+  <!-- rouleau de discours + tribune + main d'orateur levée -->
+  <!-- main d'orateur pointée -->
+  <path d="M-8,-62 Q-8,-40 -4,-28" stroke-width="2"/>
+  <path d="M-8,-62 Q-16,-52 -14,-40 Q-10,-32 -4,-30"/>
+  <path d="M-8,-62 Q-22,-54 -22,-42 Q-20,-32 -12,-30"/>
+  <path d="M-8,-62 Q-28,-56 -30,-44 Q-28,-34 -20,-30"/>
+  <path d="M-4,-28 Q2,-20 4,-8 Q2,0 -4,4 Q-16,2 -22,-8 Q-28,-20 -30,-34 Q-28,-44 -20,-48"/>
+  <!-- index tendu vers le haut (rhétorique) -->
+  <path d="M-8,-62 Q-2,-70 2,-64 Q4,-58 -2,-52"/>
+  <!-- rouleau de discours -->
+  <rect x="12" y="-18" width="32" height="44" rx="4" stroke-width="2"/>
+  <line x1="18" y1="-6" x2="38" y2="-6" stroke-width="1.2"/>
+  <line x1="18" y1="2" x2="38" y2="2" stroke-width="1.2"/>
+  <line x1="18" y1="10" x2="38" y2="10" stroke-width="1.2"/>
+  <line x1="18" y1="18" x2="38" y2="18" stroke-width="1.2"/>
+  <!-- tribune romaine -->
+  <path d="M-44,44 L44,44 L38,28 L-38,28 Z" stroke-width="1.8" opacity="0.5"/>
+  <line x1="-44" y1="44" x2="44" y2="44" stroke-width="2" opacity="0.5"/>
+  <!-- SENATUS -->
+  <text x="0" y="40" text-anchor="middle" font-family="'Cinzel',serif" font-size="6" fill="#c9a84c" stroke="none" opacity="0.7">SENATUS</text>
+`, "CICÉRON · ORATEUR · −106/−43");
+
+PORTRAITS["Marc Aurèle"] = getPortrait("Marc Aurèle","marcaurele",`
+  <!-- livre des Pensées + couronne stoïcienne + soleil intérieur -->
+  <!-- couronne de laurier (impériale mais simple) -->
+  <path d="M-28,-56 Q0,-68 28,-56" stroke-width="1.8" opacity="0.8"/>
+  <g stroke-width="1" opacity="0.5">
+    <path d="M-28,-56 Q-34,-48 -26,-44"/><path d="M-16,-64 Q-18,-54 -10,-52"/>
+    <path d="M-4,-68 Q-4,-58 2,-56"/><path d="M8,-64 Q8,-54 14,-54"/>
+    <path d="M18,-60 Q20,-50 26,-50"/><path d="M28,-56 Q34,-48 26,-44"/>
+  </g>
+  <!-- Pensées pour moi-même - livre ouvert -->
+  <path d="M-44,-20 Q-44,28 -44,44 Q-24,40 0,42 Q24,40 44,44 Q44,28 44,-20 Q24,-24 0,-22 Q-24,-24 -44,-20Z" stroke-width="2"/>
+  <line x1="0" y1="-22" x2="0" y2="42" stroke-width="1.5"/>
+  <!-- lignes de texte côté gauche -->
+  <g opacity="0.4" stroke-width="1">
+    <line x1="-38" y1="-10" x2="-6" y2="-12"/>
+    <line x1="-38" y1="-2" x2="-6" y2="-4"/>
+    <line x1="-38" y1="6" x2="-6" y2="4"/>
+    <line x1="-38" y1="14" x2="-6" y2="12"/>
+    <line x1="-38" y1="22" x2="-18" y2="20"/>
+  </g>
+  <!-- lignes de texte côté droit -->
+  <g opacity="0.4" stroke-width="1">
+    <line x1="6" y1="-12" x2="38" y2="-10"/>
+    <line x1="6" y1="-4" x2="38" y2="-2"/>
+    <line x1="6" y1="4" x2="38" y2="6"/>
+    <line x1="6" y1="12" x2="38" y2="14"/>
+    <line x1="6" y1="20" x2="28" y2="22"/>
+  </g>
+  <!-- soleil / lumière intérieure (stoïcisme) -->
+  <circle cx="0" cy="-46" r="10" stroke-width="2" opacity="0.6"/>
+  <g opacity="0.35" stroke-width="1.2">
+    <line x1="0" y1="-58" x2="0" y2="-62"/>
+    <line x1="8" y1="-54" x2="10" y2="-58"/>
+    <line x1="-8" y1="-54" x2="-10" y2="-58"/>
+    <line x1="12" y1="-46" x2="16" y2="-46"/>
+    <line x1="-12" y1="-46" x2="-16" y2="-46"/>
+  </g>
+`, "MARC AURÈLE · PHILOSOPHE-EMPEREUR · 121/180");
+
+PORTRAITS["Tim Berners-Lee"] = getPortrait("Tim Berners-Lee","tbl",`
+  <!-- toile du web mondial (WWW) -->
+  <!-- globe central -->
+  <circle cx="0" cy="0" r="28" stroke-width="2"/>
+  <ellipse cx="0" cy="0" rx="14" ry="28" stroke-width="1.2" opacity="0.5"/>
+  <ellipse cx="0" cy="0" rx="28" ry="10" stroke-width="1.2" opacity="0.5"/>
+  <line x1="-28" y1="0" x2="28" y2="0" stroke-width="1" opacity="0.4"/>
+  <!-- nœuds du réseau -->
+  <g fill="#c9a84c" stroke="#c9a84c" stroke-width="1.2">
+    <circle cx="-48" cy="-38" r="5" opacity="0.7"/>
+    <circle cx="48" cy="-38" r="5" opacity="0.7"/>
+    <circle cx="-52" cy="32" r="5" opacity="0.7"/>
+    <circle cx="52" cy="32" r="5" opacity="0.7"/>
+    <circle cx="0" cy="-58" r="4" opacity="0.6"/>
+    <circle cx="0" cy="58" r="4" opacity="0.6"/>
+  </g>
+  <!-- connexions réseau -->
+  <g stroke-width="1.2" opacity="0.4">
+    <line x1="-48" y1="-38" x2="-20" y2="-18"/>
+    <line x1="48" y1="-38" x2="20" y2="-18"/>
+    <line x1="-52" y1="32" x2="-20" y2="16"/>
+    <line x1="52" y1="32" x2="20" y2="16"/>
+    <line x1="0" y1="-58" x2="0" y2="-28"/>
+    <line x1="0" y1="58" x2="0" y2="28"/>
+    <line x1="-48" y1="-38" x2="48" y2="-38" stroke-dasharray="3,4"/>
+    <line x1="-52" y1="32" x2="52" y2="32" stroke-dasharray="3,4"/>
+  </g>
+  <!-- curseur souris / lien hypertexte -->
+  <path d="M34,-52 L34,-28 L40,-34 L46,-22 L50,-26 L44,-38 L52,-38 Z" stroke-width="1.5" opacity="0.6"/>
+`, "TIM BERNERS-LEE · WWW · NÉ EN 1955");
+
+PORTRAITS["Greta Thunberg"] = getPortrait("Greta Thunberg","greta",`
+  <!-- feuille + thermomètre + planète en danger -->
+  <!-- planète -->
+  <circle cx="0" cy="0" r="38" stroke-width="2.5"/>
+  <!-- continents stylisés -->
+  <path d="M-20,-20 Q-10,-30 2,-22 Q12,-14 8,-2 Q0,8 -12,4 Q-22,-4 -20,-20Z" stroke-width="1.5" opacity="0.5"/>
+  <path d="M14,-18 Q22,-24 28,-14 Q30,-4 22,2 Q16,4 14,-6 Q12,-12 14,-18Z" stroke-width="1.5" opacity="0.5"/>
+  <!-- flammes (réchauffement) -->
+  <path d="M-12,30 Q-18,16 -8,22 Q-16,8 -4,18 Q-8,4 4,14 Q0,0 12,12 Q8,2 18,16 Q24,6 22,28" stroke-width="2" opacity="0.8"/>
+  <!-- pancarte / panneau de grève -->
+  <line x1="-50" y1="-56" x2="-50" y2="24" stroke-width="2.5"/>
+  <rect x="-68" y="-60" width="36" height="22" rx="2" stroke-width="1.8"/>
+  <!-- texte sur pancarte -->
+  <line x1="-64" y1="-54" x2="-36" y2="-54" stroke-width="1.2"/>
+  <line x1="-64" y1="-48" x2="-36" y2="-48" stroke-width="1.2"/>
+  <line x1="-64" y1="-42" x2="-46" y2="-42" stroke-width="1.2"/>
+  <!-- feuille verte -->
+  <path d="M32,-54 Q52,-64 56,-44 Q60,-24 42,-28 Q28,-32 32,-54Z" stroke-width="1.8"/>
+  <line x1="32" y1="-54" x2="48" y2="-38" stroke-width="1" opacity="0.6"/>
+`, "GRETA THUNBERG · NÉE EN 2003");
+
+PORTRAITS["Elon Musk"] = getPortrait("Elon Musk","musk",`
+  <!-- fusée SpaceX + voiture Tesla + réseau -->
+  <!-- fusée -->
+  <path d="M0,-62 Q-12,-52 -14,-28 Q-16,-8 -12,12 Q-6,20 0,22 Q6,20 12,12 Q16,-8 14,-28 Q12,-52 0,-62Z" stroke-width="2.5"/>
+  <!-- hublot de la fusée -->
+  <circle cx="0" cy="-28" r="7" stroke-width="1.8"/>
+  <!-- ailettes de la fusée -->
+  <path d="M-14,4 Q-28,14 -28,24 Q-20,20 -12,16"/>
+  <path d="M14,4 Q28,14 28,24 Q20,20 12,16"/>
+  <!-- flammes de propulsion -->
+  <path d="M-8,22 Q-12,34 -6,40 Q0,36 6,40 Q12,34 8,22" stroke-width="1.8" opacity="0.7"/>
+  <path d="M-4,22 Q-6,30 0,38 Q6,30 4,22" stroke-width="1.5" opacity="0.5"/>
+  <!-- éclairs (Tesla) -->
+  <path d="M-42,-30 L-30,-10 L-38,-10 L-26,14" stroke-width="2.5" opacity="0.6"/>
+  <!-- planète Mars -->
+  <circle cx="44" cy="38" r="16" stroke-width="2" opacity="0.5"/>
+  <line x1="36" cy="34" x2="52" cy="34" stroke-width="1" opacity="0.4"/>
+  <!-- X (anciennement Twitter) -->
+  <g transform="translate(44,-42)" stroke-width="2" opacity="0.4">
+    <line x1="-10" y1="-10" x2="10" y2="10"/>
+    <line x1="10" y1="-10" x2="-10" y2="10"/>
+  </g>
+`, "ELON MUSK · NÉ EN 1971");
+
+function getPortrait(name) {
+  return PORTRAITS[name] || `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <defs><radialGradient id="bgd" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#1e1808"/><stop offset="100%" stop-color="#0a0703"/></radialGradient></defs>
+    <rect width="400" height="280" fill="url(#bgd)"/>
+    <circle cx="200" cy="130" r="78" fill="#0e0b06" stroke="#c9a84c" stroke-width="1.5" opacity="0.9"/>
+    <g transform="translate(200,130)" stroke="#c9a84c" fill="none" stroke-width="2" stroke-linecap="round">
+      <circle cx="0" cy="-28" r="18"/><line x1="0" y1="-10" x2="0" y2="20"/>
+      <line x1="-20" y1="2" x2="20" y2="2"/><line x1="0" y1="20" x2="-14" y2="44"/>
+      <line x1="0" y1="20" x2="14" y2="44"/>
+    </g>
+    <g stroke="#c9a84c" stroke-width="0.8" opacity="0.35" fill="none">
+      <path d="M25,25 L25,42 M25,25 L42,25"/><path d="M375,25 L375,42 M375,25 L358,25"/>
+      <path d="M25,255 L25,238 M25,255 L42,255"/><path d="M375,255 L375,238 M375,255 L358,255"/>
+    </g>
+  </svg>`;
+}
+
 // MODAL
 function openFigure(f) {
-  // Image
   const wrap = document.getElementById('modalImgWrap');
-  if (f.img) {
-    wrap.innerHTML = `<img class="modal-img" src="${f.img}" alt="${f.name}" onerror="this.parentNode.innerHTML='<div class=modal-img-placeholder>${f.emoji || '👤'}</div>'"><div class="modal-img-gradient"></div>`;
-  } else {
-    wrap.innerHTML = `<div class="modal-img-placeholder">${f.emoji || '👤'}</div>`;
-  }
+  wrap.innerHTML = getPortrait(f.name) + '<div class="modal-img-gradient"></div>';
 
   document.getElementById('modalPeriod').textContent = f.period || '';
   document.getElementById('modalName').textContent = f.name;
