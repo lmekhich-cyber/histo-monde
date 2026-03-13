@@ -2954,6 +2954,186 @@ function makeEmpeureursRomains() {
   return svgWrap(900,680,c);
 }
 
+// ── RÉSEAU DES MONARCHIES EUROPÉENNES ─────────────────────────────────────────
+function makeReseauMonarchies() {
+  const W=1000, H=750;
+  let svg=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="background:#0d0b07;font-family:'EB Garamond',serif;">`;
+
+  // ── Palette dynasties
+  const COL={
+    france:'#e8c97a', espagne:'#c9872a', habsbourg:'#9b59b6',
+    angleterre:'#4a7ab5', prusse:'#5a9b5a', russie:'#c0392b',
+    portugal:'#e74c3c', ottomane:'#e67e22', suede:'#3498db',
+    pays_bas:'#f39c12', pologne:'#e8c97a', danemark:'#9b2335',
+  };
+
+  // ── Nœuds : {id, label, sub, x, y, col}
+  const nodes=[
+    {id:'cap',  label:'CAPÉTIENS',    sub:'France 987–1328',        x:180, y:100, col:COL.france},
+    {id:'val',  label:'VALOIS',       sub:'France 1328–1589',       x:180, y:220, col:COL.france},
+    {id:'bou',  label:'BOURBONS',     sub:'France 1589–1792',       x:180, y:345, col:COL.france},
+    {id:'plan', label:'PLANTAGENÊTS', sub:'Angleterre 1154–1399',   x:460, y:100, col:COL.angleterre},
+    {id:'lan',  label:'LANCASTRE',    sub:'Angleterre 1399–1461',   x:380, y:210, col:COL.angleterre},
+    {id:'york', label:'YORK',         sub:'Angleterre 1461–1485',   x:545, y:210, col:COL.angleterre},
+    {id:'tud',  label:'TUDORS',       sub:'Angleterre 1485–1603',   x:460, y:320, col:COL.angleterre},
+    {id:'stu',  label:'STUARTS',      sub:'G-B 1603–1714',          x:460, y:430, col:COL.angleterre},
+    {id:'han',  label:'HANOVRE',      sub:'G-B 1714–1901',          x:460, y:540, col:COL.angleterre},
+    {id:'hab',  label:'HABSBOURG',    sub:'Empire/Autriche 1273+',  x:680, y:220, col:COL.habsbourg},
+    {id:'esp',  label:'TRASTÁMARES',  sub:'Espagne –1516',          x:800, y:100, col:COL.espagne},
+    {id:'hab_e',label:'HABSBOURG-ESPAGNE',sub:'Espagne 1516–1700',  x:810, y:240, col:COL.espagne},
+    {id:'bou_e',label:'BOURBONS ESPAGNE',sub:'Espagne 1700+',       x:810, y:370, col:COL.espagne},
+    {id:'hoh',  label:'HOHENZOLLERN', sub:'Prusse/All. 1415+',      x:680, y:430, col:COL.prusse},
+    {id:'rom',  label:'ROMANOV',      sub:'Russie 1613–1917',       x:870, y:520, col:COL.russie},
+    {id:'ott',  label:'OTTOMANS',     sub:'Empire 1299–1922',       x:820, y:620, col:COL.ottomane},
+    {id:'vas',  label:'VASA',         sub:'Suède 1523–1654',        x:350, y:530, col:COL.suede},
+    {id:'ave',  label:'AVIZ',         sub:'Portugal 1385–1580',     x:120, y:490, col:COL.portugal},
+    {id:'bra',  label:'BRAGANCE',     sub:'Portugal 1640+',         x:120, y:610, col:COL.portugal},
+    {id:'med',  label:'MÉDICIS',      sub:'Florence/Toscane 1434+', x:560, y:620, col:'#a0522d'},
+  ];
+
+  // ── Liens : {a, b, type, label}
+  // types: 'mariage'(or), 'heritage'(argent), 'conflit'(rouge), 'alliance'(vert), 'branche'(gris)
+  const links=[
+    // Branches capétiens → valois → bourbons
+    {a:'cap', b:'val',  type:'branche',  label:'branche directe'},
+    {a:'val', b:'bou',  type:'branche',  label:'branche Bourbon'},
+    // Plantagenêts → Lancastre/York/Tudors
+    {a:'plan',b:'lan',  type:'branche',  label:'branche Lancastre'},
+    {a:'plan',b:'york', type:'branche',  label:'branche York'},
+    {a:'lan', b:'tud',  type:'heritage', label:'Guerre des Deux-Roses → Tudors'},
+    {a:'york',b:'tud',  type:'heritage', label:'Guerre des Deux-Roses'},
+    {a:'tud', b:'stu',  type:'branche',  label:'Élisabeth I → Jacques VI (Stuart)'},
+    {a:'stu', b:'han',  type:'heritage', label:'Act of Settlement 1701'},
+    // Habsbourg empire & Espagne
+    {a:'esp', b:'hab_e',type:'heritage', label:'Mariage dynastique 1516 (Charles Quint)'},
+    {a:'hab', b:'hab_e',type:'branche',  label:'Branche espagnole'},
+    {a:'hab_e',b:'bou_e',type:'heritage',label:'Guerre de succession d\'Espagne 1701–1714'},
+    // Mariages franco-espagnols
+    {a:'bou', b:'bou_e',type:'mariage', label:'Branche Bourbon Espagne (Philippe V, 1700)'},
+    // Médici
+    {a:'val', b:'med',  type:'mariage',  label:'Catherine de Médicis → Henri II (1533)'},
+    {a:'bou', b:'med',  type:'mariage',  label:'Marie de Médicis → Henri IV (1600)'},
+    // Angleterre–Espagne
+    {a:'tud', b:'hab_e',type:'mariage',  label:'Marie I d\'Angleterre × Philippe II (1554)'},
+    // Angleterre–France
+    {a:'plan',b:'val',  type:'conflit',  label:'Guerre de Cent Ans 1337–1453'},
+    {a:'tud', b:'val',  type:'conflit',  label:'Guerres d\'Italie/rivalité'},
+    // Habsbourg–France
+    {a:'hab', b:'val',  type:'conflit',  label:'François I vs Charles Quint'},
+    {a:'hab', b:'bou',  type:'conflit',  label:'Guerres de Louis XIV vs Habsbourg'},
+    // Ottomans
+    {a:'hab', b:'ott',  type:'conflit',  label:'Guerres ottomanes-habsbourgeoises (Vienne 1529, 1683)'},
+    {a:'val', b:'ott',  type:'alliance', label:'Alliance franco-ottomane (François Ier, 1536)'},
+    // Hohenzollern
+    {a:'hab', b:'hoh',  type:'conflit',  label:'Guerre de Sept Ans 1756–1763'},
+    {a:'hoh', b:'rom',  type:'mariage',  label:'Alliances matrimoniales prusso-russes'},
+    // Romanov
+    {a:'rom', b:'hab',  type:'mariage',  label:'Mariages dynastiques austro-russes'},
+    // Suède
+    {a:'vas', b:'hab',  type:'conflit',  label:'Guerre de Trente Ans 1618–1648'},
+    {a:'vas', b:'plan', type:'mariage',  label:'Liens dynastiques nordiques'},
+    // Portugal
+    {a:'ave', b:'esp',  type:'branche',  label:'Iberia : Trastámares × Aviz (mariage 1490)'},
+    {a:'ave', b:'bra',  type:'branche',  label:'Restauration Portugal 1640'},
+    {a:'hab_e',b:'ave', type:'heritage', label:'Philippe II annexe Portugal (1580–1640)'},
+  ];
+
+  // ── Dessin des liens
+  const nodeMap={};
+  nodes.forEach(n=>nodeMap[n.id]=n);
+
+  // Couleurs par type
+  const lStyle={
+    mariage:  {col:'#e8c97a', dash:'none', w:2, op:0.7},
+    heritage: {col:'#c0c0c0', dash:'none', w:2, op:0.6},
+    conflit:  {col:'#c0392b', dash:'6,4',  w:2, op:0.65},
+    alliance: {col:'#27ae60', dash:'4,3',  w:2, op:0.65},
+    branche:  {col:'#888',    dash:'none', w:1.5, op:0.4},
+  };
+
+  svg+=`<defs>
+    <marker id="arr-or"     markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#e8c97a" opacity="0.8"/></marker>
+    <marker id="arr-gris"   markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#888" opacity="0.6"/></marker>
+    <marker id="arr-rouge"  markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#c0392b" opacity="0.8"/></marker>
+    <marker id="arr-vert"   markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#27ae60" opacity="0.8"/></marker>
+    <marker id="arr-silver" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#c0c0c0" opacity="0.8"/></marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+
+  // Fond subtil
+  svg+=`<rect width="${W}" height="${H}" fill="#0d0b07"/>`;
+  svg+=`<rect width="${W}" height="${H}" fill="url(#bg)" opacity="0.03"/>`;
+
+  // Titre
+  svg+=cTxt('RÉSEAUX DYNASTIQUES — EUROPE (987 – 1800)',W/2,28,{size:13,fill:C.gold,ls:1.5,anchor:'middle'});
+  svg+=cLine(40,38,W-40,38,{op:0.15});
+
+  // Liens
+  links.forEach(lk=>{
+    const A=nodeMap[lk.a], B=nodeMap[lk.b];
+    if(!A||!B) return;
+    const s=lStyle[lk.type]||lStyle.branche;
+    const mx=(A.x+B.x)/2, my=(A.y+B.y)/2;
+    const arr={mariage:'arr-or',heritage:'arr-silver',conflit:'arr-rouge',alliance:'arr-vert',branche:'arr-gris'}[lk.type]||'arr-gris';
+
+    // Courbe de Bézier
+    const dx=(B.x-A.x), dy=(B.y-A.y);
+    const cx1=A.x+dx*0.25+(-dy)*0.18, cy1=A.y+dy*0.25+(dx)*0.18;
+    const cx2=B.x-dx*0.25+(-dy)*0.18, cy2=B.y-dy*0.25+(dx)*0.18;
+
+    svg+=`<path d="M${A.x},${A.y} C${cx1},${cy1} ${cx2},${cy2} ${B.x},${B.y}"
+      fill="none" stroke="${s.col}" stroke-width="${s.w}"
+      stroke-dasharray="${s.dash}" opacity="${s.op}"
+      marker-end="url(#${arr})"/>`;
+
+    // Label du lien au milieu
+    if(lk.label && lk.type!=='branche'){
+      const lmx=(A.x+cx1+cx2+B.x)/4, lmy=(A.y+cy1+cy2+B.y)/4;
+      svg+=`<text x="${lmx}" y="${lmy}" text-anchor="middle"
+        font-family="EB Garamond,serif" font-size="7.5" fill="${s.col}" opacity="0.8"
+        transform="rotate(${Math.atan2(B.y-A.y,B.x-A.x)*180/Math.PI},${lmx},${lmy})">${lk.label}</text>`;
+    }
+  });
+
+  // Nœuds
+  nodes.forEach(n=>{
+    const rw=88, rh=38;
+    // Glow
+    svg+=`<rect x="${n.x-rw/2}" y="${n.y-rh/2}" width="${rw}" height="${rh}" rx="4"
+      fill="${n.col}" opacity="0.06" filter="url(#glow)"/>`;
+    // Fond
+    svg+=`<rect x="${n.x-rw/2}" y="${n.y-rh/2}" width="${rw}" height="${rh}" rx="4"
+      fill="#0d0b07" stroke="${n.col}" stroke-width="1.5" opacity="0.95"/>`;
+    // Nom
+    svg+=`<text x="${n.x}" y="${n.y-4}" text-anchor="middle"
+      font-family="Cinzel,serif" font-size="9" font-weight="600"
+      fill="${n.col}" letter-spacing="0.08em">${n.label}</text>`;
+    // Sous-titre
+    svg+=`<text x="${n.x}" y="${n.y+11}" text-anchor="middle"
+      font-family="EB Garamond,serif" font-size="8" fill="#a09060" opacity="0.85">${n.sub}</text>`;
+  });
+
+  // Légende
+  const leg=[
+    {col:'#e8c97a',dash:'none', label:'Mariage dynastique'},
+    {col:'#c0c0c0',dash:'6,3',  label:'Héritage / succession'},
+    {col:'#c0392b',dash:'6,4',  label:'Conflit armé'},
+    {col:'#27ae60',dash:'4,3',  label:'Alliance politique'},
+    {col:'#888',   dash:'none', label:'Branche dynastique'},
+  ];
+  let lx=50, ly=H-22;
+  svg+=`<text x="${lx}" y="${ly-14}" font-family="Cinzel,serif" font-size="7.5" fill="#7a6840" letter-spacing="0.1em">LÉGENDE —</text>`;
+  leg.forEach((l,i)=>{
+    const px=lx+100+i*168;
+    svg+=`<line x1="${px}" y1="${ly-10}" x2="${px+28}" y2="${ly-10}"
+      stroke="${l.col}" stroke-width="2" stroke-dasharray="${l.dash}" opacity="0.85"/>`;
+    svg+=`<text x="${px+34}" y="${ly-6}" font-family="EB Garamond,serif" font-size="8.5" fill="#a09060">${l.label}</text>`;
+  });
+
+  svg+=`</svg>`;
+  return svg;
+}
+
 // ── DYNASTIES MÉDIÉVALES ──────────────────────────────────────────────────────
 function makeArbreMedieval() {
   let c=cTxt('DYNASTIES MÉDIÉVALES — EUROPE (Ve–XVe siècle)',450,22,{size:12,fill:C.gold,ls:1});
@@ -3183,6 +3363,9 @@ function makeFriseXX() {
     ],
     "moyen-age":[
       {title:"Dynasties médiévales",svg:makeArbreMedieval(),legend:[]},
+    ],
+    "monarchies":[
+      {title:"Réseaux dynastiques européens",svg:makeReseauMonarchies(),legend:[{type:"line",color:"#e8c97a",label:"Mariage dynastique"},{type:"line",color:"#c0c0c0",label:"Héritage / succession"},{type:"line",color:"#c0392b",label:"Conflit armé"},{type:"line",color:"#27ae60",label:"Alliance politique"},{type:"line",color:"#888888",label:"Branche dynastique"}]},
     ],
     "lumieres":[
       {title:"Réseau des Lumières",svg:makeReseauLumieres(),legend:[]},
