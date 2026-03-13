@@ -2956,182 +2956,277 @@ function makeEmpeureursRomains() {
 
 // ── RÉSEAU DES MONARCHIES EUROPÉENNES ─────────────────────────────────────────
 function makeReseauMonarchies() {
-  const W=1000, H=750;
-  let svg=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="background:#0d0b07;font-family:'EB Garamond',serif;">`;
+  const W=1100, H=860;
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
 
-  // ── Palette dynasties
-  const COL={
-    france:'#e8c97a', espagne:'#c9872a', habsbourg:'#9b59b6',
-    angleterre:'#4a7ab5', prusse:'#5a9b5a', russie:'#c0392b',
-    portugal:'#e74c3c', ottomane:'#e67e22', suede:'#3498db',
-    pays_bas:'#f39c12', pologne:'#e8c97a', danemark:'#9b2335',
+  // ── Couleurs par famille
+  const CF={fr:'#e8c97a',en:'#5a9fd4',hab:'#b07fd4',es:'#d4882a',
+            pr:'#5abf7a',ru:'#e05555',pt:'#e06888',ot:'#e67e22',su:'#3aaedb',it:'#c0784a'};
+
+  // ── Styles de liens
+  const LS={
+    branche: {col:'#555',   dash:'none',w:2,  op:0.5},
+    herit:   {col:'#aaa',   dash:'none',w:2.5,op:0.75},
+    mariage: {col:'#e8c97a',dash:'none',w:2,  op:0.85},
+    conflit: {col:'#d94040',dash:'7,4', w:2.5,op:0.8},
+    alliance:{col:'#4ac880',dash:'5,3', w:2,  op:0.8},
   };
 
-  // ── Nœuds : {id, label, sub, x, y, col}
-  const nodes=[
-    {id:'cap',  label:'CAPÉTIENS',    sub:'France 987–1328',        x:180, y:100, col:COL.france},
-    {id:'val',  label:'VALOIS',       sub:'France 1328–1589',       x:180, y:220, col:COL.france},
-    {id:'bou',  label:'BOURBONS',     sub:'France 1589–1792',       x:180, y:345, col:COL.france},
-    {id:'plan', label:'PLANTAGENÊTS', sub:'Angleterre 1154–1399',   x:460, y:100, col:COL.angleterre},
-    {id:'lan',  label:'LANCASTRE',    sub:'Angleterre 1399–1461',   x:380, y:210, col:COL.angleterre},
-    {id:'york', label:'YORK',         sub:'Angleterre 1461–1485',   x:545, y:210, col:COL.angleterre},
-    {id:'tud',  label:'TUDORS',       sub:'Angleterre 1485–1603',   x:460, y:320, col:COL.angleterre},
-    {id:'stu',  label:'STUARTS',      sub:'G-B 1603–1714',          x:460, y:430, col:COL.angleterre},
-    {id:'han',  label:'HANOVRE',      sub:'G-B 1714–1901',          x:460, y:540, col:COL.angleterre},
-    {id:'hab',  label:'HABSBOURG',    sub:'Empire/Autriche 1273+',  x:680, y:220, col:COL.habsbourg},
-    {id:'esp',  label:'TRASTÁMARES',  sub:'Espagne –1516',          x:800, y:100, col:COL.espagne},
-    {id:'hab_e',label:'HABSBOURG-ESPAGNE',sub:'Espagne 1516–1700',  x:810, y:240, col:COL.espagne},
-    {id:'bou_e',label:'BOURBONS ESPAGNE',sub:'Espagne 1700+',       x:810, y:370, col:COL.espagne},
-    {id:'hoh',  label:'HOHENZOLLERN', sub:'Prusse/All. 1415+',      x:680, y:430, col:COL.prusse},
-    {id:'rom',  label:'ROMANOV',      sub:'Russie 1613–1917',       x:870, y:520, col:COL.russie},
-    {id:'ott',  label:'OTTOMANS',     sub:'Empire 1299–1922',       x:820, y:620, col:COL.ottomane},
-    {id:'vas',  label:'VASA',         sub:'Suède 1523–1654',        x:350, y:530, col:COL.suede},
-    {id:'ave',  label:'AVIZ',         sub:'Portugal 1385–1580',     x:120, y:490, col:COL.portugal},
-    {id:'bra',  label:'BRAGANCE',     sub:'Portugal 1640+',         x:120, y:610, col:COL.portugal},
-    {id:'med',  label:'MÉDICIS',      sub:'Florence/Toscane 1434+', x:560, y:620, col:'#a0522d'},
+  // ══════════════════════════════════════════════════════════
+  // LAYOUT : 5 colonnes géographiques + rangées chronologiques
+  // Chaque nœud a des coordonnées fixes soigneusement choisies
+  // pour que les liens soient le plus souvent horizontaux ou
+  // verticaux — JAMAIS de label tourné.
+  //
+  //  Col  x≈   Famille
+  //   A   90   Portugal
+  //   B  235   France
+  //   C  460   Angleterre (colonne + large car beaucoup de nœuds)
+  //   D  730   Habsbourg / Espagne
+  //   E  970   Est : Prusse, Russie, Ottomans
+  //
+  //  + Italie (Médicis) en bas au centre
+  //  + Suède (Vasa)     en haut entre C et D
+  // ══════════════════════════════════════════════════════════
+
+  // {id, l(abel court), s(ous-titre), x, y, c(ouleur)}
+  const NODES=[
+    // ── PORTUGAL
+    {id:'aviz', l:'AVIZ',          s:'Portugal 1385–1580', x:90,  y:240, c:CF.pt},
+    {id:'bra',  l:'BRAGANCE',      s:'Portugal 1640–1910', x:90,  y:390, c:CF.pt},
+    // ── FRANCE
+    {id:'cap',  l:'CAPÉTIENS',     s:'France 987–1328',    x:245, y:130, c:CF.fr},
+    {id:'val',  l:'VALOIS',        s:'France 1328–1589',   x:245, y:280, c:CF.fr},
+    {id:'bou',  l:'BOURBONS',      s:'France 1589–1792',   x:245, y:430, c:CF.fr},
+    // ── ITALIE (bas centre, entre France et Angleterre)
+    {id:'med',  l:'MÉDICIS',       s:'Florence 1434–1737', x:360, y:610, c:CF.it},
+    // ── ANGLETERRE
+    {id:'plan', l:'PLANTAGENÊTS',  s:'Angl. 1154–1399',    x:510, y:130, c:CF.en},
+    {id:'lan',  l:'LANCASTRE',     s:'Angl. 1399–1461',    x:440, y:270, c:CF.en},
+    {id:'york', l:'YORK',          s:'Angl. 1461–1485',    x:590, y:270, c:CF.en},
+    {id:'tud',  l:'TUDORS',        s:'Angl. 1485–1603',    x:510, y:410, c:CF.en},
+    {id:'stu',  l:'STUARTS',       s:'G-B 1603–1714',      x:510, y:540, c:CF.en},
+    {id:'han',  l:'HANOVRE',       s:'G-B 1714–1901',      x:510, y:670, c:CF.en},
+    // ── SUÈDE (entre Angleterre et Habsbourg, haut)
+    {id:'vas',  l:'VASA',          s:'Suède 1523–1654',    x:670, y:170, c:CF.su},
+    // ── HABSBOURG / ESPAGNE
+    {id:'tras', l:'TRASTÁMARES',   s:'Espagne –1516',      x:750, y:130, c:CF.es},
+    {id:'hab',  l:'HABSBOURG',     s:'Empire 1273–1918',   x:750, y:300, c:CF.hab},
+    {id:'habe', l:'HABSBOURG-ESP.',s:'Espagne 1516–1700',  x:750, y:450, c:CF.es},
+    {id:'boue', l:'BOURBONS-ESP.', s:'Espagne 1700+',      x:750, y:590, c:CF.es},
+    // ── EST
+    {id:'hoh',  l:'HOHENZOLLERN', s:'Prusse 1415+',        x:970, y:350, c:CF.pr},
+    {id:'rom',  l:'ROMANOV',      s:'Russie 1613–1917',    x:970, y:500, c:CF.ru},
+    {id:'ott',  l:'OTTOMANS',     s:'Empire 1299–1922',    x:970, y:680, c:CF.ot},
   ];
 
-  // ── Liens : {a, b, type, label}
-  // types: 'mariage'(or), 'heritage'(argent), 'conflit'(rouge), 'alliance'(vert), 'branche'(gris)
-  const links=[
-    // Branches capétiens → valois → bourbons
-    {a:'cap', b:'val',  type:'branche',  label:'branche directe'},
-    {a:'val', b:'bou',  type:'branche',  label:'branche Bourbon'},
-    // Plantagenêts → Lancastre/York/Tudors
-    {a:'plan',b:'lan',  type:'branche',  label:'branche Lancastre'},
-    {a:'plan',b:'york', type:'branche',  label:'branche York'},
-    {a:'lan', b:'tud',  type:'heritage', label:'Guerre des Deux-Roses → Tudors'},
-    {a:'york',b:'tud',  type:'heritage', label:'Guerre des Deux-Roses'},
-    {a:'tud', b:'stu',  type:'branche',  label:'Élisabeth I → Jacques VI (Stuart)'},
-    {a:'stu', b:'han',  type:'heritage', label:'Act of Settlement 1701'},
-    // Habsbourg empire & Espagne
-    {a:'esp', b:'hab_e',type:'heritage', label:'Mariage dynastique 1516 (Charles Quint)'},
-    {a:'hab', b:'hab_e',type:'branche',  label:'Branche espagnole'},
-    {a:'hab_e',b:'bou_e',type:'heritage',label:'Guerre de succession d\'Espagne 1701–1714'},
-    // Mariages franco-espagnols
-    {a:'bou', b:'bou_e',type:'mariage', label:'Branche Bourbon Espagne (Philippe V, 1700)'},
-    // Médici
-    {a:'val', b:'med',  type:'mariage',  label:'Catherine de Médicis → Henri II (1533)'},
-    {a:'bou', b:'med',  type:'mariage',  label:'Marie de Médicis → Henri IV (1600)'},
-    // Angleterre–Espagne
-    {a:'tud', b:'hab_e',type:'mariage',  label:'Marie I d\'Angleterre × Philippe II (1554)'},
-    // Angleterre–France
-    {a:'plan',b:'val',  type:'conflit',  label:'Guerre de Cent Ans 1337–1453'},
-    {a:'tud', b:'val',  type:'conflit',  label:'Guerres d\'Italie/rivalité'},
-    // Habsbourg–France
-    {a:'hab', b:'val',  type:'conflit',  label:'François I vs Charles Quint'},
-    {a:'hab', b:'bou',  type:'conflit',  label:'Guerres de Louis XIV vs Habsbourg'},
-    // Ottomans
-    {a:'hab', b:'ott',  type:'conflit',  label:'Guerres ottomanes-habsbourgeoises (Vienne 1529, 1683)'},
-    {a:'val', b:'ott',  type:'alliance', label:'Alliance franco-ottomane (François Ier, 1536)'},
-    // Hohenzollern
-    {a:'hab', b:'hoh',  type:'conflit',  label:'Guerre de Sept Ans 1756–1763'},
-    {a:'hoh', b:'rom',  type:'mariage',  label:'Alliances matrimoniales prusso-russes'},
-    // Romanov
-    {a:'rom', b:'hab',  type:'mariage',  label:'Mariages dynastiques austro-russes'},
-    // Suède
-    {a:'vas', b:'hab',  type:'conflit',  label:'Guerre de Trente Ans 1618–1648'},
-    {a:'vas', b:'plan', type:'mariage',  label:'Liens dynastiques nordiques'},
-    // Portugal
-    {a:'ave', b:'esp',  type:'branche',  label:'Iberia : Trastámares × Aviz (mariage 1490)'},
-    {a:'ave', b:'bra',  type:'branche',  label:'Restauration Portugal 1640'},
-    {a:'hab_e',b:'ave', type:'heritage', label:'Philippe II annexe Portugal (1580–1640)'},
+  // Largeur auto selon label
+  function nw(n){ return Math.max(100, n.l.length*8.5+20); }
+  const NH=44;
+
+  const nm={};
+  NODES.forEach(n=>nm[n.id]=n);
+
+  // ══════════════════════════════════════════════════════════
+  // LIENS — chaque label est une BULLE HORIZONTALE dont la
+  // position Y est choisie manuellement (ly) pour ne jamais
+  // chevaucher un nœud ou une autre bulle.
+  // lx/ly = centre de la bulle (défaut = milieu du segment)
+  // ══════════════════════════════════════════════════════════
+  const LINKS=[
+    // ── Successions verticales FRANCE (pas de label = juste flèche)
+    {a:'cap', b:'val',  t:'branche', lbl:''},
+    {a:'val', b:'bou',  t:'branche', lbl:''},
+    // ── Successions verticales ANGLETERRE
+    {a:'plan',b:'lan',  t:'branche', lbl:''},
+    {a:'plan',b:'york', t:'branche', lbl:''},
+    {a:'lan', b:'tud',  t:'herit',   lbl:'Guerre des Deux-Roses'},
+    {a:'york',b:'tud',  t:'herit',   lbl:''},
+    {a:'tud', b:'stu',  t:'branche', lbl:'Élisabeth I → Jacques VI', ly:478},
+    {a:'stu', b:'han',  t:'herit',   lbl:'Act of Settlement 1701',   ly:608},
+    // ── Successions PORTUGAL
+    {a:'aviz',b:'bra',  t:'branche', lbl:'Restauration 1640', ly:318},
+    // ── Successions HABSBOURG/ESPAGNE
+    {a:'tras',b:'habe', t:'herit',   lbl:'Héritage Charles Quint 1516', ly:390},
+    {a:'hab', b:'habe', t:'branche', lbl:''},
+    {a:'habe',b:'boue', t:'herit',   lbl:'Succession d\'Espagne 1700', ly:528},
+    // ── MARIAGES (lignes horizontales → labels propres)
+    {a:'val', b:'med',  t:'mariage', lbl:'Catherine de Médicis × Henri II 1533', ly:350},
+    {a:'bou', b:'med',  t:'mariage', lbl:'Marie de Médicis × Henri IV 1600',     ly:520},
+    {a:'bou', b:'boue', t:'mariage', lbl:'Philippe V Bourbon 1700',              ly:410},
+    {a:'tud', b:'habe', t:'mariage', lbl:'Marie I × Philippe II 1554',           ly:430},
+    {a:'habe',b:'aviz', t:'herit',   lbl:'Philippe II annexe Portugal 1580',     ly:450},
+    {a:'aviz',b:'tras', t:'mariage', lbl:'Alliance ibérique 1490',               ly:185},
+    // ── CONFLITS
+    {a:'cap', b:'plan', t:'conflit', lbl:'Guerre de Cent Ans 1337–1453',         ly:92},
+    {a:'val', b:'hab',  t:'conflit', lbl:'François Ier vs Charles Quint',        ly:248},
+    {a:'bou', b:'hab',  t:'conflit', lbl:'Louis XIV vs Habsbourg',               ly:395},
+    // ── ALLIANCE franco-ottomane (lien long, bulle placée à gauche)
+    {a:'val', b:'ott',  t:'alliance',lbl:'Alliance franco-ottomane 1536',        ly:480},
+    // ── HABSBOURG–OTTOMANS
+    {a:'hab', b:'ott',  t:'conflit', lbl:'Vienne 1529 & 1683',                   ly:568},
+    // ── HABSBOURG–PRUSSE
+    {a:'hab', b:'hoh',  t:'conflit', lbl:'Guerre de Sept Ans 1756',              ly:326},
+    // ── EST
+    {a:'hoh', b:'rom',  t:'mariage', lbl:'Alliances prusso-russes',              ly:428},
+    {a:'rom', b:'hab',  t:'mariage', lbl:'Mariages austro-russes',               ly:400},
+    // ── SUÈDE
+    {a:'vas', b:'hab',  t:'conflit', lbl:'Guerre de Trente Ans 1618',            ly:192},
   ];
 
-  // ── Dessin des liens
-  const nodeMap={};
-  nodes.forEach(n=>nodeMap[n.id]=n);
+  // ══════════════════════════════════════════════════════════
+  // RENDU SVG
+  // ══════════════════════════════════════════════════════════
+  const mks={branche:'mq_gr',herit:'mq_si',mariage:'mq_or',conflit:'mq_ro',alliance:'mq_ve'};
 
-  // Couleurs par type
-  const lStyle={
-    mariage:  {col:'#e8c97a', dash:'none', w:2, op:0.7},
-    heritage: {col:'#c0c0c0', dash:'none', w:2, op:0.6},
-    conflit:  {col:'#c0392b', dash:'6,4',  w:2, op:0.65},
-    alliance: {col:'#27ae60', dash:'4,3',  w:2, op:0.65},
-    branche:  {col:'#888',    dash:'none', w:1.5, op:0.4},
-  };
-
-  svg+=`<defs>
-    <marker id="arr-or"     markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#e8c97a" opacity="0.8"/></marker>
-    <marker id="arr-gris"   markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#888" opacity="0.6"/></marker>
-    <marker id="arr-rouge"  markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#c0392b" opacity="0.8"/></marker>
-    <marker id="arr-vert"   markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#27ae60" opacity="0.8"/></marker>
-    <marker id="arr-silver" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#c0c0c0" opacity="0.8"/></marker>
-    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  s+=`<defs>
+    <marker id="mq_or" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <polygon points="0 0,8 4,0 8" fill="#e8c97a"/></marker>
+    <marker id="mq_gr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <polygon points="0 0,8 4,0 8" fill="#666"/></marker>
+    <marker id="mq_si" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <polygon points="0 0,8 4,0 8" fill="#aaa"/></marker>
+    <marker id="mq_ro" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <polygon points="0 0,8 4,0 8" fill="#d94040"/></marker>
+    <marker id="mq_ve" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <polygon points="0 0,8 4,0 8" fill="#4ac880"/></marker>
+    <filter id="mq_glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>`;
 
-  // Fond subtil
-  svg+=`<rect width="${W}" height="${H}" fill="#0d0b07"/>`;
-  svg+=`<rect width="${W}" height="${H}" fill="url(#bg)" opacity="0.03"/>`;
+  // Fond
+  s+=`<rect width="${W}" height="${H}" fill="#0c0a06"/>`;
+
+  // Zones géographiques
+  const ZONES=[
+    {x:28, y:70,w:132,h:760,col:CF.pt, lbl:'PORTUGAL'},
+    {x:168,y:70,w:140,h:760,col:CF.fr, lbl:'FRANCE'},
+    {x:390,y:70,w:235,h:760,col:CF.en, lbl:'ANGLETERRE'},
+    {x:695,y:70,w:175,h:760,col:CF.hab,lbl:'HABSBOURG / ESPAGNE'},
+    {x:900,y:70,w:175,h:760,col:'#888',lbl:'PRUSSE · RUSSIE · OTTOMANS'},
+  ];
+  ZONES.forEach(z=>{
+    s+=`<rect x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}" rx="6"
+      fill="${z.col}" opacity="0.04"/>`;
+    s+=`<rect x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}" rx="6"
+      fill="none" stroke="${z.col}" stroke-width="1" opacity="0.14"/>`;
+    s+=`<text x="${z.x+z.w/2}" y="${z.y+14}" text-anchor="middle"
+      font-family="Cinzel,serif" font-size="7.5" fill="${z.col}" opacity="0.5"
+      letter-spacing="0.1em">${z.lbl}</text>`;
+  });
 
   // Titre
-  svg+=cTxt('RÉSEAUX DYNASTIQUES — EUROPE (987 – 1800)',W/2,28,{size:13,fill:C.gold,ls:1.5,anchor:'middle'});
-  svg+=cLine(40,38,W-40,38,{op:0.15});
+  s+=`<text x="${W/2}" y="42" text-anchor="middle"
+    font-family="Cinzel,serif" font-size="13.5" fill="#e8c97a"
+    letter-spacing="0.12em" opacity="0.95">RÉSEAUX DYNASTIQUES EUROPÉENS — 987 – 1800</text>`;
+  s+=`<line x1="40" y1="52" x2="${W-40}" y2="52"
+    stroke="#e8c97a" stroke-width="0.5" opacity="0.2"/>`;
 
-  // Liens
-  links.forEach(lk=>{
-    const A=nodeMap[lk.a], B=nodeMap[lk.b];
+  // ── PHASE 1 : LIENS (sous les nœuds)
+  LINKS.forEach(lk=>{
+    const A=nm[lk.a], B=nm[lk.b];
     if(!A||!B) return;
-    const s=lStyle[lk.type]||lStyle.branche;
-    const mx=(A.x+B.x)/2, my=(A.y+B.y)/2;
-    const arr={mariage:'arr-or',heritage:'arr-silver',conflit:'arr-rouge',alliance:'arr-vert',branche:'arr-gris'}[lk.type]||'arr-gris';
+    const st=LS[lk.t];
+    const mk=mks[lk.t];
+    const aw=nw(A)/2, bw=nw(B)/2;
 
-    // Courbe de Bézier
-    const dx=(B.x-A.x), dy=(B.y-A.y);
-    const cx1=A.x+dx*0.25+(-dy)*0.18, cy1=A.y+dy*0.25+(dx)*0.18;
-    const cx2=B.x-dx*0.25+(-dy)*0.18, cy2=B.y-dy*0.25+(dx)*0.18;
+    // Points de départ/arrivée sur les bords des boîtes
+    const dx=B.x-A.x, dy=B.y-A.y;
+    const adx=Math.abs(dx), ady=Math.abs(dy);
+    let ax,ay,bx,by;
+    // Si lien principalement horizontal → sortie par côtés gauche/droite
+    if(adx>=ady){
+      ax = dx>0 ? A.x+aw   : A.x-aw;
+      bx = dx>0 ? B.x-bw-6 : B.x+bw+6;
+      ay=A.y; by=B.y;
+    } else {
+      // principalement vertical → sortie par dessus/dessous
+      ax=A.x; bx=B.x;
+      ay = dy>0 ? A.y+NH/2   : A.y-NH/2;
+      by = dy>0 ? B.y-NH/2-6 : B.y+NH/2+6;
+    }
 
-    svg+=`<path d="M${A.x},${A.y} C${cx1},${cy1} ${cx2},${cy2} ${B.x},${B.y}"
-      fill="none" stroke="${s.col}" stroke-width="${s.w}"
-      stroke-dasharray="${s.dash}" opacity="${s.op}"
-      marker-end="url(#${arr})"/>`;
+    // Contrôle Bézier : courbure latérale légère pour les verticaux,
+    // courbure verticale légère pour les horizontaux
+    let c1x,c1y,c2x,c2y;
+    if(adx>=ady){
+      // Horizontal — léger arc vertical au milieu
+      const arc=(dy!==0?Math.sign(dy)*-20:0);
+      c1x=ax+dx*0.35; c1y=ay+arc;
+      c2x=bx-dx*0.35; c2y=by+arc;
+    } else {
+      // Vertical — léger arc latéral pour éviter les chevauchements
+      // Alterner gauche/droite selon l'id pour démêler les lignes parallèles
+      const side=(lk.a.charCodeAt(0)+lk.b.charCodeAt(0))%2===0 ? 1:-1;
+      const bend=Math.min(55, adx*0.5+18);
+      c1x=ax+side*bend; c1y=ay+dy*0.3;
+      c2x=bx+side*bend; c2y=by-dy*0.3;
+    }
 
-    // Label du lien au milieu
-    if(lk.label && lk.type!=='branche'){
-      const lmx=(A.x+cx1+cx2+B.x)/4, lmy=(A.y+cy1+cy2+B.y)/4;
-      svg+=`<text x="${lmx}" y="${lmy}" text-anchor="middle"
-        font-family="EB Garamond,serif" font-size="7.5" fill="${s.col}" opacity="0.8"
-        transform="rotate(${Math.atan2(B.y-A.y,B.x-A.x)*180/Math.PI},${lmx},${lmy})">${lk.label}</text>`;
+    s+=`<path d="M${ax},${ay} C${c1x},${c1y} ${c2x},${c2y} ${bx},${by}"
+      fill="none" stroke="${st.col}" stroke-width="${st.w}"
+      stroke-dasharray="${st.dash}" opacity="${st.op}"
+      marker-end="url(#${mk})"/>`;
+
+    // ── Label HORIZONTAL, bulle avec fond opaque
+    if(lk.lbl){
+      // Centre de la courbe de Bézier à t=0.5
+      const t=0.5,mt=0.5;
+      const mlx=mt*mt*mt*ax+3*mt*mt*t*c1x+3*mt*t*t*c2x+t*t*t*bx;
+      // Si ly est fourni, on l'utilise (position Y manuelle = pas de chevauchement)
+      const mly = lk.ly !== undefined ? lk.ly : (mt*mt*mt*ay+3*mt*mt*t*c1y+3*mt*t*t*c2y+t*t*t*by);
+      const LW=lk.lbl.length*5.2+16;
+      const LH=14;
+      s+=`<rect x="${mlx-LW/2}" y="${mly-LH+2}" width="${LW}" height="${LH}" rx="3"
+        fill="#0e0c08" stroke="${st.col}" stroke-width="0.6" opacity="0.95"/>`;
+      s+=`<text x="${mlx}" y="${mly-1}" text-anchor="middle"
+        font-family="EB Garamond,serif" font-size="9" fill="${st.col}"
+        opacity="0.95">${lk.lbl}</text>`;
     }
   });
 
-  // Nœuds
-  nodes.forEach(n=>{
-    const rw=88, rh=38;
-    // Glow
-    svg+=`<rect x="${n.x-rw/2}" y="${n.y-rh/2}" width="${rw}" height="${rh}" rx="4"
-      fill="${n.col}" opacity="0.06" filter="url(#glow)"/>`;
-    // Fond
-    svg+=`<rect x="${n.x-rw/2}" y="${n.y-rh/2}" width="${rw}" height="${rh}" rx="4"
-      fill="#0d0b07" stroke="${n.col}" stroke-width="1.5" opacity="0.95"/>`;
-    // Nom
-    svg+=`<text x="${n.x}" y="${n.y-4}" text-anchor="middle"
-      font-family="Cinzel,serif" font-size="9" font-weight="600"
-      fill="${n.col}" letter-spacing="0.08em">${n.label}</text>`;
-    // Sous-titre
-    svg+=`<text x="${n.x}" y="${n.y+11}" text-anchor="middle"
-      font-family="EB Garamond,serif" font-size="8" fill="#a09060" opacity="0.85">${n.sub}</text>`;
+  // ── PHASE 2 : NOEUDS (par-dessus les lignes)
+  NODES.forEach(n=>{
+    const w=nw(n);
+    s+=`<rect x="${n.x-w/2-2}" y="${n.y-NH/2-2}" width="${w+4}" height="${NH+4}" rx="7"
+      fill="${n.c}" opacity="0.07" filter="url(#mq_glow)"/>`;
+    s+=`<rect x="${n.x-w/2}" y="${n.y-NH/2}" width="${w}" height="${NH}" rx="5"
+      fill="#0e0c08" stroke="${n.c}" stroke-width="1.8"/>`;
+    s+=`<text x="${n.x}" y="${n.y-6}" text-anchor="middle"
+      font-family="Cinzel,serif" font-size="9.5" font-weight="600"
+      fill="${n.c}" letter-spacing="0.06em">${n.l}</text>`;
+    s+=`<text x="${n.x}" y="${n.y+10}" text-anchor="middle"
+      font-family="EB Garamond,serif" font-size="8.5" fill="#9a8860">${n.s}</text>`;
   });
 
-  // Légende
-  const leg=[
-    {col:'#e8c97a',dash:'none', label:'Mariage dynastique'},
-    {col:'#c0c0c0',dash:'6,3',  label:'Héritage / succession'},
-    {col:'#c0392b',dash:'6,4',  label:'Conflit armé'},
-    {col:'#27ae60',dash:'4,3',  label:'Alliance politique'},
-    {col:'#888',   dash:'none', label:'Branche dynastique'},
+  // ── LÉGENDE (barre horizontale en bas)
+  const LEG=[
+    {col:'#555',    dash:'none',lbl:'Succession directe'},
+    {col:'#aaa',    dash:'none',lbl:'Héritage / succession'},
+    {col:'#e8c97a', dash:'none',lbl:'Mariage dynastique'},
+    {col:'#d94040', dash:'7,4', lbl:'Conflit armé'},
+    {col:'#4ac880', dash:'5,3', lbl:'Alliance politique'},
   ];
-  let lx=50, ly=H-22;
-  svg+=`<text x="${lx}" y="${ly-14}" font-family="Cinzel,serif" font-size="7.5" fill="#7a6840" letter-spacing="0.1em">LÉGENDE —</text>`;
-  leg.forEach((l,i)=>{
-    const px=lx+100+i*168;
-    svg+=`<line x1="${px}" y1="${ly-10}" x2="${px+28}" y2="${ly-10}"
-      stroke="${l.col}" stroke-width="2" stroke-dasharray="${l.dash}" opacity="0.85"/>`;
-    svg+=`<text x="${px+34}" y="${ly-6}" font-family="EB Garamond,serif" font-size="8.5" fill="#a09060">${l.label}</text>`;
+  const ly0=H-22;
+  s+=`<line x1="28" y1="${ly0-20}" x2="${W-28}" y2="${ly0-20}"
+    stroke="#e8c97a" stroke-width="0.4" opacity="0.15"/>`;
+  s+=`<text x="38" y="${ly0-5}" font-family="Cinzel,serif" font-size="7.5"
+    fill="#7a6840" letter-spacing="0.14em" opacity="0.9">LÉGENDE</text>`;
+  let lxc=120;
+  LEG.forEach(lg=>{
+    s+=`<line x1="${lxc}" y1="${ly0-11}" x2="${lxc+28}" y2="${ly0-11}"
+      stroke="${lg.col}" stroke-width="2.5" stroke-dasharray="${lg.dash}" opacity="0.9"/>`;
+    s+=`<polygon points="${lxc+28} ${ly0-15},${lxc+36} ${ly0-11},${lxc+28} ${ly0-7}"
+      fill="${lg.col}" opacity="0.9"/>`;
+    s+=`<text x="${lxc+40}" y="${ly0-5}" font-family="EB Garamond,serif" font-size="9.5"
+      fill="#a09060">${lg.lbl}</text>`;
+    lxc+=40+lg.lbl.length*5.6+20;
   });
 
-  svg+=`</svg>`;
-  return svg;
+  s+=`</svg>`;
+  return s;
 }
 
 // ── DYNASTIES MÉDIÉVALES ──────────────────────────────────────────────────────
